@@ -1,1 +1,5 @@
-export const path = {};
+export const path = {
+  HOME: '/',
+  LOGIN: '/login',
+  REGISTER: '/register',
+};
