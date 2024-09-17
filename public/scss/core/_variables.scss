@@ -1,0 +1,43 @@
+:root {
+  /* MaxWidth Of Page, Container-Fluid, Container, Gutter*/
+  --max-width-page: 2560px;
+  --max-width-container-fluid: 1920px;
+  --max-width-container: calc(1220px + calc(var(--gap) * 2));
+
+  --gap: 30px;
+
+  /* Colors Variable*/
+  --main-cl: #42ada5;
+  --blue-dark: #001642;
+  --blue-light: #268bc7;
+  --dark-cl: #262626;
+  --black-cl: #000;
+  --white-cl: #fff;
+  --gray-cl: #4c4c4d;
+  --body-cl: #e8e9eb;
+  // Fontsize - Lineheight Variable
+  --fs-h1: 9rem;
+  --lh1-h1: 10rem;
+
+  --fs-h2: 8.5rem;
+  --lh1-h2: 9rem;
+
+  --fs-body: 1.8rem;
+  --lh-body: 2rem;
+
+  --height-header: 120px;
+  --height-button: 42px;
+  --pd-section: 120px;
+
+  // Timing Transition Variable
+  --duration: 0.4s;
+  --cubic: cubic-bezier(0.59, 0.29, 0.15, 0.93);
+
+  // Responsive
+  @include md {
+    --container-max-width: 1140px;
+  }
+  @include sm {
+    --container-max-width: 960px;
+  }
+}
