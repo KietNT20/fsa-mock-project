@@ -1,6 +1,12 @@
-
 // component button
-const CustomButton = ({ text = 'Submit', onClick, className = 'btn', id, additionalClass = '', ...props }) => {
+const CustomButton = ({
+  text = "Submit",
+  onClick,
+  className = "btn",
+  id,
+  additionalClass = "",
+  ...props
+}) => {
   // kết hợp class mặc định và class bổ sung
   const combinedClassName = `${className} ${additionalClass}`.trim();
 

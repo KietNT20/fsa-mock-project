@@ -1,5 +1,5 @@
-import { PATH } from '@/constant/path';
-import { Navigate, Outlet } from 'react-router-dom';
+import { PATH } from "@/constant/path";
+import { Navigate, Outlet } from "react-router-dom";
 
 const PrivateRoute = ({ isAuthenticated, redirectPath = PATH.LOGIN }) => {
   if (!isAuthenticated) {

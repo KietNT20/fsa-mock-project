@@ -1,8 +1,7 @@
-import CustomButton from '../../components/Button/Button';
-import CustomInput from '../../components/InputText/InputText';
+import CustomButton from '../../components/Button/CustomButton';
+import CustomInput from '../../components/InputText/CustomInput';
 
 const RegisterForm = ({ handleRegister }) => {
-
   return (
     <>
       <form className="sign-up-form">

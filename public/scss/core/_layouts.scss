@@ -3,39 +3,16 @@ html {
 }
 body {
   width: 100%;
-  max-width: var(--max-width-page);
   margin: auto;
   scroll-behavior: smooth;
-  font-family: vnRegular;
   font-size: var(--fs-body);
   line-height: var(--lh-body);
   &.--disable-scroll {
     height: 100vh;
     overflow: hidden;
   }
-  .container-fluid {
-    width: 100%;
-    max-width: var(--max-width-container-fluid);
-    padding-right: var(--gap);
-    padding-left: var(--gap);
-    margin-right: auto;
-    margin-left: auto;
-    position: relative;
-  }
-  .container {
-    width: 100%;
-    max-width: var(--max-width-container);
-    padding-right: var(--gap);
-    padding-left: var(--gap);
-    margin-right: auto;
-    margin-left: auto;
-    position: relative;
-  }
   .main {
     position: relative;
     margin-top: var(--height-header);
-    section {
-      padding: var(--pd-section) 0;
-    }
   }
 }
