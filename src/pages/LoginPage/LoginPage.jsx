@@ -1,26 +1,27 @@
 import { useEffect } from 'react';
 import { toggleSignInUpMode } from '../../assets/js/toggleSignInUpMode';
+import CustomButton from '../../components/Button/CustomButton';
 import loginIcon from './../../assets/LoginAsset/login.svg';
 import regIcon from './../../assets/LoginAsset/reg.svg';
-import LoginForm from './LoginForm';
-import './LoginPage.css';
-import RegisterForm from './RegisterForm';
+import LoginForm from './../LoginPage/LoginForm';
+import RegisterForm from './../LoginPage/RegisterForm';
+// import "./LoginPage.css";
 
 const LoginPage = () => {
   const handleLogin = () => {
-    // Handle login logic here
-    console.log('Login button clicked');
+    // handle login logic here
+    console.log('login button clicked');
   };
 
   const handleRegister = () => {
-    // Handle registration logic here
-    console.log('Register button clicked');
+    // handle registration logic here
+    console.log('register button clicked');
   };
 
   useEffect(() => {
     const cleanup = toggleSignInUpMode();
 
-    // Cleanup function when component unmounts
+    // cleanup function when component unmounts
     return () => {
       if (cleanup) cleanup();
     };
@@ -31,9 +32,9 @@ const LoginPage = () => {
       <div className="container">
         <div className="forms-container">
           <div className="signin-signup">
-            {/* Login form */}
+            {/* login form */}
             <LoginForm handleLogin={() => handleLogin()} />
-            {/* Register form */}
+            {/* register form */}
             <RegisterForm handleRegister={() => handleRegister()} />
           </div>
         </div>
@@ -41,28 +42,36 @@ const LoginPage = () => {
         <div className="panels-container">
           <div className="panel left-panel">
             <div className="content">
-              <h3>New here ?</h3>
+              <h3>new here ?</h3>
               <p>
-                If you don&apos;t have an account yet, please click the Sign Up
+                if you don&apos;t have an account yet, please click the sign up
                 button to create a new account and start enjoying our amazing
                 features!
               </p>
-              <button className="btn transparent" id="sign-up-btn">
-                Sign up
-              </button>
+              {/* sử dụng custom button với id và className "btn" và thêm class "transparent" */}
+              <CustomButton
+                text="sign up"
+                id="sign-up-btn"
+                className="btn"
+                additionalClass="transparent"
+              />
             </div>
             <img src={loginIcon} className="image" alt="" />
           </div>
           <div className="panel right-panel">
             <div className="content">
-              <h3>One of us ?</h3>
+              <h3>one of us ?</h3>
               <p>
-                If you already have an account, please click the Sign In button
+                if you already have an account, please click the sign in button
                 to log in!
               </p>
-              <button className="btn transparent" id="sign-in-btn">
-                Sign in
-              </button>
+              {/* sử dụng custom button với id và className "btn" và thêm class "transparent" */}
+              <CustomButton
+                text="sign in"
+                id="sign-in-btn"
+                className="btn"
+                additionalClass="transparent"
+              />
             </div>
             <img src={regIcon} className="image" alt="" />
           </div>
