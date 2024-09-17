@@ -1,25 +1,32 @@
+import CustomButton from '../../components/Button/Button';
+import CustomInput from '../../components/InputText/InputText';
+
 const RegisterForm = ({ handleRegister }) => {
+
   return (
     <>
-      {' '}
       <form className="sign-up-form">
         <h2 className="title">Sign up</h2>
-        <div className="input-field">
-          <i className="fas fa-user"></i>
-          <input type="text" placeholder="Username" />
-        </div>
-        <div className="input-field">
-          <i className="fas fa-envelope"></i>
-          <input type="email" placeholder="Email" />
-        </div>
-        <div className="input-field">
-          <i className="fas fa-lock"></i>
-          <input type="password" placeholder="Password" />
-        </div>
-        {/* logic button register */}
-        <button className="btn" onClick={handleRegister}>
-          Sign up
-        </button>
+        {/* sử dụng component CustomInput */}
+        <CustomInput
+          type="text"
+          placeholder="Username"
+          iconClass="fas fa-user"
+        />
+        <CustomInput
+          type="email"
+          placeholder="Email"
+          iconClass="fas fa-envelope"
+        />
+        <CustomInput
+          type="password"
+          placeholder="Password"
+          iconClass="fas fa-lock"
+        />
+
+        {/* sử dụng component CustomButton với className mặc định là 'btn' */}
+        <CustomButton text="Sign up" onClick={handleRegister} />
+
         <p className="social-text">Or Sign up with social platforms</p>
         <div className="social-media">
           <a href="#" className="social-icon">
