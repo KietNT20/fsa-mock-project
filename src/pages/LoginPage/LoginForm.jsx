@@ -180,7 +180,7 @@ const LoginForm = ({ handleLogin }) => {
             className="social-icon"
             sx={{ border: 1, borderColor: 'grey.300' }}
           >
-            <Icon sx={{ fontSize: '2.4rem' }} />
+            <Icon fontSize="large" />
           </IconButton>
         ))}
       </Box>
