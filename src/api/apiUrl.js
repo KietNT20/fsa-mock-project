@@ -1,3 +1,5 @@
 export const API = {
-  LOGIN: "/login",
+  LOGIN: '/login',
+  REGISTER: '/signup',
+  REFRESH_TOKEN: '/refresh-token',
 };
