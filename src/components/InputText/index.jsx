@@ -1,6 +1,10 @@
-import { InputAdornment, TextField } from '@mui/material';
+import { InputAdornment, TextField } from "@mui/material";
+import { forwardRef } from "react";
 
-const InputText = ({ type, placeholder, startIcon, endIcon, sx, ...props }) => (
+const InputText = (
+  { type, placeholder, startIcon, endIcon, sx, ...props },
+  ref,
+) => (
   <TextField
     fullWidth
     type={type}
@@ -8,6 +12,7 @@ const InputText = ({ type, placeholder, startIcon, endIcon, sx, ...props }) => (
     variant="outlined"
     size="medium"
     sx={sx}
+    ref={ref}
     slotProps={{
       input: {
         startAdornment: startIcon && (
@@ -21,4 +26,4 @@ const InputText = ({ type, placeholder, startIcon, endIcon, sx, ...props }) => (
     {...props}
   />
 );
-export default InputText;
+export default forwardRef(InputText);

@@ -1,6 +1,6 @@
 body,
 input {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .container {
@@ -11,7 +11,7 @@ input {
   overflow: hidden;
 
   &:before {
-    content: '';
+    content: "";
     position: absolute;
     height: 2000px;
     width: 2000px;

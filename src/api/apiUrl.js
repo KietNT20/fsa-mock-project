@@ -1,3 +1,3 @@
 export const API = {
-  LOGIN: '/login',
+  LOGIN: "/login",
 };

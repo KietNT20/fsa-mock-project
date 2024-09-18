@@ -1,14 +1,18 @@
 import { QueryClient } from "@tanstack/react-query";
-import LoginPage from "./pages/LoginPage/LoginPage";
 import AppRoutes from "./routes/AppRoutes";
 
-export const queryClient = new QueryClient();
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 0,
+    },
+  },
+});
 
 function App() {
   return (
     <>
       <AppRoutes />
-      <LoginPage />
     </>
   );
 }

@@ -1,5 +1,5 @@
-import CustomButton from '../../components/Button/CustomButton';
-import CustomInput from '../../components/InputText/CustomInput';
+import CustomButton from "../../components/Button/CustomButton";
+import CustomInput from "../../components/InputText/CustomInput";
 
 const RegisterForm = ({ handleRegister }) => {
   return (

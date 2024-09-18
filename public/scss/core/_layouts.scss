@@ -14,5 +14,6 @@ body {
   .main {
     position: relative;
     margin-top: var(--height-header);
+    overflow: scroll;
   }
 }
