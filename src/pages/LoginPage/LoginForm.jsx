@@ -89,6 +89,15 @@ const LoginForm = () => {
       component="form"
       className="sign-in-form"
       onSubmit={handleSubmit(onSubmit)}
+      sx={{
+        width: "100%", // Chỉnh lại width
+        maxWidth: "400px", // Chỉnh lại max-width cho nhỏ hơn
+        margin: "0 auto", // Canh giữa form
+        padding: 3, // Thêm padding xung quanh form
+        boxShadow: 3, // Thêm hiệu ứng đổ bóng (tuỳ chọn)
+        borderRadius: 2, // Bo góc hộp form
+        backgroundColor: "#fff", // Màu nền (tuỳ chọn)
+      }}
     >
       <Typography variant="h2" component="h2" className="title">
         Sign in

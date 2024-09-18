@@ -1,6 +1,6 @@
 // component button
 const CustomButton = ({
-  text = "Submit",
+  text = "",
   onClick,
   className = "btn",
   id,
