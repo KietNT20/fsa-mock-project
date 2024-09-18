@@ -1,7 +1,7 @@
-import { API } from '@/api/apiUrl';
-import axios from 'axios';
-import { BASE_URL } from './environment';
-import tokenMethod from './token';
+import { API } from "@/api/apiUrl";
+import axios from "axios";
+import { BASE_URL } from "./environment";
+import tokenMethod from "./token";
 
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
@@ -17,7 +17,7 @@ axiosInstance.interceptors.request.use(
   function (error) {
     // Do something with request error
     return Promise.reject(error);
-  }
+  },
 );
 
 // Add a response interceptor
@@ -29,7 +29,7 @@ axiosInstance.interceptors.response.use(
   },
   async function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
-    console.log('error', error);
+    console.log("error", error);
     const originalRequest = error.config;
 
     // If error status is 403 or 401 and request has not key _retry
@@ -65,7 +65,7 @@ axiosInstance.interceptors.response.use(
 
     // Do something with response error
     return Promise.reject(error);
-  }
+  },
 );
 
 export default axiosInstance;

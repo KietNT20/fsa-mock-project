@@ -8,11 +8,6 @@ import RegisterForm from "./../LoginPage/RegisterForm";
 // import "./LoginPage.css";
 
 const LoginPage = () => {
-  const handleLogin = () => {
-    // handle login logic here
-    console.log("login button clicked");
-  };
-
   const handleRegister = () => {
     // handle registration logic here
     console.log("register button clicked");
@@ -33,7 +28,7 @@ const LoginPage = () => {
         <div className="forms-container">
           <div className="signin-signup">
             {/* login form */}
-            <LoginForm handleLogin={() => handleLogin()} />
+            <LoginForm />
             {/* register form */}
             <RegisterForm handleRegister={() => handleRegister()} />
           </div>
