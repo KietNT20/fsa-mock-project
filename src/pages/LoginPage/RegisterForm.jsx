@@ -1,6 +1,7 @@
 import ButtonComp from "@/components/Button";
 import InputText from "@/components/InputText";
-import { registerSchema } from "@/utils/registerSchema"; // Đường dẫn đến schema bạn đã tạo
+import { useRegister } from "@/hooks/useRegister";
+import { registerSchema } from "@/utils/schema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
   Email,
@@ -55,7 +56,7 @@ export const styles = {
   },
 };
 
-const RegisterForm = ({ handleRegister }) => {
+const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const {
@@ -65,20 +66,26 @@ const RegisterForm = ({ handleRegister }) => {
   } = useForm({
     resolver: yupResolver(registerSchema),
     defaultValues: {
-      username: "",
+      name: "",
       email: "",
       password: "",
-      role: "0",
     },
   });
 
+  const { doRegisterUser, isPending } = useRegister();
+
   const onSubmit = (data) => {
     console.log(data);
-    handleRegister(data);
+    const { email, name, password } = data;
+    doRegisterUser({ email, name, password });
   };
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleMouseDownPassword = (event) => event.preventDefault();
+
+  if (isPending) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <Box
@@ -101,7 +108,7 @@ const RegisterForm = ({ handleRegister }) => {
 
       {/* Username input */}
       <Controller
-        name="username"
+        name="name"
         control={control}
         render={({ field }) => (
           <InputText
@@ -112,8 +119,8 @@ const RegisterForm = ({ handleRegister }) => {
             variant="outlined"
             size="medium"
             sx={styles.inputStyles}
-            error={!!errors.username}
-            helperText={errors.username?.message}
+            error={!!errors.name}
+            helperText={errors.name?.message}
             slotProps={{
               input: {
                 startAdornment: (

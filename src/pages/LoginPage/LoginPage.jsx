@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material";
 import { useEffect } from "react";
 import { toggleSignInUpMode } from "../../assets/js/toggleSignInUpMode";
 import CustomButton from "../../components/Button/CustomButton";
@@ -8,11 +9,6 @@ import RegisterForm from "./../LoginPage/RegisterForm";
 // import "./LoginPage.css";
 
 const LoginPage = () => {
-  const handleRegister = () => {
-    // handle registration logic here
-    console.log("register button clicked");
-  };
-
   useEffect(() => {
     const cleanup = toggleSignInUpMode();
 
@@ -30,14 +26,21 @@ const LoginPage = () => {
             {/* login form */}
             <LoginForm />
             {/* register form */}
-            <RegisterForm handleRegister={() => handleRegister()} />
+            <RegisterForm />
           </div>
         </div>
         {/* panels transition for login and register */}
         <div className="panels-container">
           <div className="panel left-panel">
             <div className="content">
-              <h3>new here ?</h3>
+              <Typography
+                variant="h3"
+                component="h2"
+                className="title"
+                sx={{ color: "#fff" }}
+              >
+                NEW HERE ?
+              </Typography>
               <p>
                 if you don&apos;t have an account yet, please click the sign up
                 button to create a new account and start enjoying our amazing
@@ -55,7 +58,14 @@ const LoginPage = () => {
           </div>
           <div className="panel right-panel">
             <div className="content">
-              <h3>one of us ?</h3>
+              <Typography
+                variant="h3"
+                component="h2"
+                className="title"
+                sx={{ color: "#fff" }}
+              >
+                ONE OF US ?
+              </Typography>
               <p>
                 if you already have an account, please click the sign in button
                 to log in!

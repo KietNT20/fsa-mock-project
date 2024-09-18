@@ -1,7 +1,7 @@
 import ButtonComp from "@/components/Button";
 import InputText from "@/components/InputText";
 import { useLogin } from "@/hooks/useLogin";
-import { schema } from "@/utils/schema";
+import { loginSchema } from "@/utils/schema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
   Facebook,
@@ -62,7 +62,7 @@ const LoginForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(loginSchema),
     defaultValues: {
       email: "",
       password: "",

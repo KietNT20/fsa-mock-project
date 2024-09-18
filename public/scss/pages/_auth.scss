@@ -1,7 +1,4 @@
-body,
-input {
-  font-family: "Poppins", sans-serif;
-}
+
 
 .container {
   position: relative;
@@ -100,7 +97,7 @@ form {
 
   &.sign-up-form {
     opacity: 0;
-    z-index: 1;
+    z-index: 2;
   }
 
   &.sign-in-form {
@@ -238,7 +235,7 @@ form {
   }
 
   p {
-    padding: 7px 0 30px 0;
+    padding: 20px 0;
   }
 }
 
@@ -268,6 +265,7 @@ form {
     min-height: 800px;
     height: 100vh;
 
+
     &:before {
       width: 1500px;
       height: 1500px;
@@ -287,6 +285,7 @@ form {
       }
 
       .left-panel {
+        
         .image,
         .content {
           transform: translateY(-300px);
@@ -302,9 +301,10 @@ form {
 
       .signin-signup {
         top: 5%;
-        transform: translate(-50%, 0);
+        transform: translate(-25%, 0);
       }
     }
+    
   }
 
   .signin-signup {
@@ -338,8 +338,9 @@ form {
     }
 
     p {
-      font-size: 0.7rem;
-      padding: 0.5rem 0;
+      font-weight: 400;
+      font-size: 1.6rem;
+      padding: 2rem 1rem;
     }
   }
 
@@ -360,7 +361,7 @@ form {
   .btn.transparent {
     width: 110px;
     height: 35px;
-    font-size: 0.7rem;
+    font-size: 1.4rem;
   }
 
   .right-panel {
