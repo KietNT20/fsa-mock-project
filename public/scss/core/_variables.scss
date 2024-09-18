@@ -1,0 +1,26 @@
+:root {
+  --gap: 30px;
+  /* Colors Variable*/
+  --main-cl: #42ada5;
+  --blue-dark: #001642;
+  --blue-light: #268bc7;
+  --dark-cl: #262626;
+  --black-cl: #000;
+  --white-cl: #fff;
+  --gray-cl: #4c4c4d;
+  --body-cl: #e8e9eb;
+  // Variables Login
+  --primary-color: #6c63ff;
+  --secondary-color: #333;
+  --background-color: #fff;
+  --input-background: #f0f0f0;
+  --placeholder-color: #aaa;
+  --text-color: #444;
+  // Fontsize - Lineheight Variable
+  --fs-body: 1.8rem;
+  --lh-body: 2rem;
+  --height-btn: 49px;
+  // Timing Transition Variable
+  --duration: 0.4s;
+  --cubic: cubic-bezier(0.59, 0.29, 0.15, 0.93);
+}
