@@ -31,3 +31,4 @@ export const registerSchema = yup.object().shape({
 
   role: yup.string().required("Role is required"),
 });
+

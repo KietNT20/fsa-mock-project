@@ -19,3 +19,12 @@ export const loginUser = async ({ email, password }) => {
     throw error;
   }
 };
+export const registerUser = async ({ email, name, password }) => {
+  try {
+    const res = await authService.register({ email, name, password });
+    return res;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};

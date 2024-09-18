@@ -2,6 +2,7 @@ import { PATH } from "@/constant/path";
 import { loginUser } from "@/services/authService";
 import tokenMethod from "@/utils/token";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 export const useLogin = () => {
@@ -17,11 +18,14 @@ export const useLogin = () => {
       console.log("Login Success:", userData);
       queryClient.setQueryData(["user"], userData);
       tokenMethod.set(userData);
+      toast.dismiss();
+      toast.success("Login successfully!!");
       navigate(PATH.HOME, { replace: true });
     },
     onError: (err) => {
+      toast.dismiss();
       console.error("Login Error:", err);
-      // alert("Login failed");
+      toast.error("Login failed");
     },
   });
 
