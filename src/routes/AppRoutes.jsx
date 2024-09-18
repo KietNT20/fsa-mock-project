@@ -13,8 +13,8 @@ const AppRoutes = () => {
         <Route element={<PrivateRoute />}>
           <Route index path={PATH.HOME} element={<HomePage />} />
         </Route>
-        <Route path={PATH.LOGIN} element={<LoginPage />} />
       </Route>
+      <Route path={PATH.LOGIN} element={<LoginPage />} />
     </Routes>
   );
 };

@@ -17,11 +17,11 @@ export const useLogin = () => {
       console.log("Login Success:", userData);
       queryClient.setQueryData(["user"], userData);
       tokenMethod.set(userData);
-      navigate(PATH.HOME);
+      navigate(PATH.HOME, { replace: true });
     },
     onError: (err) => {
       console.error("Login Error:", err);
-      alert("Login failed");
+      // alert("Login failed");
     },
   });
 

@@ -11,6 +11,6 @@ export const schema = yup.object().shape({
     .required("Email or username is required"),
   password: yup
     .string()
-    .min(5, "Password must be at least 8 characters")
+    .min(5, "Password must be at least 5 characters")
     .required("Password is required"),
 });
