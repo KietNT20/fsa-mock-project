@@ -1,7 +1,7 @@
-import ButtonComp from '@/components/Button';
-import InputText from '@/components/InputText';
-import { schema } from '@/utils/schema';
-import { yupResolver } from '@hookform/resolvers/yup';
+import ButtonComp from "@/components/Button";
+import InputText from "@/components/InputText";
+import { schema } from "@/utils/schema";
+import { yupResolver } from "@hookform/resolvers/yup";
 import {
   Facebook,
   Google,
@@ -11,44 +11,44 @@ import {
   Twitter,
   Visibility,
   VisibilityOff,
-} from '@mui/icons-material';
-import { Box, IconButton, InputAdornment, Typography } from '@mui/material';
-import { useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+} from "@mui/icons-material";
+import { Box, IconButton, InputAdornment, Typography } from "@mui/material";
+import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 
 export const styles = {
   buttonStyles: {
-    height: 'var(--height-btn)',
-    width: 'fit-content',
-    px: '50px',
+    height: "var(--height-btn)",
+    width: "fit-content",
+    px: "50px",
     mt: 3,
-    fontSize: '1.8rem',
-    backgroundColor: 'var(--primary-color)',
-    borderRadius: '49px',
+    fontSize: "1.4rem",
+    backgroundColor: "var(--primary-color)",
+    borderRadius: "49px",
   },
   inputStyles: {
     mt: 3,
-    '& .MuiOutlinedInput-root': {
-      '& fieldset': {
-        borderColor: 'rgba(0, 0, 0, 0.23)',
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: "rgba(0, 0, 0, 0.23)",
       },
-      '&:hover fieldset': {
-        borderColor: 'var(--primary-color)',
+      "&:hover fieldset": {
+        borderColor: "var(--primary-color)",
       },
-      '&.Mui-focused fieldset': {
-        borderColor: 'var(--primary-color)',
-        borderWidth: '2px',
+      "&.Mui-focused fieldset": {
+        borderColor: "var(--primary-color)",
+        borderWidth: "2px",
       },
     },
-    '& .MuiInputBase-input': {
-      fontSize: '1.6rem',
+    "& .MuiInputBase-input": {
+      fontSize: "1.6rem",
     },
-    '& .MuiInputLabel-root': {
-      fontSize: '1.4rem',
+    "& .MuiInputLabel-root": {
+      fontSize: "1.4rem",
     },
-    '& .MuiFormHelperText-root': {
-      fontSize: '1.2rem',
-      marginTop: '8px',
+    "& .MuiFormHelperText-root": {
+      fontSize: "1.2rem",
+      marginTop: "8px",
       fontWeight: 500,
     },
   },
@@ -63,8 +63,8 @@ const LoginForm = ({ handleLogin }) => {
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      username: '',
-      password: '',
+      username: "",
+      password: "",
     },
   });
 
@@ -81,13 +81,22 @@ const LoginForm = ({ handleLogin }) => {
       component="form"
       className="sign-in-form"
       onSubmit={handleSubmit(onSubmit)}
+      sx={{
+        width: "100%", // Chỉnh lại width
+        maxWidth: "400px", // Chỉnh lại max-width cho nhỏ hơn
+        margin: "0 auto", // Canh giữa form
+        padding: 3, // Thêm padding xung quanh form
+        boxShadow: 3, // Thêm hiệu ứng đổ bóng (tuỳ chọn)
+        borderRadius: 2, // Bo góc hộp form
+        backgroundColor: "#fff", // Màu nền (tuỳ chọn)
+      }}
     >
       <Typography variant="h2" component="h2" className="title">
         Sign in
       </Typography>
 
       <Controller
-        name="username"
+        name="login"
         control={control}
         render={({ field }) => (
           <InputText
@@ -98,13 +107,13 @@ const LoginForm = ({ handleLogin }) => {
             variant="outlined"
             size="medium"
             sx={styles.inputStyles}
-            error={!!errors.username}
-            helperText={errors.username?.message}
+            error={!!errors.login}
+            helperText={errors.login?.message}
             slotProps={{
               input: {
                 startAdornment: (
                   <InputAdornment position="start">
-                    <Person color="action" sx={{ fontSize: '2rem' }} />
+                    <Person color="action" sx={{ fontSize: "2rem" }} />
                   </InputAdornment>
                 ),
               },
@@ -120,7 +129,7 @@ const LoginForm = ({ handleLogin }) => {
           <InputText
             {...field}
             fullWidth
-            type={showPassword ? 'text' : 'password'}
+            type={showPassword ? "text" : "password"}
             placeholder="Password"
             variant="outlined"
             sx={styles.inputStyles}
@@ -131,7 +140,7 @@ const LoginForm = ({ handleLogin }) => {
               input: {
                 startAdornment: (
                   <InputAdornment position="start">
-                    <Lock color="action" sx={{ fontSize: '2rem' }} />
+                    <Lock color="action" sx={{ fontSize: "2rem" }} />
                   </InputAdornment>
                 ),
                 endAdornment: (
@@ -142,9 +151,9 @@ const LoginForm = ({ handleLogin }) => {
                       onMouseDown={handleMouseDownPassword}
                     >
                       {showPassword ? (
-                        <Visibility sx={{ fontSize: '2rem' }} />
+                        <Visibility sx={{ fontSize: "2rem" }} />
                       ) : (
-                        <VisibilityOff sx={{ fontSize: '2rem' }} />
+                        <VisibilityOff sx={{ fontSize: "2rem" }} />
                       )}
                     </IconButton>
                   </InputAdornment>
@@ -168,17 +177,17 @@ const LoginForm = ({ handleLogin }) => {
       <Typography
         variant="body1"
         className="social-text"
-        sx={{ mt: 2, fontSize: '1.4rem' }}
+        sx={{ mt: 2, fontSize: "1.4rem" }}
       >
         Or Sign in with social platforms
       </Typography>
 
-      <Box className="social-media" sx={{ display: 'flex', gap: 1, mt: 1 }}>
+      <Box className="social-media" sx={{ display: "flex", gap: 1, mt: 1 }}>
         {[Facebook, Twitter, Google, LinkedIn].map((Icon, index) => (
           <IconButton
             key={index}
             className="social-icon"
-            sx={{ border: 1, borderColor: 'grey.300' }}
+            sx={{ border: 1, borderColor: "grey.300" }}
           >
             <Icon fontSize="large" />
           </IconButton>
