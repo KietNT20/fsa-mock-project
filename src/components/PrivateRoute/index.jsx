@@ -1,9 +1,9 @@
-import { PATH } from "@/constant/path";
-import { Navigate, Outlet } from "react-router-dom";
+import { PATH } from '@/constant/path';
+import tokenMethod from '@/utils/token';
+import { Navigate, Outlet } from 'react-router-dom';
 
 const PrivateRoute = ({ redirectPath = PATH.LOGIN }) => {
-  const isAuthenticated = false;
-  if (!isAuthenticated) {
+  if (!tokenMethod.get()?.access_token) {
     return <Navigate replace to={redirectPath} />;
   }
 

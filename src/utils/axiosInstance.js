@@ -11,7 +11,7 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   function (config) {
     // Do something before request is sent
-    config.headers.Authorization = `Bearer ${tokenMethod.get()?.accessToken}`;
+    config.headers.Authorization = `Bearer ${tokenMethod.get()?.access_token}`;
     return config;
   },
   function (error) {
@@ -41,18 +41,18 @@ axiosInstance.interceptors.response.use(
       try {
         // Call API refresh token for new token
         const res = await axiosInstance.put(`${API.REFRESH_TOKEN}`, {
-          refreshToken: tokenMethod.get()?.refreshToken,
+          refresh_token: tokenMethod.get()?.refresh_token,
         });
-        const { token: accessToken, refreshToken } = res.data?.data || {};
+        const { token: access_token, refresh_token } = res.data?.data || {};
 
         // Save new token to localStorage
         tokenMethod.set({
-          accessToken,
-          refreshToken,
+          access_token,
+          refresh_token,
         });
 
         // Change Authorization header
-        originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+        originalRequest.headers.Authorization = `Bearer ${access_token}`;
 
         // Call API again with new token
         return axiosInstance(originalRequest);

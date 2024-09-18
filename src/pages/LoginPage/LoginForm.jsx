@@ -64,16 +64,17 @@ const LoginForm = () => {
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      name: "",
+      email: "",
       password: "",
     },
   });
 
-  const { loginUser, isPending } = useLogin();
+  const { doLoginUser, isPending } = useLogin();
 
   const onSubmit = (data) => {
     console.log(data);
-    loginUser(data);
+    const { email, password } = data;
+    doLoginUser({ email, password });
   };
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
@@ -94,7 +95,7 @@ const LoginForm = () => {
       </Typography>
 
       <Controller
-        name="name"
+        name="email"
         control={control}
         render={({ field }) => (
           <InputText
@@ -105,8 +106,8 @@ const LoginForm = () => {
             variant="outlined"
             size="medium"
             sx={styles.inputStyles}
-            error={!!errors.name}
-            helperText={errors.name?.message}
+            error={!!errors.email}
+            helperText={errors.email?.message}
             slotProps={{
               input: {
                 startAdornment: (

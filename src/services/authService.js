@@ -10,9 +10,9 @@ export const authService = {
   },
 };
 
-export const loginUser = async ({ name, password }) => {
+export const loginUser = async ({ email, password }) => {
   try {
-    const res = await authService.login({ name, password });
+    const res = await authService.login({ email, password });
     return res;
   } catch (error) {
     console.log(error);
