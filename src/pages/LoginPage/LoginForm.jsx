@@ -1,5 +1,6 @@
 import ButtonComp from "@/components/Button";
 import InputText from "@/components/InputText";
+import { useLogin } from "@/hooks/useLogin";
 import { schema } from "@/utils/schema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
@@ -22,7 +23,7 @@ export const styles = {
     width: "fit-content",
     px: "50px",
     mt: 3,
-    fontSize: "1.4rem",
+    fontSize: "1.8rem",
     backgroundColor: "var(--primary-color)",
     borderRadius: "49px",
   },
@@ -54,7 +55,7 @@ export const styles = {
   },
 };
 
-const LoginForm = ({ handleLogin }) => {
+const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const {
     control,
@@ -63,18 +64,25 @@ const LoginForm = ({ handleLogin }) => {
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      username: "",
+      email: "",
       password: "",
     },
   });
 
+  const { doLoginUser, isPending } = useLogin();
+
   const onSubmit = (data) => {
     console.log(data);
-    handleLogin(data);
+    const { email, password } = data;
+    doLoginUser({ email, password });
   };
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleMouseDownPassword = (event) => event.preventDefault();
+
+  if (isPending) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <Box
@@ -96,7 +104,7 @@ const LoginForm = ({ handleLogin }) => {
       </Typography>
 
       <Controller
-        name="login"
+        name="email"
         control={control}
         render={({ field }) => (
           <InputText
@@ -107,8 +115,8 @@ const LoginForm = ({ handleLogin }) => {
             variant="outlined"
             size="medium"
             sx={styles.inputStyles}
-            error={!!errors.login}
-            helperText={errors.login?.message}
+            error={!!errors.email}
+            helperText={errors.email?.message}
             slotProps={{
               input: {
                 startAdornment: (

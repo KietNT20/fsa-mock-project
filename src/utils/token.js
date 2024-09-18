@@ -1,4 +1,4 @@
-import { STORAGE } from '@/constant/storage';
+import { STORAGE } from "@/constant/storage";
 
 // LocalStorage
 export const localToken = {
@@ -12,7 +12,7 @@ const tokenMethod = {
     return localToken.get();
   },
   set: (token) => {
-    console.log('token', token);
+    console.log("token", token);
     localToken.set(token);
   },
   remove: () => {

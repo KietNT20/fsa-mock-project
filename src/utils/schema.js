@@ -1,21 +1,16 @@
-import { REGEX } from '@/constant/regex';
-import * as yup from 'yup';
+import { REGEX } from "@/constant/regex";
+import * as yup from "yup";
 
 export const schema = yup.object().shape({
-  username: yup
+  email: yup
     .string()
-    .test(
-      'is-email-or-username',
-      'Enter a valid email or username',
-      (value) => {
-        const emailRegex = REGEX.EMAIL;
-        const usernameRegex = REGEX.USERNAME;
-        return emailRegex.test(value) || usernameRegex.test(value);
-      }
-    )
-    .required('Email or username is required'),
+    .test("is-email", "Enter a valid email", (value) => {
+      const emailRegex = REGEX.EMAIL;
+      return emailRegex.test(value);
+    })
+    .required("Email or username is required"),
   password: yup
     .string()
-    .min(8, 'Password must be at least 8 characters')
-    .required('Password is required'),
+    .min(5, "Password must be at least 8 characters")
+    .required("Password is required"),
 });
