@@ -2,8 +2,8 @@ import { InputAdornment, TextField } from "@mui/material";
 import { forwardRef } from "react";
 
 const InputText = (
-  { type, placeholder, startIcon, endIcon, sx, ...props },
-  ref,
+  { type, disabled, placeholder, startIcon, endIcon, sx, ...props },
+  ref
 ) => (
   <TextField
     fullWidth
@@ -12,6 +12,7 @@ const InputText = (
     variant="outlined"
     size="medium"
     sx={sx}
+    disabled={disabled}
     ref={ref}
     slotProps={{
       input: {

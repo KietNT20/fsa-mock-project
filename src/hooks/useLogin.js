@@ -18,9 +18,9 @@ export const useLogin = () => {
       console.log("Login Success:", userData);
       queryClient.setQueryData(["user"], userData);
       tokenMethod.set(userData);
-      navigate(PATH.HOME);
       toast.dismiss();
       toast.success("Login successfully!!");
+      navigate(PATH.HOME, { replace: true });
     },
     onError: (err) => {
       toast.dismiss();
