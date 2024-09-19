@@ -30,7 +30,7 @@ export const styles = {
     borderRadius: "49px",
   },
   inputStyles: {
-    mt: 3,
+    m: 3,
     "& .MuiOutlinedInput-root": {
       "& fieldset": {
         borderColor: "rgba(0, 0, 0, 0.23)",
@@ -47,7 +47,8 @@ export const styles = {
       fontSize: "1.6rem",
     },
     "& .MuiInputLabel-root": {
-      fontSize: "1.4rem",
+      fontSize: "1.6rem",
+      top: "-8px",
     },
     "& .MuiFormHelperText-root": {
       fontSize: "1.2rem",
@@ -93,7 +94,7 @@ const RegisterForm = () => {
       className="sign-up-form"
       sx={{
         width: "100%",
-        maxWidth: "400px",
+        maxWidth: 500,
         margin: "0 auto",
         padding: 3,
         boxShadow: 3,
@@ -104,7 +105,7 @@ const RegisterForm = () => {
     >
       {registerLoading && <Spinner />}
       <Typography variant="h2" component="h2" className="title">
-        Sign up
+        SIGN UP
       </Typography>
 
       {/* Username input */}
@@ -116,7 +117,8 @@ const RegisterForm = () => {
             {...field}
             fullWidth
             type="text"
-            placeholder="Username"
+            label="Name"
+            placeholder="Please enter your name"
             variant="outlined"
             size="medium"
             disabled={registerLoading}
@@ -145,7 +147,8 @@ const RegisterForm = () => {
             {...field}
             fullWidth
             type="email"
-            placeholder="Email"
+            label="Email"
+            placeholder="Please enter your email"
             variant="outlined"
             size="medium"
             disabled={registerLoading}
@@ -174,7 +177,8 @@ const RegisterForm = () => {
             {...field}
             fullWidth
             type={showPassword ? "text" : "password"}
-            placeholder="Password"
+            label="Password"
+            placeholder="Please enter your password"
             variant="outlined"
             size="medium"
             disabled={registerLoading}

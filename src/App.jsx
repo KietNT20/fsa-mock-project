@@ -1,12 +1,18 @@
 import { QueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
+import { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { PATH } from "./constant/path";
-import { Toaster } from "react-hot-toast";
 import AppRoutes from "./routes/AppRoutes";
 import tokenMethod from "./utils/token";
 
-export const queryClient = new QueryClient();
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 0,
+    },
+  },
+});
 
 function App() {
   const navigate = useNavigate();

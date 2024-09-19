@@ -23,7 +23,7 @@ export const useRegister = () => {
       // Delay the confirm dialog to allow toast to show first
       setTimeout(() => {
         const navigateToLogin = window.confirm(
-          "Register successfully! Do you want to return to the login page?"
+          "Register successfully! Do you want to return to the login page?",
         );
 
         if (navigateToLogin) {

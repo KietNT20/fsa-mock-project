@@ -58,7 +58,7 @@ const LoginForm = () => {
       onSubmit={handleSubmit(onSubmit)}
       sx={{
         width: "100%",
-        maxWidth: "400px",
+        maxWidth: 500,
         margin: "0 auto",
         padding: 3,
         boxShadow: 3,
@@ -67,7 +67,7 @@ const LoginForm = () => {
       }}
     >
       <Typography variant="h2" component="h2" className="title">
-        Sign in
+        SIGN IN
       </Typography>
 
       <Controller
@@ -77,9 +77,9 @@ const LoginForm = () => {
           <InputText
             {...field}
             fullWidth
+            label="Email"
             type="text"
-            placeholder="Email or Username"
-            variant="outlined"
+            placeholder="Please enter your email"
             size="medium"
             sx={styles.inputStyles}
             error={!!errors.email}
@@ -104,10 +104,10 @@ const LoginForm = () => {
         render={({ field }) => (
           <InputText
             {...field}
+            label="Password"
             fullWidth
             type={showPassword ? "text" : "password"}
-            placeholder="Password"
-            variant="outlined"
+            placeholder="Please enter your password"
             sx={styles.inputStyles}
             size="medium"
             error={!!errors.password}
@@ -188,11 +188,8 @@ export const styles = {
     borderRadius: "49px",
   },
   inputStyles: {
-    mt: 3,
+    m: 3,
     "& .MuiOutlinedInput-root": {
-      "& fieldset": {
-        borderColor: "rgba(0, 0, 0, 0.23)",
-      },
       "&:hover fieldset": {
         borderColor: "var(--primary-color)",
       },
@@ -205,7 +202,8 @@ export const styles = {
       fontSize: "1.6rem",
     },
     "& .MuiInputLabel-root": {
-      fontSize: "1.4rem",
+      fontSize: "1.6rem",
+      top: "-8px",
     },
     "& .MuiFormHelperText-root": {
       fontSize: "1.2rem",
