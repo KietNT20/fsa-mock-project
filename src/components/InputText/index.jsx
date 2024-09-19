@@ -3,7 +3,7 @@ import { forwardRef } from "react";
 
 const InputText = (
   { type, disabled, placeholder, startIcon, endIcon, sx, ...props },
-  ref
+  ref,
 ) => (
   <TextField
     fullWidth

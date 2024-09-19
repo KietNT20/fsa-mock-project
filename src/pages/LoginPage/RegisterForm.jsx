@@ -1,5 +1,6 @@
 import ButtonComp from "@/components/Button";
 import InputText from "@/components/InputText";
+import Spinner from "@/components/Spinner";
 import { useRegister } from "@/hooks/useRegister";
 import { registerSchema } from "@/utils/schema";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -72,7 +73,7 @@ const RegisterForm = () => {
     },
   });
 
-  const { doRegisterUser, isPending } = useRegister();
+  const { doRegisterUser, registerLoading } = useRegister();
 
   const onSubmit = (data) => {
     console.log(data);
@@ -81,11 +82,10 @@ const RegisterForm = () => {
   };
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
-  const handleMouseDownPassword = (event) => event.preventDefault();
-
-  if (isPending) {
-    return <div>Loading...</div>;
-  }
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+  };
 
   return (
     <Box
@@ -102,6 +102,7 @@ const RegisterForm = () => {
       }}
       onSubmit={handleSubmit(onSubmit)}
     >
+      {registerLoading && <Spinner />}
       <Typography variant="h2" component="h2" className="title">
         Sign up
       </Typography>
@@ -118,6 +119,7 @@ const RegisterForm = () => {
             placeholder="Username"
             variant="outlined"
             size="medium"
+            disabled={registerLoading}
             sx={styles.inputStyles}
             error={!!errors.name}
             helperText={errors.name?.message}
@@ -146,6 +148,7 @@ const RegisterForm = () => {
             placeholder="Email"
             variant="outlined"
             size="medium"
+            disabled={registerLoading}
             sx={styles.inputStyles}
             error={!!errors.email}
             helperText={errors.email?.message}
@@ -174,6 +177,7 @@ const RegisterForm = () => {
             placeholder="Password"
             variant="outlined"
             size="medium"
+            disabled={registerLoading}
             sx={styles.inputStyles}
             error={!!errors.password}
             helperText={errors.password?.message}
@@ -211,6 +215,7 @@ const RegisterForm = () => {
         fullWidth
         variant="contained"
         color="primary"
+        disabled={registerLoading}
         sx={styles.buttonStyles}
       >
         Sign up

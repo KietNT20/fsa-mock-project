@@ -1,6 +1,5 @@
 import ButtonComp from "@/components/Button";
 import InputText from "@/components/InputText";
-import Spinner from "@/components/Spinner";
 import { useLogin } from "@/hooks/useLogin";
 import { loginSchema } from "@/utils/schema";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -38,7 +37,7 @@ const LoginForm = () => {
     },
   });
 
-  const { doLoginUser, isPending } = useLogin();
+  const { doLoginUser, loginLoading } = useLogin();
 
   const onSubmit = (data) => {
     console.log(data);
@@ -47,11 +46,10 @@ const LoginForm = () => {
   };
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
-  const handleMouseDownPassword = (event) => event.preventDefault();
-
-  if (isPending) {
-    return <Spinner />;
-  }
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+  };
 
   return (
     <Box
@@ -59,13 +57,13 @@ const LoginForm = () => {
       className="sign-in-form"
       onSubmit={handleSubmit(onSubmit)}
       sx={{
-        width: "100%", // Chỉnh lại width
-        maxWidth: "400px", // Chỉnh lại max-width cho nhỏ hơn
-        margin: "0 auto", // Canh giữa form
-        padding: 3, // Thêm padding xung quanh form
-        boxShadow: 3, // Thêm hiệu ứng đổ bóng (tuỳ chọn)
-        borderRadius: 2, // Bo góc hộp form
-        backgroundColor: "#fff", // Màu nền (tuỳ chọn)
+        width: "100%",
+        maxWidth: "400px",
+        margin: "0 auto",
+        padding: 3,
+        boxShadow: 3,
+        borderRadius: 2,
+        backgroundColor: "var(--white-cl)",
       }}
     >
       <Typography variant="h2" component="h2" className="title">
@@ -86,7 +84,7 @@ const LoginForm = () => {
             sx={styles.inputStyles}
             error={!!errors.email}
             helperText={errors.email?.message}
-            disabled={isPending}
+            disabled={loginLoading}
             slotProps={{
               input: {
                 startAdornment: (
@@ -114,7 +112,7 @@ const LoginForm = () => {
             size="medium"
             error={!!errors.password}
             helperText={errors.password?.message}
-            disabled={isPending}
+            disabled={loginLoading}
             slotProps={{
               input: {
                 startAdornment: (
@@ -150,7 +148,7 @@ const LoginForm = () => {
         color="primary"
         sx={styles.buttonStyles}
       >
-        {isPending ? <CircularProgress /> : "Sign in"}
+        {loginLoading ? <CircularProgress color="inherit" /> : "Sign in"}
       </ButtonComp>
 
       <Typography

@@ -20,23 +20,25 @@ function App() {
     <>
       <AppRoutes />
       <Toaster
-        position= "top-right"
-        duration=  {3000}
-        containerStyle={{margin: "30px"}} 
+        position="top-right"
+        duration={3000}
+        containerStyle={{ margin: "30px" }}
         toastOptions={{
           success: {
             style: {
-              padding: '16px',
-              color: '#fff',
-              backgroundColor: '#A1D6B2',
-            } 
+              padding: "16px",
+              color: "#fff",
+              backgroundColor: "#A1D6B2",
+            },
           },
-          error: {style: {
-            padding: '16px',
-            color: '#fff',
-            backgroundColor: '#D37676',
-          }
-        }}}
+          error: {
+            style: {
+              padding: "16px",
+              color: "#fff",
+              backgroundColor: "#D37676",
+            },
+          },
+        }}
       />
     </>
   );

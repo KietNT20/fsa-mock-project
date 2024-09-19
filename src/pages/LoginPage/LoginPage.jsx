@@ -6,7 +6,6 @@ import loginIcon from "./../../assets/LoginAsset/login.svg";
 import regIcon from "./../../assets/LoginAsset/reg.svg";
 import LoginForm from "./../LoginPage/LoginForm";
 import RegisterForm from "./../LoginPage/RegisterForm";
-// import "./LoginPage.css";
 
 const LoginPage = () => {
   useEffect(() => {
