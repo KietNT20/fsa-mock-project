@@ -3,7 +3,7 @@ import { forwardRef } from "react";
 
 const InputText = (
   { type, disabled, placeholder, label, startIcon, endIcon, sx, ...props },
-  ref
+  ref,
 ) => (
   <TextField
     label={label}

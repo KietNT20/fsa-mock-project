@@ -1,6 +1,6 @@
 import { API } from "@/api/apiUrl";
 import axios from "axios";
-import { BASE_URL } from "./environment";
+import { BASE_URL } from "../config/environment";
 import tokenMethod from "./token";
 
 const axiosInstance = axios.create({

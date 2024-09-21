@@ -1,7 +1,7 @@
 import ButtonComp from "@/components/Button";
 import InputText from "@/components/InputText";
 import { useLogin } from "@/hooks/useLogin";
-import { loginSchema } from "@/utils/schema";
+import { loginSchema } from "@/pages/LoginPage/schemas/schema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
   Facebook,
@@ -55,7 +55,7 @@ const LoginForm = () => {
     <Box
       component="form"
       className="sign-in-form"
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={(e) => handleSubmit(onSubmit)(e)}
       sx={{
         width: "100%",
         maxWidth: 500,
@@ -124,8 +124,8 @@ const LoginForm = () => {
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
+                      onClick={() => handleClickShowPassword()}
+                      onMouseDown={(event) => handleMouseDownPassword(event)}
                     >
                       {showPassword ? (
                         <Visibility sx={{ fontSize: "2rem" }} />

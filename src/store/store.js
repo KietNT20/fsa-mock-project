@@ -1,4 +1,4 @@
-import { ENV } from "@/utils/environment";
+import { ENV } from "@/config/environment";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
 const rootReducer = combineReducers({});
