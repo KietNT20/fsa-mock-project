@@ -1,8 +1,6 @@
-import { Typography } from "@mui/material";
+
 import { useEffect } from "react";
 import { toggleSignInUpMode } from "../../assets/js/toggleSignInUpMode";
-import loginIcon from "./../../assets/LoginAsset/login.svg";
-import regIcon from "./../../assets/LoginAsset/reg.svg";
 import LoginForm from "./../LoginPage/LoginForm";
 import RegisterForm from "./../LoginPage/RegisterForm";
 import PanelTransition from "./PanelsTransition";

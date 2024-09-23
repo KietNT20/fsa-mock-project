@@ -268,7 +268,7 @@ form {
       height: 1500px;
       transform: translateX(-50%);
       left: 30%;
-      bottom: 68%;
+      bottom: 73%;
       right: initial;
       top: initial;
       transition: 2s ease-in-out;
@@ -276,7 +276,7 @@ form {
 
     &.sign-up-mode {
       &:before {
-        transform: translate(-50%, 100%);
+        transform: translate(-50%, 104%);
         bottom: 32%;
         right: initial;
       }
@@ -384,12 +384,12 @@ form {
     padding: 1.5rem;
 
     &:before {
-      bottom: 72%;
+      bottom: 73%;
       left: 50%;
     }
 
     &.sign-up-mode:before {
-      bottom: 28%;
+      bottom: 32%;
       left: 50%;
     }
   }

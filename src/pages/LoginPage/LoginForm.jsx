@@ -58,7 +58,7 @@ const LoginForm = () => {
       onSubmit={(e) => handleSubmit(onSubmit)(e)}
       sx={{
         width: "100%",
-        maxWidth: 500,
+        maxWidth: 450,
         margin: "0 auto",
         padding: 3,
         boxShadow: 3,
@@ -66,7 +66,7 @@ const LoginForm = () => {
         backgroundColor: "var(--white-cl)",
       }}
     >
-      <Typography variant="h2" component="h2" className="title">
+      <Typography variant="h2" component="h2" className="title" sx={{ mb: 2 }}>
         SIGN IN
       </Typography>
 
@@ -182,7 +182,6 @@ export const styles = {
     height: "var(--height-btn)",
     width: "fit-content",
     px: "50px",
-    mt: 3,
     fontSize: "1.8rem",
     backgroundColor: "var(--primary-color)",
     borderRadius: "49px",
