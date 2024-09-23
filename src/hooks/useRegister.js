@@ -1,7 +1,24 @@
-import { registerUser } from "@/services/authService";
+import { API } from "@/api/apiUrl";
+import axiosInstance from "@/utils/axiosInstance";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import toast from "react-hot-toast";
+
+
+
+
+const registerUser = async ({ name, email, password }) => {
+  try {
+    const response = await axiosInstance.post(API.REGISTER, {
+      name,
+      email,
+      password,
+    });
+    return response; // Trả về dữ liệu sau khi login thành công
+  } catch (error) {
+    throw error.response?.data || error.message; // Ném lỗi nếu có
+  }
+};
 
 export const useRegister = () => {
   const queryClient = useQueryClient();
@@ -34,7 +51,7 @@ export const useRegister = () => {
   const handleConfirmNavigate = () => {
     // Tìm nút có id "sign-in-btn" và class "btn transparent"
     const signInButton = document.querySelector("#sign-in-btn");
-    
+
     if (signInButton) {
       signInButton.click(); // Kích hoạt sự kiện click vào nút sign-in
     } else {

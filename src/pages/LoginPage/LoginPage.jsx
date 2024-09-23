@@ -1,4 +1,3 @@
-
 import { useEffect } from "react";
 import { toggleSignInUpMode } from "../../assets/js/toggleSignInUpMode";
 import LoginForm from "./../LoginPage/LoginForm";
