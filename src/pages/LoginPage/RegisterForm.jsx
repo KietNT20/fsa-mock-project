@@ -45,6 +45,7 @@ const RegisterForm = () => {
   } = useRegister();
 
   const onSubmit = (data) => {
+    console.log("Form Data Submitted:", data);
     doRegisterUser(data);
   };
 

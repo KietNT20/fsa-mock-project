@@ -11,7 +11,7 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   function (config) {
     // Do something before request is sent
-    config.headers.Authorization = `Bearer ${tokenMethod.get()?.access_token}`;
+    config.headers.Authorization = `Bearer ${tokenMethod.get()}`;
     return config;
   },
   function (error) {

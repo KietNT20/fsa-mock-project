@@ -17,7 +17,7 @@ export const queryClient = new QueryClient({
 function App() {
   const navigate = useNavigate();
   useEffect(() => {
-    if (tokenMethod.get()?.access_token) {
+    if (tokenMethod.get()) {
       navigate(PATH.HOME, { replace: true });
     }
   }, []);
