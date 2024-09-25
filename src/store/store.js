@@ -1,6 +1,5 @@
 import { ENV } from "@/config/environment";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import { authReducer } from "./reducers/authReducer";
 import profileReducer from "./reducers/profileReducer";
 
 const customizedMiddleware = {
@@ -8,7 +7,6 @@ const customizedMiddleware = {
 };
 
 const rootReducer = combineReducers({
-  auth: authReducer,
   profile: profileReducer,
 });
 

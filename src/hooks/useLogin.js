@@ -1,6 +1,7 @@
+import { API } from "@/api/apiUrl";
 import { PATH } from "@/constant/path";
-import { loginUser } from "@/store/actions/authAction";
 import { saveProfile } from "@/store/actions/profileAction";
+import axiosInstance from "@/utils/axiosInstance";
 import tokenMethod from "@/utils/token";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { jwtDecode } from "jwt-decode";
@@ -17,17 +18,17 @@ export const useLogin = () => {
   const { mutate: doLoginUser, isPending: loginLoading } = useMutation({
     mutationKey: ["login"],
     mutationFn: ({ email, password }) => {
-      return dispatch(loginUser({ email, password }));
+      return axiosInstance.post(API.LOGIN, { email, password });
     },
 
     onSuccess: (response) => {
+      toast.dismiss();
       response = { ...response, ...user };
       const decodedToken = jwtDecode(response?.access_token);
       dispatch(saveProfile(decodedToken));
       console.log("Login Success:", response);
       queryClient.setQueryData(["user"], response);
       tokenMethod.set(response);
-      toast.dismiss();
       toast.success("Login successfully!!");
       navigate(PATH.HOME, { replace: true });
     },

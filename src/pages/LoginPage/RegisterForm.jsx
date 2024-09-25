@@ -214,6 +214,7 @@ const RegisterForm = () => {
       </Box>
 
       {/* Confirmation Modal */}
+
       <ConfirmationModal
         open={isModalOpen}
         onClose={() => handleCloseModal()}
