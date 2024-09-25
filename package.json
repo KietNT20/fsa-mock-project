@@ -22,6 +22,7 @@
     "axios": "^1.7.7",
     "dotenv": "^16.4.5",
     "fsa-mock-project": "file:",
+    "jwt-decode": "^4.0.0",
     "path": "^0.12.7",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

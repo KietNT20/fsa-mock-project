@@ -3,7 +3,7 @@ import tokenMethod from "@/utils/token";
 import { Navigate, Outlet } from "react-router-dom";
 
 const PrivateRoute = ({ redirectPath = PATH.LOGIN }) => {
-  if (!tokenMethod.get()?.access_token) {
+  if (!tokenMethod.get()) {
     return <Navigate replace to={redirectPath} />;
   }
 

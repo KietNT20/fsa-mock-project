@@ -1,8 +1,9 @@
 import ButtonComp from "@/components/Button";
 import InputText from "@/components/InputText";
+import ConfirmationModal from "@/components/Modal";
 import Spinner from "@/components/Spinner";
 import { useRegister } from "@/hooks/useRegister";
-import { registerSchema } from "@/utils/schema";
+import { registerSchema } from "@/pages/LoginPage/schemas/schema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
   Email,
@@ -18,45 +19,6 @@ import {
 import { Box, IconButton, InputAdornment, Typography } from "@mui/material";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-
-export const styles = {
-  buttonStyles: {
-    height: "var(--height-btn)",
-    width: "fit-content",
-    px: "50px",
-    mt: 3,
-    fontSize: "1.4rem",
-    backgroundColor: "var(--primary-color)",
-    borderRadius: "49px",
-  },
-  inputStyles: {
-    m: 3,
-    "& .MuiOutlinedInput-root": {
-      "& fieldset": {
-        borderColor: "rgba(0, 0, 0, 0.23)",
-      },
-      "&:hover fieldset": {
-        borderColor: "var(--primary-color)",
-      },
-      "&.Mui-focused fieldset": {
-        borderColor: "var(--primary-color)",
-        borderWidth: "2px",
-      },
-    },
-    "& .MuiInputBase-input": {
-      fontSize: "1.6rem",
-    },
-    "& .MuiInputLabel-root": {
-      fontSize: "1.6rem",
-      top: "-8px",
-    },
-    "& .MuiFormHelperText-root": {
-      fontSize: "1.2rem",
-      marginTop: "8px",
-      fontWeight: 500,
-    },
-  },
-};
 
 const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -74,12 +36,17 @@ const RegisterForm = () => {
     },
   });
 
-  const { doRegisterUser, registerLoading } = useRegister();
+  const {
+    doRegisterUser,
+    registerLoading,
+    isModalOpen,
+    handleCloseModal,
+    handleConfirmNavigate,
+  } = useRegister();
 
   const onSubmit = (data) => {
-    console.log(data);
-    const { email, name, password } = data;
-    doRegisterUser({ email, name, password });
+    console.log("Form Data Submitted:", data);
+    doRegisterUser(data);
   };
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
@@ -94,7 +61,7 @@ const RegisterForm = () => {
       className="sign-up-form"
       sx={{
         width: "100%",
-        maxWidth: 500,
+        maxWidth: 450,
         margin: "0 auto",
         padding: 3,
         boxShadow: 3,
@@ -196,8 +163,8 @@ const RegisterForm = () => {
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
+                      onClick={() => handleClickShowPassword()}
+                      onMouseDown={(event) => handleMouseDownPassword(event)}
                     >
                       {showPassword ? (
                         <Visibility sx={{ fontSize: "2rem" }} />
@@ -245,8 +212,58 @@ const RegisterForm = () => {
           </IconButton>
         ))}
       </Box>
+
+      {/* Confirmation Modal */}
+      <ConfirmationModal
+        open={isModalOpen}
+        onClose={() => handleCloseModal()}
+        onConfirm={() => handleConfirmNavigate()}
+        title="Confirm Navigation"
+        content="Registration successful! Would you like to go to the login page?"
+        disagree="Cancel"
+        agree="Go to Login"
+      />
     </Box>
   );
+};
+
+// Custom styles MUI components
+export const styles = {
+  buttonStyles: {
+    height: "var(--height-btn)",
+    width: "fit-content",
+    px: "50px",
+    fontSize: "1.4rem",
+    backgroundColor: "var(--primary-color)",
+    borderRadius: "49px",
+  },
+  inputStyles: {
+    m: 3,
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: "rgba(0, 0, 0, 0.23)",
+      },
+      "&:hover fieldset": {
+        borderColor: "var(--primary-color)",
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: "var(--primary-color)",
+        borderWidth: "2px",
+      },
+    },
+    "& .MuiInputBase-input": {
+      fontSize: "1.6rem",
+    },
+    "& .MuiInputLabel-root": {
+      fontSize: "1.6rem",
+      top: "-8px",
+    },
+    "& .MuiFormHelperText-root": {
+      fontSize: "1.2rem",
+      marginTop: "8px",
+      fontWeight: 500,
+    },
+  },
 };
 
 export default RegisterForm;

@@ -1,47 +1,57 @@
-import { PATH } from "@/constant/path";
-import { registerUser } from "@/services/authService";
+import { registerUser } from "@/store/actions/authAction";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 export const useRegister = () => {
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
+  const [isModalOpen, setModalOpen] = useState(false);
+  const dispatch = useDispatch();
 
   const { mutate: doRegisterUser, isPending: registerLoading } = useMutation({
     mutationKey: ["register"],
-    mutationFn: ({ email, name, password }) =>
-      registerUser({ email, name, password }),
+    mutationFn: async ({ name, email, password }) => {
+      // Dispatch action registerUser và nhận dữ liệu trực tiếp
+      console.log("Registering with: ", { name, email, password });
+      const response = await dispatch(registerUser({ name, email, password }));
+      console.log("Register Response: ", response);
+
+      return response; // Trả về dữ liệu từ action
+    },
     onSuccess: (response) => {
       toast.dismiss();
-      // Assuming the response contains user data
-      const userData = response;
-      console.log("Register Success:", userData);
-      queryClient.setQueryData(["user"], userData);
-      toast.success("Register successfully!!");
+      console.log("Register Success:", response); // In ra dữ liệu phản hồi
 
-      // Delay the confirm dialog to allow toast to show first
-      setTimeout(() => {
-        const navigateToLogin = window.confirm(
-          "Register successfully! Do you want to return to the login page?",
-        );
-
-        if (navigateToLogin) {
-          navigate(PATH.HOME);
-        }
-      }, 500); // 500ms delay for the toast to show
+      // Nếu phản hồi có dữ liệu hợp lệ
+      if (response) {
+        queryClient.setQueryData(["user"], response);
+        toast.success("Register successfully!!");
+        setModalOpen(true); // Mở modal khi đăng ký thành công
+      } else {
+        console.error("No response data from register API");
+        toast.error("Register failed, no response from server.");
+      }
     },
     onError: (err) => {
       toast.dismiss();
+      console.error("Full Error Object:", err); // Thêm log đầy đủ lỗi
+      const errorMessage = err.response?.data?.message || "Register failed";
       console.error("Register Error:", err);
-      toast.error("Register failed");
-
-      // Delay the confirm dialog to allow toast to show first
-      setTimeout(() => {
-        window.confirm("Registration failed. Please try again.");
-      }, 500); // 500ms delay for the toast to show
+      toast.error(errorMessage);
     },
   });
 
-  return { doRegisterUser, registerLoading };
+  return {
+    doRegisterUser,
+    registerLoading,
+    isModalOpen,
+    handleCloseModal: () => setModalOpen(false),
+    handleConfirmNavigate: () => {
+      const signInButton = document.querySelector("#sign-in-btn");
+      if (signInButton) signInButton.click();
+      else console.error("Sign-in button not found.");
+      setModalOpen(false);
+    },
+  };
 };

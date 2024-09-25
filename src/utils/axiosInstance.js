@@ -1,6 +1,6 @@
 import { API } from "@/api/apiUrl";
 import axios from "axios";
-import { BASE_URL } from "./environment";
+import { BASE_URL } from "../config/environment";
 import tokenMethod from "./token";
 
 const axiosInstance = axios.create({
@@ -11,7 +11,7 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   function (config) {
     // Do something before request is sent
-    config.headers.Authorization = `Bearer ${tokenMethod.get()?.access_token}`;
+    config.headers.Authorization = `Bearer ${tokenMethod.get()}`;
     return config;
   },
   function (error) {
