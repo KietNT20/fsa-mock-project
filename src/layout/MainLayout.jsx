@@ -4,7 +4,6 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { styled } from "@mui/material/styles";
 import { Outlet } from "react-router-dom";
 
-
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
@@ -14,16 +13,13 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 export default function MainLayout() {
-  
-
-
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <Header />
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
-        <Outlet/>
+        <Outlet />
       </Box>
     </Box>
   );
