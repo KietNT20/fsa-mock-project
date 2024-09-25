@@ -6,13 +6,12 @@ import tokenMethod from "@/utils/token";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { jwtDecode } from "jwt-decode";
 import toast from "react-hot-toast";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 export const useLogin = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const { mutate: doLoginUser, isPending: loginLoading } = useMutation({
@@ -23,7 +22,6 @@ export const useLogin = () => {
 
     onSuccess: (response) => {
       toast.dismiss();
-      response = { ...response, ...user };
       const decodedToken = jwtDecode(response?.access_token);
       dispatch(saveProfile(decodedToken));
       console.log("Login Success:", response);
