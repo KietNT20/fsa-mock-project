@@ -51,9 +51,9 @@ const Header = () => {
       duration: theme.transitions.duration.leavingScreen,
     }),
     overflowX: "hidden",
-    width: `calc(${theme.spacing(7)} + 1px)`,
+    width: `calc(${theme.spacing(7)} + 15px)`,
     [theme.breakpoints.up("sm")]: {
-      width: `calc(${theme.spacing(8)} + 1px)`,
+      width: `calc(${theme.spacing(8)} + 15px)`,
     },
   });
 
@@ -99,7 +99,7 @@ const Header = () => {
   return (
     <>
       <MUIAppBar position="fixed" open={open}>
-        <Toolbar>
+        <Toolbar sx={{height: "75px"}}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -131,7 +131,7 @@ const Header = () => {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <MenuList />
+        <MenuList/>
         <Divider />
       </MuiDrawer>
     </>

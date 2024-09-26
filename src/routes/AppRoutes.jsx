@@ -2,7 +2,7 @@ import PrivateRoute from "@/components/PrivateRoute";
 import { PATH } from "@/constant/path";
 import MainLayout from "@/layout/MainLayout";
 import DashboardPage from "@/pages/HomePage/Contents/DashboardPage";
-import ProjectsPage from "@/pages/HomePage/Contents/ProjectsPage";
+import ProjectsPage from "@/pages/HomePage/Contents/project/ProjectsPage";
 import TasksPage from "@/pages/HomePage/Contents/TasksPage";
 import UsersPage from "@/pages/HomePage/Contents/UsersPage";
 import HomePage from "@/pages/HomePage/HomePage";
