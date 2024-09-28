@@ -11,13 +11,13 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   function (config) {
     // Do something before request is sent
-    config.headers.Authorization = `Bearer ${tokenMethod.get()}`;
+    config.headers.Authorization = `Bearer ${tokenMethod.get()?.access_token}`;
     return config;
   },
   function (error) {
     // Do something with request error
     return Promise.reject(error);
-  },
+  }
 );
 
 // Add a response interceptor
@@ -43,7 +43,7 @@ axiosInstance.interceptors.response.use(
         const res = await axiosInstance.put(`${API.REFRESH_TOKEN}`, {
           refresh_token: tokenMethod.get()?.refresh_token,
         });
-        const { token: access_token, refresh_token } = res.data?.data || {};
+        const { access_token, refresh_token } = res.data?.data || {};
 
         // Save new token to localStorage
         tokenMethod.set({
@@ -65,7 +65,7 @@ axiosInstance.interceptors.response.use(
 
     // Do something with response error
     return Promise.reject(error);
-  },
+  }
 );
 
 export default axiosInstance;

@@ -1,5 +1,3 @@
-// components/UsersPage.js
-import CustomizedTable from "@/components/CustomizedTable";
 import { useUsers } from "@/hooks/useUsers";
 import { Typography } from "@mui/material";
 import React from "react";
@@ -15,7 +13,7 @@ const UsersPage = () => {
         </Typography>
         <Typography>Đây là trang quản lý người dùng.</Typography>
       </div>
-      <CustomizedTable />
+      {/* <CustomizedTable tableCell={dataUsers} tableDatas={dataUsers} /> */}
     </React.Fragment>
   );
 };
