@@ -24,10 +24,10 @@ const ConfirmationModal = ({
       aria-describedby="alert-dialog-description"
       PaperProps={{
         sx: {
-          padding: "20px", // Tạo khoảng cách bên trong modal
-          borderRadius: "15px", // Bo tròn các góc của modal
-          background: "linear-gradient(135deg, #f3e7e9, #e3eeff)", // Nền gradient cho modal
-          boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)", // Tạo bóng đổ cho modal
+          padding: "20px",
+          borderRadius: "15px",
+          background: "linear-gradient(135deg, #f3e7e9, #e3eeff)",
+          boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
           width: "500px",
           maxWidth: "100%",
         },
@@ -36,10 +36,10 @@ const ConfirmationModal = ({
       <DialogTitle
         id="alert-dialog-title"
         sx={{
-          fontSize: "2.2rem", // Tăng kích thước font cho tiêu đề
-          color: "#333", // Màu chữ cho tiêu đề
+          fontSize: "2.2rem",
+          color: "#333",
           fontWeight: "bold",
-          textAlign: "center", // Căn giữa tiêu đề
+          textAlign: "center",
         }}
       >
         {title}
@@ -48,9 +48,9 @@ const ConfirmationModal = ({
         <DialogContentText
           id="alert-dialog-description"
           sx={{
-            fontSize: "1.4rem", // Tăng kích thước chữ nội dung
-            color: "#555", // Màu chữ cho nội dung
-            textAlign: "left", // Căn lề trái cho nội dung
+            fontSize: "1.4rem",
+            color: "#555",
+            textAlign: "left",
           }}
         >
           {content}
@@ -58,7 +58,7 @@ const ConfirmationModal = ({
       </DialogContent>
       <DialogActions
         sx={{
-          justifyContent: "flex-end", // Căn lề phải cho các nút
+          justifyContent: "flex-end",
         }}
       >
         <Button
@@ -67,9 +67,9 @@ const ConfirmationModal = ({
             color: "white",
             backgroundColor: "red",
             padding: "10px 20px",
-            borderRadius: "50px", // Làm nút bo tròn
-            fontSize: "1.2rem", // Tăng kích thước font của nút
-            textTransform: "none", // Không viết hoa chữ
+            borderRadius: "50px",
+            fontSize: "1.2rem",
+            textTransform: "none",
             "&:hover": {
               backgroundColor: "darkred",
             },

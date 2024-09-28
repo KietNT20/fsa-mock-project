@@ -99,7 +99,7 @@ const Header = () => {
   return (
     <>
       <MUIAppBar position="fixed" open={open}>
-        <Toolbar sx={{height: "75px"}}>
+        <Toolbar sx={{ height: "75px" }}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -131,7 +131,7 @@ const Header = () => {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <MenuList/>
+        <MenuList />
         <Divider />
       </MuiDrawer>
     </>
