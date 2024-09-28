@@ -1,13 +1,13 @@
-import PrivateRoute from "@/components/PrivateRoute";
-import { PATH } from "@/constant/path";
-import MainLayout from "@/layout/MainLayout";
-import DashboardPage from "@/pages/HomePage/Contents/DashboardPage";
-import ProjectsPage from "@/pages/HomePage/Contents/project/ProjectsPage";
-import TasksPage from "@/pages/HomePage/Contents/TasksPage";
-import UsersPage from "@/pages/HomePage/Contents/UsersPage";
-import HomePage from "@/pages/HomePage/HomePage";
-import LoginPage from "@/pages/LoginPage/LoginPage";
-import { Route, Routes } from "react-router-dom";
+import PrivateRoute from '@/components/PrivateRoute';
+import { PATH } from '@/constant/path';
+import MainLayout from '@/layout/MainLayout';
+import DashboardPage from '@/pages/Dashboard/DashboardPage';
+import TasksPage from '@/pages/TasksPage/TasksPage';
+import UsersPage from '@/pages/UsersPage/UsersPage';
+import HomePage from '@/pages/HomePage/HomePage';
+import LoginPage from '@/pages/LoginPage/LoginPage';
+import { Route, Routes } from 'react-router-dom';
+import ProjectsPage from '@/pages/ProjectsPage/ProjectsPage';
 
 const AppRoutes = () => {
   return (
