@@ -1,13 +1,12 @@
 // components/ProjectsPage.js
 import { Typography } from "@mui/material";
+import TableLayout from "./TableLayout";
 
 const ProjectsPage = () => {
   return (
     <div>
-      <Typography variant="h4" gutterBottom>
-        Projects Page
-      </Typography>
-      <Typography>Đây là trang quản lý dự án.</Typography>
+      <Typography variant="h3"> Chào mừng</Typography>
+      <TableLayout />
     </div>
   );
 };
