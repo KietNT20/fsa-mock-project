@@ -1,6 +1,6 @@
 import { Card, CardContent, Typography } from "@mui/material";
 
-const CardLayout = () => {
+const CustomizedCard = () => {
   const items = [
     { name: "Sản phẩm A", price: 100, category: "Điện tử" },
     { name: "Sản phẩm B", price: 200, category: "Thời trang" },
@@ -62,4 +62,4 @@ const CardLayout = () => {
   );
 };
 
-export default CardLayout;
+export default CustomizedCard;
