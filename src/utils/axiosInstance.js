@@ -40,7 +40,7 @@ axiosInstance.interceptors.response.use(
       originalRequest._retry = true;
       try {
         // Call API refresh token for new token
-        const res = await axiosInstance.put(`${API.REFRESH_TOKEN}`, {
+        const res = await axiosInstance.post(`${API.REFRESH_TOKEN}`, {
           refresh_token: tokenMethod.get()?.refresh_token,
         });
         const { access_token, refresh_token } = res.data?.data || {};

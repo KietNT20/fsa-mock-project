@@ -15,7 +15,6 @@ export const useUsers = () => {
       console.log("error", error);
     },
   });
-
   return {
     dataUsers,
     getUsers,
