@@ -26,7 +26,10 @@ export const useLogin = () => {
       dispatch(saveProfile(decodedToken));
       console.log("Login Success:", response);
       queryClient.setQueryData(["user"], response);
-      tokenMethod.set(response);
+      tokenMethod.set({
+        access_token: response?.access_token,
+        refresh_token: response?.refresh_token,
+      });
       toast.success("Login successfully!!");
       navigate(PATH.HOME, { replace: true });
     },
