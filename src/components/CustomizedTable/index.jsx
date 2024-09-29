@@ -11,9 +11,19 @@ import {
   Typography,
 } from "@mui/material";
 
-const CustomizedTable = ({ tableCell, tableDatas }) => {
+const CustomizedTable = ({ tableCell = [], tableDatas = [] }) => {
   console.log("tableDatas", tableDatas);
   console.log("tableCell", tableCell);
+
+  // Nếu không có dữ liệu, hiển thị thông báo
+  if (tableCell.length === 0 || tableDatas.length === 0) {
+    return <Typography>No data available to display</Typography>;
+  }
+
+  // Hàm để biến chữ cái đầu của từ thành in hoa
+  const capitalize = (string) =>
+    string.charAt(0).toUpperCase() + string.slice(1);
+
   return (
     <TableContainer
       component={Paper}
@@ -26,7 +36,6 @@ const CustomizedTable = ({ tableCell, tableDatas }) => {
         padding: "20px",
       }}
     >
-      {/* Tiêu đề bảng */}
       <Typography
         variant="h4"
         align="center"
@@ -41,13 +50,10 @@ const CustomizedTable = ({ tableCell, tableDatas }) => {
           marginBottom: "20px",
         }}
       >
-        Danh Sách Sản Phẩm
+        Danh Sách Người Dùng
       </Typography>
 
-      {/* Bảng dữ liệu */}
       <Table sx={{ minWidth: 500, width: "100%" }}>
-        {" "}
-        {/* width 100% */}
         <TableHead>
           <TableRow>
             {tableCell.map((cell, index) => (
@@ -55,11 +61,14 @@ const CustomizedTable = ({ tableCell, tableDatas }) => {
                 key={index}
                 style={{
                   fontWeight: "bold",
-                  fontSize: "16px",
-                  backgroundColor: "#f5f5f5",
+                  fontSize: "20px",
+                  backgroundColor: "#fff",
+                  color: "black",
+                  textAlign: "center",
+                  width: `${100 / tableCell.length}%`, // Chia đều cột
                 }}
               >
-                {cell}
+                {capitalize(cell)}
               </StyledTableCell>
             ))}
           </TableRow>
@@ -67,10 +76,10 @@ const CustomizedTable = ({ tableCell, tableDatas }) => {
         <TableBody>
           {tableDatas.map((row, index) => (
             <StyledTableRow
-              key={row.name}
+              key={index} // Sử dụng index làm key cho mỗi row
               sx={{
                 "&:last-child td, &:last-child th": { border: 0 },
-                backgroundColor: index % 2 === 0 ? "#fff" : "#f9f9f9",
+                backgroundColor: index % 2 === 0 ? "#f5f5f5" : "#fff",
                 height: "60px",
                 transition: "background-color 0.3s ease, transform 0.2s ease",
                 "&:hover": {
@@ -80,25 +89,20 @@ const CustomizedTable = ({ tableCell, tableDatas }) => {
                 },
               }}
             >
-              <StyledTableCell
-                component="th"
-                scope="row"
-                style={{ fontSize: "15px", padding: "15px" }}
-              >
-                {row.name}
-              </StyledTableCell>
-              <StyledTableCell
-                align="right"
-                style={{ fontSize: "15px", padding: "15px" }}
-              >
-                {row.price}
-              </StyledTableCell>
-              <StyledTableCell
-                align="right"
-                style={{ fontSize: "15px", padding: "15px" }}
-              >
-                {row.category}
-              </StyledTableCell>
+              {tableCell.map((cell, cellIndex) => (
+                <StyledTableCell
+                  key={cellIndex}
+                  align="center" // Căn giữa nội dung
+                  style={{
+                    fontSize: "15px",
+                    padding: "15px",
+                    width: `${100 / tableCell.length}%`, // Chia đều cột
+                  }}
+                >
+                  {/* Kiểm tra và hiển thị role tương ứng */}
+                  {row[cell]}
+                </StyledTableCell>
+              ))}
             </StyledTableRow>
           ))}
         </TableBody>
@@ -123,7 +127,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
     backgroundColor: theme.palette.action.hover,
   },
-  // hide last border
   "&:last-child td, &:last-child th": {
     border: 0,
   },
