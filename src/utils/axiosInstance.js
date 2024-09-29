@@ -9,9 +9,11 @@ const axiosInstance = axios.create({
 
 // Add a request interceptor
 axiosInstance.interceptors.request.use(
-  function (config) {
+  (config) => {
     // Do something before request is sent
-    config.headers.Authorization = `Bearer ${tokenMethod.get()?.access_token}`;
+    if (tokenMethod.get()) {
+      config.headers.Authorization = `Bearer ${tokenMethod.get().access_token}`;
+    }
     return config;
   },
   function (error) {
@@ -22,12 +24,12 @@ axiosInstance.interceptors.request.use(
 
 // Add a response interceptor
 axiosInstance.interceptors.response.use(
-  function (response) {
+  (response) => {
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
     return response.data;
   },
-  async function (error) {
+  async (error) => {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     console.log("error", error);
     const originalRequest = error.config;
@@ -39,10 +41,14 @@ axiosInstance.interceptors.response.use(
     ) {
       originalRequest._retry = true;
       try {
+        console.log("Call API refresh token");
         // Call API refresh token for new token
-        const res = await axiosInstance.put(`${API.REFRESH_TOKEN}`, {
-          refresh_token: tokenMethod.get()?.refresh_token,
+        const res = await axiosInstance.post(`${API.REFRESH_TOKEN}`, {
+          refresh_token: tokenMethod.get().refresh_token,
         });
+
+        console.log("res", res);
+
         const { access_token, refresh_token } = res.data?.data || {};
 
         // Save new token to localStorage
