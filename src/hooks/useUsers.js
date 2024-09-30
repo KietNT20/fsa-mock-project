@@ -8,7 +8,7 @@ export const useUsers = () => {
     return dataUsers;
   };
 
-  const { data: dataUsers } = useQuery({
+  const { data: dataUsers, ...rest } = useQuery({
     queryKey: ["users"],
     queryFn: getUsers,
     onError: (error) => {
@@ -17,6 +17,6 @@ export const useUsers = () => {
   });
   return {
     dataUsers,
-    getUsers,
+    ...rest,
   };
 };
