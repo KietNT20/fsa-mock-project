@@ -1,4 +1,3 @@
-import tokenMethod from "@/utils/token";
 import { useTheme } from "@emotion/react";
 import { Menu } from "@mui/icons-material";
 import {
@@ -33,7 +32,7 @@ const Header = () => {
   };
 
   const handleLogout = () => {
-    tokenMethod.remove();
+    localStorage.clear();
     navigate(PATH.LOGIN, { replace: true });
   };
 

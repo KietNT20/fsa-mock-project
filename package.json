@@ -20,6 +20,7 @@
     "@tanstack/react-query": "^5.56.2",
     "@tanstack/react-query-devtools": "^5.56.2",
     "axios": "^1.7.7",
+    "date-fns": "^4.1.0",
     "dotenv": "^16.4.5",
     "fsa-mock-project": "file:",
     "jwt-decode": "^4.0.0",

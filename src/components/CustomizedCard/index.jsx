@@ -1,11 +1,21 @@
 import { Card, CardContent, Typography } from "@mui/material";
+import { format } from "date-fns";
 
-const CustomizedCard = () => {
-  const items = [
-    { name: "Sản phẩm A", price: 100, category: "Điện tử" },
-    { name: "Sản phẩm B", price: 200, category: "Thời trang" },
-    { name: "Sản phẩm C", price: 300, category: "Gia dụng" },
-  ];
+const CustomizedCard = ({ cardCell = [], cardDatas = [] }) => {
+  // console.log("cardDatas", cardDatas);
+  // console.log("cardCell", cardCell);
+
+  const capitalize = (string) =>
+    string.charAt(0).toUpperCase() + string.slice(1);
+
+  const formatDate = (dateString) => {
+    try {
+      return format(new Date(dateString), "dd/MM/yyyy HH:mm:ss");
+    } catch (error) {
+      console.error("Error parsing date:", error);
+      return dateString;
+    }
+  };
 
   return (
     <div
@@ -17,7 +27,7 @@ const CustomizedCard = () => {
         flexWrap: "wrap",
       }}
     >
-      {items.map((item, index) => (
+      {cardDatas.map((item, index) => (
         <Card
           key={index}
           style={{
@@ -26,35 +36,36 @@ const CustomizedCard = () => {
             borderRadius: "20px",
             boxShadow: "0 6px 12px rgba(0, 0, 0, 0.3)",
             transition: "transform 0.3s",
-            padding: "20px",
+            cursor: "pointer",
+            padding: "10px",
           }}
           onMouseOver={(e) => {
-            e.currentTarget.style.transform = "scale(1.1)";
+            e.currentTarget.style.transform = "scale(1.05)";
           }}
           onMouseOut={(e) => {
             e.currentTarget.style.transform = "scale(1)";
           }}
         >
           <CardContent>
-            <Typography
-              variant="h4"
-              component="div"
-              style={{ fontWeight: "bold", marginBottom: "15px" }}
-            >
-              {item.name}
-            </Typography>
-            <Typography
-              color="text.secondary"
-              style={{ marginBottom: "20px", fontSize: "18px" }}
-            >
-              Giá: {item.price} VND
-            </Typography>
-            <Typography
-              variant="body1"
-              style={{ color: "#4caf50", fontSize: "16px" }}
-            >
-              Danh mục: {item.category}
-            </Typography>
+            {cardCell.map((cell, cellIndex) => (
+              <Typography
+                key={cellIndex}
+                variant={cellIndex === 0 ? "h5" : "body1"}
+                style={{
+                  fontWeight: cellIndex === 0 ? "bold" : "normal",
+                  fontSize: cellIndex === 0 ? "26px" : "18px",
+                  padding: "10px",
+                  marginTop: "10px",
+                }}
+              >
+                {capitalize(cell)}:{" "}
+                {cell.includes("time")
+                  ? formatDate(item[cell])
+                  : cell.includes("note") && item[cell] === ""
+                    ? "None"
+                    : item[cell]}
+              </Typography>
+            ))}
           </CardContent>
         </Card>
       ))}

@@ -1,15 +1,23 @@
 import CustomizedTable from "@/components/CustomizedTable";
-import { useUsers } from "@/hooks/useUsers";
+import { useDeleteApiUser, useGetApiUsers } from "@/hooks/useUsers";
 import { columnsUsers } from "@/utils/columns";
-import { CircularProgress, Pagination, Typography } from "@mui/material";
-import React, { useMemo, useState } from "react";
-import { useSelector } from "react-redux";
+import { Container, Pagination, Skeleton, Typography } from "@mui/material";
+import { useCallback, useMemo, useState } from "react";
+
+const itemsPerPage = 6;
 
 const UsersPage = () => {
-  const { dataUsers, isLoading, isError, error } = useUsers();
-  const { profile } = useSelector((state) => state.profile);
+  const { data: dataUsers, isLoading, isError, error } = useGetApiUsers();
+  const { mutate: doDeleteUser } = useDeleteApiUser();
   const [page, setPage] = useState(1);
-  const itemsPerPage = 6;
+
+  const handleDeleteUser = useCallback(
+    (userId) => {
+      // console.log("Deleting user with ID:", userId);
+      doDeleteUser({ id: userId });
+    },
+    [doDeleteUser]
+  );
 
   const paginatedData = useMemo(() => {
     if (!dataUsers) return [];
@@ -21,38 +29,54 @@ const UsersPage = () => {
   const pageCount = dataUsers ? Math.ceil(dataUsers.length / itemsPerPage) : 0;
 
   const handlePageChange = (event, value) => {
-    event.preventDefault();
     setPage(value);
   };
+
+  const TableSkeleton = () => (
+    <>
+      {[...Array(itemsPerPage)].map((_, index) => (
+        <Skeleton
+          key={index}
+          variant="rectangular"
+          height={53}
+          sx={{ my: 1 }}
+        />
+      ))}
+    </>
+  );
 
   if (isError) {
     return <Typography color="error">Error: {error.message}</Typography>;
   }
 
-  if (!dataUsers || dataUsers.length === 0) {
-    return <Typography>No users data available.</Typography>;
-  }
-
   return (
-    <React.Fragment>
-      {isLoading && <CircularProgress />}
-      <div>
-        <Typography variant="h4" gutterBottom>
-          Users Page
-        </Typography>
-        <Typography>Đây là trang quản lý người dùng.</Typography>
-      </div>
-      {profile?.role === 1 && <Typography>Chính sửa</Typography>}
-      <CustomizedTable tableCell={columnsUsers} tableData={paginatedData} />
-      <Pagination
-        count={pageCount}
-        page={page}
-        onChange={handlePageChange}
-        variant="outlined"
-        shape="rounded"
-        sx={{ marginTop: 2, display: "flex", justifyContent: "center" }}
-      />
-    </React.Fragment>
+    <Container>
+      <Typography variant="h4" gutterBottom>
+        Users Page
+      </Typography>
+      <Typography gutterBottom>This is the user management page.</Typography>
+      {isLoading ? (
+        <TableSkeleton />
+      ) : !dataUsers || dataUsers.length === 0 ? (
+        <Typography>No users data available.</Typography>
+      ) : (
+        <CustomizedTable
+          tableCell={columnsUsers}
+          tableData={paginatedData}
+          handleDelete={handleDeleteUser}
+        />
+      )}
+      {!isLoading && dataUsers && dataUsers.length > 0 && (
+        <Pagination
+          count={pageCount}
+          page={page}
+          onChange={handlePageChange}
+          variant="outlined"
+          shape="rounded"
+          sx={{ marginTop: 2, display: "flex", justifyContent: "center" }}
+        />
+      )}
+    </Container>
   );
 };
 

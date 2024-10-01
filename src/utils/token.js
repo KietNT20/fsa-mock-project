@@ -12,7 +12,7 @@ const tokenMethod = {
     return localToken.get();
   },
   set: (token) => {
-    console.log("token", token);
+    // console.log("token", token);
     localToken.set(token);
   },
   remove: () => {

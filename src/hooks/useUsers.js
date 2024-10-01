@@ -1,22 +1,47 @@
 import { API } from "@/api/apiUrl";
 import axiosInstance from "@/utils/axiosInstance";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
-export const useUsers = () => {
-  const getUsers = async () => {
-    const dataUsers = await axiosInstance.get(API.USERS);
-    return dataUsers;
-  };
-
-  const { data: dataUsers, ...rest } = useQuery({
+export const useGetApiUsers = () => {
+  const { data, ...rest } = useQuery({
     queryKey: ["users"],
-    queryFn: getUsers,
+    queryFn: () => {
+      return axiosInstance.get(API.USERS);
+    },
     onError: (error) => {
       console.log("error", error);
     },
   });
+
   return {
-    dataUsers,
+    data,
     ...rest,
   };
+};
+
+export const useDeleteApiUser = () => {
+  const queryClient = useQueryClient();
+
+  const { mutate, ...rest } = useMutation({
+    mutationFn: ({ id }) => {
+      // console.log("id", id);
+      return axiosInstance.delete(API.USERS, { data: { id } });
+    },
+
+    onSuccess: () => {
+      toast.dismiss();
+      queryClient.invalidateQueries({
+        queryKey: ["users"],
+      });
+      toast.success("Delete successfully!!");
+    },
+    onError: (err) => {
+      toast.dismiss();
+      console.error("Error:", err);
+      toast.error("Delete failed");
+    },
+  });
+
+  return { mutate, ...rest };
 };
