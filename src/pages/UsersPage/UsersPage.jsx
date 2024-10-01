@@ -16,7 +16,7 @@ const UsersPage = () => {
       // console.log("Deleting user with ID:", userId);
       doDeleteUser({ id: userId });
     },
-    [doDeleteUser]
+    [doDeleteUser],
   );
 
   const paginatedData = useMemo(() => {
