@@ -40,7 +40,7 @@ const LoginForm = () => {
   const { doLoginUser, loginLoading } = useLogin();
 
   const onSubmit = (data) => {
-    console.log(data);
+    // console.log(data);
     const { email, password } = data;
     doLoginUser({ email, password });
   };
