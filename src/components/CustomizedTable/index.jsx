@@ -10,32 +10,48 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import { format, parseISO } from "date-fns";
 
-const CustomizedTable = ({ tableCell = [], tableDatas = [] }) => {
+const CustomizedTable = ({
+  title = "Table List",
+  tableCell = [],
+  tableDatas = [],
+}) => {
   console.log("tableDatas", tableDatas);
   console.log("tableCell", tableCell);
 
-  // Nếu không có dữ liệu, hiển thị thông báo
+  // Function to capitalize the first letter of the string
   if (tableCell.length === 0 || tableDatas.length === 0) {
     return <Typography>No data available to display</Typography>;
   }
 
-  // Hàm để biến chữ cái đầu của từ thành in hoa
+  // Function to format the date and time
   const capitalize = (string) =>
     string.charAt(0).toUpperCase() + string.slice(1);
+
+  const formatDate = (dateString) => {
+    try {
+      return format(parseISO(dateString), "dd/MM/yyyy HH:mm:ss");
+    } catch (error) {
+      console.error("Error parsing date:", error);
+      return dateString;
+    }
+  };
 
   return (
     <TableContainer
       component={Paper}
       style={{
         margin: "20px auto",
+        height: "75vh",
         maxWidth: "100%",
-        overflowX: "auto",
-        boxShadow: "0px 3px 6px rgba(0,0,0,0.1)",
+        overflowY: "auto",
+        boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.2)",
         borderRadius: "10px",
         padding: "20px",
       }}
     >
+      {/* Dynamic title with a light to darker blue gradient */}
       <Typography
         variant="h4"
         align="center"
@@ -43,14 +59,14 @@ const CustomizedTable = ({ tableCell = [], tableDatas = [] }) => {
         style={{
           paddingBottom: "10px",
           fontWeight: "bold",
-          backgroundColor: "#1976d2",
-          color: "white",
+          background: "linear-gradient(135deg, #0d47a1 , #90caf9)",
+          color: "#fff",
           borderRadius: "8px 8px 0 0",
           padding: "15px",
           marginBottom: "20px",
         }}
       >
-        Danh Sách Người Dùng
+        {title}
       </Typography>
 
       <Table sx={{ minWidth: 500, width: "100%" }}>
@@ -65,7 +81,7 @@ const CustomizedTable = ({ tableCell = [], tableDatas = [] }) => {
                   backgroundColor: "#fff",
                   color: "black",
                   textAlign: "center",
-                  width: `${100 / tableCell.length}%`, // Chia đều cột
+                  width: `${100 / tableCell.length}%`,
                 }}
               >
                 {capitalize(cell)}
@@ -76,7 +92,7 @@ const CustomizedTable = ({ tableCell = [], tableDatas = [] }) => {
         <TableBody>
           {tableDatas.map((row, index) => (
             <StyledTableRow
-              key={index} // Sử dụng index làm key cho mỗi row
+              key={index}
               sx={{
                 "&:last-child td, &:last-child th": { border: 0 },
                 backgroundColor: index % 2 === 0 ? "#f5f5f5" : "#fff",
@@ -92,15 +108,22 @@ const CustomizedTable = ({ tableCell = [], tableDatas = [] }) => {
               {tableCell.map((cell, cellIndex) => (
                 <StyledTableCell
                   key={cellIndex}
-                  align="center" // Căn giữa nội dung
+                  align="center"
                   style={{
                     fontSize: "15px",
                     padding: "15px",
-                    width: `${100 / tableCell.length}%`, // Chia đều cột
+                    width: `${100 / tableCell.length}%`,
                   }}
                 >
-                  {/* Kiểm tra và hiển thị role tương ứng */}
-                  {row[cell]}
+                  {cell.includes("role")
+                    ? row[cell] === 0
+                      ? "User"
+                      : "Admin"
+                    : cell.includes("time")
+                      ? formatDate(row[cell])
+                      : cell.includes("note") && row[cell] === ""
+                        ? "None"
+                        : row[cell]}
                 </StyledTableCell>
               ))}
             </StyledTableRow>

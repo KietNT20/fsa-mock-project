@@ -28,19 +28,25 @@ function App() {
       <Toaster
         position="top-right"
         duration={3000}
-        containerStyle={{ margin: "30px" }}
+        containerStyle={{
+          marginRight: "100px",
+          marginTop: "20px",
+          transform: "translateX(-20px)",
+        }}
         toastOptions={{
           success: {
             style: {
-              padding: "16px",
+              padding: "25px",
               color: "#fff",
+              fontSize: "1.4rem",
               backgroundColor: "#A1D6B2",
             },
           },
           error: {
             style: {
-              padding: "16px",
+              padding: "25px",
               color: "#fff",
+              fontSize: "1.4rem",
               backgroundColor: "#D37676",
             },
           },
