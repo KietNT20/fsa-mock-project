@@ -2,6 +2,7 @@ import { API } from "@/api/apiUrl";
 import axiosInstance from "@/utils/axiosInstance";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 
 export const useGetApiUsers = () => {
   const { data, ...rest } = useQuery({
@@ -22,6 +23,7 @@ export const useGetApiUsers = () => {
 
 export const useDeleteApiUser = () => {
   const queryClient = useQueryClient();
+  const { profile } = useSelector((state) => state.profile);
 
   const { mutate, ...rest } = useMutation({
     mutationFn: ({ id }) => {
@@ -39,7 +41,11 @@ export const useDeleteApiUser = () => {
     onError: (err) => {
       toast.dismiss();
       console.error("Error:", err);
-      toast.error("Delete failed");
+      if (profile?.role === 1) {
+        toast.error("You can not delete this user has role admin");
+      } else {
+        toast.error("Delete failed");
+      }
     },
   });
 
