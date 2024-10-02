@@ -1,4 +1,14 @@
 import {
+  Delete as DeleteIcon,
+  Edit as EditIcon,
+  MoreHoriz as MoreHorizIcon,
+} from "@mui/icons-material";
+import {
+  IconButton,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
   Paper,
   styled,
   Table,
@@ -11,21 +21,48 @@ import {
   Typography,
 } from "@mui/material";
 import { format, parseISO } from "date-fns";
+import { useState } from "react";
 
 const CustomizedTable = ({
   title = "Table List",
   tableCell = [],
   tableDatas = [],
+  onUpdate, // Callback for handling update action
+  onDelete, // Callback for handling delete action
+  onActionClick, // Callback when the 3-dot menu is clicked
 }) => {
-  console.log("tableDatas", tableDatas);
-  console.log("tableCell", tableCell);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedRow, setSelectedRow] = useState(null);
 
-  // Function to capitalize the first letter of the string
-  if (tableCell.length === 0 || tableDatas.length === 0) {
-    return <Typography>No data available to display</Typography>;
-  }
+  const handleClick = (event, row) => {
+    setAnchorEl(event.currentTarget);
+    setSelectedRow(row);
+    if (onActionClick) {
+      onActionClick(row);
+    }
+  };
 
-  // Function to format the date and time
+  const handleClose = () => {
+    setAnchorEl(null);
+    setSelectedRow(null);
+  };
+
+  const handleUpdate = () => {
+    if (onUpdate) {
+      onUpdate(selectedRow);
+    }
+    handleClose();
+  };
+
+  const handleDelete = () => {
+    if (onDelete && selectedRow?.id) {
+      onDelete(selectedRow.id);
+    } else {
+      console.error("No project ID found");
+    }
+    handleClose();
+  };
+
   const capitalize = (string) =>
     string.charAt(0).toUpperCase() + string.slice(1);
 
@@ -51,7 +88,6 @@ const CustomizedTable = ({
         padding: "20px",
       }}
     >
-      {/* Dynamic title with a light to darker blue gradient */}
       <Typography
         variant="h4"
         align="center"
@@ -115,15 +151,74 @@ const CustomizedTable = ({
                     width: `${100 / tableCell.length}%`,
                   }}
                 >
-                  {cell.includes("role")
-                    ? row[cell] === 0
-                      ? "User"
-                      : "Admin"
-                    : cell.includes("time")
-                      ? formatDate(row[cell])
-                      : cell.includes("note") && row[cell] === ""
-                        ? "None"
-                        : row[cell]}
+                  {cell === "action" ? (
+                    <>
+                      <IconButton
+                        aria-controls="simple-menu"
+                        aria-haspopup="true"
+                        onClick={(event) => handleClick(event, row)}
+                      >
+                        <MoreHorizIcon />
+                      </IconButton>
+                      <Menu
+                        id="simple-menu"
+                        anchorEl={anchorEl}
+                        keepMounted
+                        open={Boolean(anchorEl)}
+                        onClose={handleClose}
+                        PaperProps={{
+                          style: {
+                            width: "fit-content",
+                            boxShadow: "none",
+                            border: "1px solid #ddd",
+                          },
+                        }}
+                      >
+                        <MenuItem onClick={() => handleUpdate(row)}>
+                          <ListItemIcon>
+                            <EditIcon
+                              fontSize="medium"
+                              sx={{ color: "#0d47a1" }}
+                            />
+                          </ListItemIcon>
+                          <ListItemText
+                            primary="Update"
+                            primaryTypographyProps={{
+                              fontSize: "1.8rem",
+                              color: "#0d47a1",
+                            }}
+                          />
+                        </MenuItem>
+                        <MenuItem onClick={() => handleDelete(row)}>
+                          <ListItemIcon>
+                            <DeleteIcon
+                              fontSize="medium"
+                              sx={{ color: "#e83535" }}
+                            />
+                          </ListItemIcon>
+                          <ListItemText
+                            primary="Delete"
+                            primaryTypographyProps={{
+                              fontSize: "1.8rem",
+                              color: "#e83535",
+                            }}
+                          />
+                        </MenuItem>
+                      </Menu>
+                    </>
+                  ) : cell.includes("role") ? (
+                    row[cell] === 0 ? (
+                      "User"
+                    ) : (
+                      "Admin"
+                    )
+                  ) : cell.includes("time") ? (
+                    formatDate(row[cell])
+                  ) : cell.includes("note") && row[cell] === "" ? (
+                    "None"
+                  ) : (
+                    row[cell]
+                  )}
                 </StyledTableCell>
               ))}
             </StyledTableRow>

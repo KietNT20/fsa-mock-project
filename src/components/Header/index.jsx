@@ -87,8 +87,8 @@ const Header = () => {
               alt={profile.name}
               src={generateCartoonAvatar(profile.name)}
               sx={{
-                border: '2px solid #fff',
-                boxShadow: '0 0 8px rgba(0, 0, 0, 0.3)',
+                border: "2px solid #fff",
+                boxShadow: "0 0 8px rgba(0, 0, 0, 0.3)",
                 width: 40,
                 height: 40,
               }}
@@ -110,7 +110,7 @@ const Header = () => {
           </StyledMenu>
         </Toolbar>
       </MUIAppBar>
-      
+
       <MuiDrawer variant="permanent" open={open}>
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>

@@ -1,24 +1,56 @@
-// components/ProjectsPage.js
 import CustomizedCard from "@/components/CustomizedCard";
 import CustomizedTable from "@/components/CustomizedTable";
-import { useProject } from "@/hooks/useProject";
-import { Box, Button, Typography } from "@mui/material"; // Added Box for layout
-import React, { useState } from "react";
+import {
+  useCreateProject,
+  useDeleteProject,
+  useGetProject,
+  useUpdateProject,
+} from "@/hooks/useProject";
+import { Box, Button, Typography } from "@mui/material";
+import React, { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
-import ProjectCreationModal from "./ProjectCreationModal";
+import ProjectModal from "./ProjectModal";
 
 const ProjectsPage = () => {
-  const { dataProject } = useProject();
+  const { dataProject } = useGetProject();
+  const { mutate: doDeleteProject } = useDeleteProject();
+  const { mutate: doCreateProject } = useCreateProject();
+  const { mutate: doUpdateProject } = useUpdateProject(); // Import the update project mutation
   const { profile } = useSelector((state) => state.profile);
-  console.log("profile", profile);
-  console.log(dataProject);
 
   const [modalOpen, setModalOpen] = useState(false);
+  const [modalMode, setModalMode] = useState("create"); // Mode for the modal ('create' or 'update')
+  const [selectedProject, setSelectedProject] = useState(null); // Track the project being updated
 
-  const handleOpenModal = () => setModalOpen(true);
+  const handleOpenModal = (mode = "create", project = null) => {
+    setModalMode(mode);
+    setSelectedProject(project);
+    setModalOpen(true);
+  };
+
   const handleCloseModal = () => setModalOpen(false);
 
-  // Headers cho table và card
+  const handleDeleteProject = useCallback(
+    (projectId) => {
+      if (projectId) {
+        doDeleteProject({ id: projectId });
+      } else {
+        console.error("Invalid project ID");
+      }
+    },
+    [doDeleteProject],
+  );
+
+  // Handle project creation
+  const handleCreateProject = (projectData) => {
+    doCreateProject(projectData);
+  };
+
+  // Handle project update
+  const handleUpdateProject = (projectData) => {
+    doUpdateProject(projectData);
+  };
+
   const dataHeader = [
     "name",
     "payment",
@@ -26,6 +58,7 @@ const ProjectsPage = () => {
     "time_end",
     "note",
     "priority",
+    "action",
   ];
 
   return (
@@ -40,11 +73,10 @@ const ProjectsPage = () => {
           </Typography>
         )}
 
-        {/* Conditionally render the 'Create New Project' button for admin users (role 1) */}
         {profile?.role === 1 && (
           <Button
             variant="contained"
-            onClick={handleOpenModal}
+            onClick={() => handleOpenModal("create")}
             sx={{
               background: "linear-gradient(135deg, #0d47a1 , #90caf9)",
               padding: "12px 24px",
@@ -67,9 +99,15 @@ const ProjectsPage = () => {
         )}
       </Box>
 
-      <ProjectCreationModal open={modalOpen} onClose={handleCloseModal} />
+      <ProjectModal
+        open={modalOpen}
+        onClose={() => handleCloseModal()}
+        mode={modalMode}
+        project={selectedProject}
+        onCreateProject={(projectData) => handleCreateProject(projectData)}
+        onUpdateProject={(projectData) => handleUpdateProject(projectData)}
+      />
 
-      {/* Conditionally render either CustomizedCard or CustomizedTable based on user role */}
       {profile?.role === 0 ? (
         <CustomizedCard cardCell={dataHeader} cardDatas={dataProject} />
       ) : (
@@ -77,6 +115,8 @@ const ProjectsPage = () => {
           title="Project Table List"
           tableCell={dataHeader}
           tableDatas={dataProject}
+          onUpdate={(project) => handleOpenModal("update", project)} // Open modal for updating a project
+          onDelete={(projectId) => handleDeleteProject(projectId)}
         />
       )}
     </React.Fragment>

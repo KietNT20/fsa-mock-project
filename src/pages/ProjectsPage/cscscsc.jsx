@@ -10,9 +10,16 @@ import {
 } from "@mui/material";
 import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const ProjectCreationModal = ({ open, onClose }) => {
+const ProjectCreationModal = ({
+  open,
+  onClose,
+  mode,
+  project,
+  onCreateProject,
+  onUpdateProject,
+}) => {
   const [projectData, setProjectData] = useState({
     name: "",
     payment: "",
@@ -22,6 +29,30 @@ const ProjectCreationModal = ({ open, onClose }) => {
     priority: "",
   });
 
+  // Populate the modal with existing project data when in update mode
+  useEffect(() => {
+    if (mode === "update" && project) {
+      setProjectData({
+        name: project.name || "",
+        payment: project.payment || "",
+        time_start: project.time_start || null,
+        time_end: project.time_end || null,
+        note: project.note || "",
+        priority: project.priority || "",
+      });
+    } else {
+      // Clear the form when switching to create mode
+      setProjectData({
+        name: "",
+        payment: "",
+        time_start: null,
+        time_end: null,
+        note: "",
+        priority: "",
+      });
+    }
+  }, [mode, project]);
+
   const handleInputChange = (field, value) => {
     setProjectData((prev) => ({
       ...prev,
@@ -30,7 +61,12 @@ const ProjectCreationModal = ({ open, onClose }) => {
   };
 
   const handleConfirm = () => {
-    console.log("projectData", projectData);
+    if (mode === "create") {
+      onCreateProject(projectData);
+    } else if (mode === "update") {
+      onUpdateProject({ ...projectData, id: project.id });
+    }
+    onClose();
   };
 
   return (
@@ -62,7 +98,7 @@ const ProjectCreationModal = ({ open, onClose }) => {
             letterSpacing: "0.1rem",
           }}
         >
-          Create New Project
+          {mode === "create" ? "Create New Project" : "Update Project"}
         </DialogTitle>
 
         <DialogContent
@@ -83,7 +119,9 @@ const ProjectCreationModal = ({ open, onClose }) => {
               fontWeight: "500",
             }}
           >
-            Fill in the project details below
+            {mode === "create"
+              ? "Fill in the project details below"
+              : "Update the project details below"}
           </DialogContentText>
 
           {/* Project Name */}
@@ -123,11 +161,12 @@ const ProjectCreationModal = ({ open, onClose }) => {
             }}
           />
 
+          {/* Start Date */}
           <DateTimePicker
             label="Start Date and Time"
             value={projectData.time_start}
             onChange={(newDate) => handleInputChange("time_start", newDate)}
-            ampm={false} 
+            ampm={false}
             slotProps={{
               textField: {
                 marginBottom: "30px",
@@ -150,15 +189,11 @@ const ProjectCreationModal = ({ open, onClose }) => {
                     fontSize: "1.8rem",
                   },
                 },
-                sx: {
-                  "& .MuiSvgIcon-root": {
-                    fontSize: "2.4rem",
-                  },
-                },
               },
             }}
           />
 
+          {/* End Date */}
           <DateTimePicker
             label="End Date and Time"
             value={projectData.time_end}
@@ -185,15 +220,9 @@ const ProjectCreationModal = ({ open, onClose }) => {
                     fontSize: "1.8rem", // Label size
                   },
                 },
-                sx: {
-                  "& .MuiSvgIcon-root": {
-                    fontSize: "2.4rem", // Icon size
-                  },
-                },
               },
             }}
           />
-
 
           {/* Note */}
           <TextField
@@ -248,7 +277,6 @@ const ProjectCreationModal = ({ open, onClose }) => {
           </TextField>
         </DialogContent>
 
-        {/* Actions */}
         <DialogActions
           sx={{
             justifyContent: "space-between",
@@ -277,7 +305,7 @@ const ProjectCreationModal = ({ open, onClose }) => {
             onClick={handleConfirm}
             sx={{
               color: "#fff",
-              backgroundColor: "#4CAF50",
+              backgroundColor: mode === "create" ? "#4CAF50" : "#1565C0",
               padding: "14px 30px",
               borderRadius: "50px",
               fontSize: "1.4rem",
@@ -285,11 +313,11 @@ const ProjectCreationModal = ({ open, onClose }) => {
               fontWeight: "500",
               boxShadow: "0px 4px 10px rgba(76, 175, 80, 0.3)",
               "&:hover": {
-                backgroundColor: "#388E3C",
+                backgroundColor: mode === "create" ? "#388E3C" : "#0B4C8C",
               },
             }}
           >
-            Create
+            {mode === "create" ? "Create" : "Update"}
           </Button>
         </DialogActions>
       </Dialog>
