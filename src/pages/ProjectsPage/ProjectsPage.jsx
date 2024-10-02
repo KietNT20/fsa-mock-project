@@ -51,6 +51,7 @@ const ProjectsPage = () => {
     doUpdateProject(projectData);
   };
 
+  // Conditionally generate the dataHeader based on the profile role
   const dataHeader = [
     "name",
     "payment",
@@ -58,7 +59,7 @@ const ProjectsPage = () => {
     "time_end",
     "note",
     "priority",
-    "action",
+    ...(profile?.role === 1 ? ["action"] : []),
   ];
 
   return (
@@ -115,7 +116,7 @@ const ProjectsPage = () => {
           title="Project Table List"
           tableCell={dataHeader}
           tableDatas={dataProject}
-          onUpdate={(project) => handleOpenModal("update", project)} // Open modal for updating a project
+          onUpdate={(project) => handleOpenModal("update", project)}
           onDelete={(projectId) => handleDeleteProject(projectId)}
         />
       )}
