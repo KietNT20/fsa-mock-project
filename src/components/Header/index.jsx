@@ -1,26 +1,36 @@
 import { useTheme } from "@emotion/react";
-import { Menu } from "@mui/icons-material";
+import { Menu as MenuIcon } from "@mui/icons-material";
 import {
   AppBar,
-  Button,
+  Avatar,
   Divider,
   Drawer,
   IconButton,
+  Menu,
+  MenuItem,
   styled,
   Toolbar,
   Typography,
 } from "@mui/material";
 
 import { PATH } from "@/constant/path";
+import { generateCartoonAvatar } from "@/utils/avatarUtils";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle"; // Profile icon
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import LogoutIcon from "@mui/icons-material/Logout"; // Logout icon
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import MenuList from "../Menu";
+
 const drawerWidth = 240;
+
 const Header = () => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
+  const { profile } = useSelector((state) => state.profile);
+  const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
 
   const handleDrawerOpen = () => {
@@ -31,9 +41,23 @@ const Header = () => {
     setOpen(false);
   };
 
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
   const handleLogout = () => {
     localStorage.clear();
     navigate(PATH.LOGIN, { replace: true });
+    handleMenuClose();
+  };
+
+  const handleProfile = () => {
+    navigate(PATH.PROFILE); // Navigate to profile page
+    handleMenuClose();
   };
 
   return (
@@ -50,16 +74,42 @@ const Header = () => {
               ...(open && { display: "none" }),
             }}
           >
-            <Menu />
+            <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
             Mini variant drawer
           </Typography>
-          <Button color="inherit" onClick={handleLogout}>
-            Logout
-          </Button>
+
+          {/* User Avatar/Button to Open Menu */}
+          <IconButton color="inherit" onClick={handleMenuClick}>
+            <Avatar
+              alt={profile.name}
+              src={generateCartoonAvatar(profile.name)}
+              sx={{
+                border: "2px solid #fff",
+                boxShadow: "0 0 8px rgba(0, 0, 0, 0.3)",
+                width: 40,
+                height: 40,
+              }}
+            />
+          </IconButton>
+
+          {/* User Menu */}
+          <StyledMenu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleMenuClose}
+          >
+            <StyledMenuItem onClick={handleProfile}>
+              <AccountCircleIcon sx={{ mr: 1.5, fontSize: "2rem" }} /> Profile
+            </StyledMenuItem>
+            <StyledMenuItem onClick={handleLogout}>
+              <LogoutIcon sx={{ mr: 1.5, fontSize: "2rem" }} /> Logout
+            </StyledMenuItem>
+          </StyledMenu>
         </Toolbar>
       </MUIAppBar>
+
       <MuiDrawer variant="permanent" open={open}>
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
@@ -79,6 +129,29 @@ const Header = () => {
 };
 
 export default Header;
+
+// Styled Menu to make it larger and more visually appealing
+const StyledMenu = styled(Menu)(({ theme }) => ({
+  "& .MuiPaper-root": {
+    borderRadius: "10px",
+    padding: theme.spacing(1),
+    backgroundColor: "#f0f0f0",
+    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+    minWidth: "150px",
+  },
+}));
+
+// Styled MenuItem
+const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
+  fontSize: "1.5rem",
+  padding: theme.spacing(2),
+  display: "flex",
+  alignItems: "center",
+  "&:hover": {
+    backgroundColor: theme.palette.primary.main,
+    color: "#fff",
+  },
+}));
 
 // MUI Styled Components
 const MUIAppBar = styled(AppBar, {
