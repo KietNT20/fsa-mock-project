@@ -24,7 +24,7 @@ export const useLogin = () => {
       toast.dismiss();
       const decodedToken = jwtDecode(response?.access_token);
       dispatch(saveProfile(decodedToken));
-      console.log("Login Success:", response);
+      // console.log("Login Success:", response);
       queryClient.setQueryData(["user"], response);
       tokenMethod.set({
         access_token: response?.access_token,

@@ -15,7 +15,7 @@ export const useRegister = () => {
     },
     onSuccess: (response) => {
       toast.dismiss();
-      console.log("Register Success:", response);
+      // console.log("Register Success:", response);
       if (response) {
         queryClient.setQueryData(["user"], response);
         toast.success("Register successfully!!");
