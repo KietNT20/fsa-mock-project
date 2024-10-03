@@ -15,7 +15,6 @@ export const useRegister = () => {
     },
     onSuccess: (response) => {
       toast.dismiss();
-      // console.log("Register Success:", response);
       if (response) {
         queryClient.setQueryData(["user"], response);
         toast.success("Register successfully!!");
@@ -24,7 +23,7 @@ export const useRegister = () => {
     },
     onError: (err) => {
       toast.dismiss();
-      console.error("Full Error Object:", err); // Thêm log đầy đủ lỗi
+      console.error("Full Error Object:", err);
       const errorMessage = err.response?.data?.message || "Register failed";
       console.error("Register Error:", err);
       toast.error(errorMessage);
