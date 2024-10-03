@@ -55,7 +55,7 @@ const LoginForm = () => {
     <Box
       component="form"
       className="sign-in-form"
-      onSubmit={(e) => handleSubmit(onSubmit)(e)}
+      onSubmit={handleSubmit(onSubmit)}
       sx={{
         width: "100%",
         maxWidth: 450,

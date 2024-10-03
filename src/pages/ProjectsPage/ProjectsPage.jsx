@@ -51,7 +51,6 @@ const ProjectsPage = () => {
     doUpdateProject(projectData);
   };
 
-  // Conditionally generate the dataHeader based on the profile role
   const dataHeader = [
     "name",
     "payment",

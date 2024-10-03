@@ -1,4 +1,3 @@
-import { MoreHoriz } from "@mui/icons-material";
 import {
   Delete as DeleteIcon,
   Edit as EditIcon,
@@ -11,9 +10,11 @@ import {
   Menu,
   MenuItem,
   Paper,
+  styled,
   Table,
   TableBody,
   TableCell,
+  tableCellClasses,
   TableContainer,
   TableHead,
   TableRow,
@@ -26,10 +27,12 @@ const CustomizedTable = ({
   title = "Table List",
   tableCell = [],
   tableDatas = [],
-  onUpdate, // Callback for handling update action
-  onDelete, // Callback for handling delete action
-  onActionClick, // Callback when the 3-dot menu is clicked
+  onUpdate,
+  onDelete,
+  onActionClick,
+  deleteLoading,
 }) => {
+  // console.log(tableDatas);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedRow, setSelectedRow] = useState(null);
 
@@ -165,11 +168,13 @@ const CustomizedTable = ({
                         keepMounted
                         open={Boolean(anchorEl)}
                         onClose={handleClose}
-                        PaperProps={{
-                          style: {
-                            width: "fit-content",
-                            boxShadow: "none",
-                            border: "1px solid #ddd",
+                        slotProps={{
+                          paper: {
+                            style: {
+                              width: "fit-content",
+                              boxShadow: "none",
+                              border: "1px solid #ddd",
+                            },
                           },
                         }}
                       >
@@ -188,7 +193,10 @@ const CustomizedTable = ({
                             }}
                           />
                         </MenuItem>
-                        <MenuItem onClick={() => handleDelete(row)}>
+                        <MenuItem
+                          disabled={deleteLoading}
+                          onClick={() => handleDelete(row)}
+                        >
                           <ListItemIcon>
                             <DeleteIcon
                               fontSize="medium"

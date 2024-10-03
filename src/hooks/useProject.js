@@ -3,7 +3,6 @@ import axiosInstance from "@/utils/axiosInstance";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
-// Hook để lấy danh sách project (GET)
 export const useGetProject = () => {
   const getProject = async () => {
     const dataProject = await axiosInstance.get(API.PROJECTS);

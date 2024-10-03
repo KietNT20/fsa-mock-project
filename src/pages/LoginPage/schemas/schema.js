@@ -14,6 +14,7 @@ export const loginSchema = yup.object().shape({
     .min(5, "Password must be at least 5 characters")
     .required("Password is required"),
 });
+
 export const registerSchema = yup.object().shape({
   email: yup
     .string()
@@ -26,7 +27,7 @@ export const registerSchema = yup.object().shape({
       const nameRegex = REGEX.NAME;
       return nameRegex.test(value);
     })
-    .required("Username or email is required"),
+    .required("Username is required"),
   // Kiểm tra email hợp lệ bằng regex
 
   // Kiểm tra mật khẩu có tối thiểu 8 ký tự
