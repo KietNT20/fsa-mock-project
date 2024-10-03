@@ -1,10 +1,9 @@
 import CustomizedCard from "@/components/CustomizedCard";
-import CustomizedTable from "@/components/CustomizedTable";
+import TableUser from "@/components/CustomizedTable/TableUser";
 import {
   useCreateApiUser,
   useDeleteApiUser,
   useGetApiUsers,
-  useUpdateApiUser,
 } from "@/hooks/useUsers";
 import { Box, Button, Pagination, Skeleton, Typography } from "@mui/material";
 import React, { useCallback, useMemo, useState } from "react";
@@ -17,14 +16,12 @@ const UsersPage = () => {
   const [page, setPage] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState("create");
-  const [selectedProject, setSelectedProject] = useState(null);
+  const [selectedUser, setSelectedUser] = useState(null);
   const { profile } = useSelector((state) => state.profile);
   const userRole = profile?.role;
   const { data: dataUsers, isLoading, isError, error } = useGetApiUsers();
   const { mutate: doDeleteUser, isPending: deleteUserLoading } =
     useDeleteApiUser();
-  const { mutate: doUpdateUser, isPending: updateUserLoading } =
-    useUpdateApiUser();
   const { mutate: doCreateUser, isPending: createUserLoading } =
     useCreateApiUser();
 
@@ -33,7 +30,7 @@ const UsersPage = () => {
       console.log("Deleting user with ID:", userId);
       doDeleteUser({ id: userId });
     },
-    [doDeleteUser],
+    [doDeleteUser]
   );
 
   const paginatedData = useMemo(() => {
@@ -45,20 +42,14 @@ const UsersPage = () => {
 
   const handleOpenModal = (mode = "create", user = null) => {
     setModalMode(mode);
-    setSelectedProject(user);
+    setSelectedUser(user);
     setModalOpen(true);
   };
 
   const handleCloseModal = () => setModalOpen(false);
 
-  // Handle user creation
   const handleCreateUser = (data) => {
     doCreateUser(data);
-  };
-
-  // Handle user update
-  const handleUpdateUser = (data) => {
-    doUpdateUser(data);
   };
 
   const pageCount = dataUsers ? Math.ceil(dataUsers.length / itemsPerPage) : 0;
@@ -141,22 +132,17 @@ const UsersPage = () => {
         open={modalOpen}
         onClose={() => handleCloseModal()}
         mode={modalMode}
-        project={selectedProject}
+        user={selectedUser}
         onCreateUser={(data) => handleCreateUser(data)}
-        onUpdateUser={(data) => handleUpdateUser(data)}
         createLoading={createUserLoading}
-        updateLoading={updateUserLoading}
       />
 
-      {isLoading ||
-      deleteUserLoading ||
-      createUserLoading ||
-      updateUserLoading ? (
+      {isLoading || deleteUserLoading || createUserLoading ? (
         <TableSkeleton />
       ) : !dataUsers || dataUsers.length === 0 ? (
         <Typography>No users data available.</Typography>
       ) : userRole === 1 ? (
-        <CustomizedTable
+        <TableUser
           tableCell={columnsUsers}
           tableDatas={paginatedData}
           onDelete={handleDeleteUser}
