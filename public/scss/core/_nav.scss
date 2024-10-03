@@ -1,0 +1,10 @@
+// custom menu
+.active {
+  color: var(--menu-cl) !important;
+  font-weight: 600;
+  @include transition(var(--duration));
+  svg {
+    fill: var(--menu-cl) !important;
+    @include transition(var(--duration));
+  }
+}
