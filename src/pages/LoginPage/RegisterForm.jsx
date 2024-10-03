@@ -1,6 +1,6 @@
 import ButtonComp from "@/components/Button";
-import InputText from "@/components/InputText";
 import ConfirmationModal from "@/components/ConfirmationModal";
+import InputText from "@/components/InputText";
 import Spinner from "@/components/Spinner";
 import { useRegister } from "@/hooks/useRegister";
 import { registerSchema } from "@/pages/LoginPage/schemas/schema";

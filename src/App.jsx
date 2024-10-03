@@ -39,7 +39,7 @@ function App() {
               padding: "25px",
               color: "#fff",
               fontSize: "1.4rem",
-              backgroundColor: "#A1D6B2",
+              backgroundColor: "#37DD9E",
             },
           },
           error: {
@@ -47,7 +47,7 @@ function App() {
               padding: "25px",
               color: "#fff",
               fontSize: "1.4rem",
-              backgroundColor: "#D37676",
+              backgroundColor: "#e25454",
             },
           },
         }}
