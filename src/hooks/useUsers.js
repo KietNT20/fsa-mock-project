@@ -36,7 +36,7 @@ export const useDeleteApiUser = () => {
       queryClient.invalidateQueries({
         queryKey: ["users"],
       });
-      toast.success("Delete successfully!!");
+      toast.success("Delete User Successfully!!");
     },
     onError: (err) => {
       toast.dismiss();
@@ -49,34 +49,6 @@ export const useDeleteApiUser = () => {
     },
   });
 
-  return { mutate, ...rest };
-};
-
-export const useUpdateApiUser = () => {
-  const queryClient = useQueryClient();
-  const { mutate, ...rest } = useMutation({
-    mutationFn: ({ id, name, email, password, role }) => {
-      return axiosInstance.put(API.USERS, {
-        id,
-        name,
-        email,
-        password,
-        role,
-      });
-    },
-    onSuccess: () => {
-      toast.dismiss();
-      queryClient.invalidateQueries({
-        queryKey: ["users"],
-      });
-      toast.success("Update successfully!!");
-    },
-    onError: (err) => {
-      toast.dismiss();
-      console.error("Error:", err);
-      toast.error("Update failed");
-    },
-  });
   return { mutate, ...rest };
 };
 
@@ -96,12 +68,62 @@ export const useCreateApiUser = () => {
       queryClient.invalidateQueries({
         queryKey: ["users"],
       });
-      toast.success("Create successfully!!");
+      toast.success("Create New User Successfully!!");
     },
     onError: (err) => {
       toast.dismiss();
       console.error("Error:", err);
-      toast.error("Create failed");
+      toast.error("Create New User Failed");
+    },
+  });
+  return { mutate, ...rest };
+};
+
+export const useUpdateApiUser = () => {
+  const queryClient = useQueryClient();
+  const { mutate, ...rest } = useMutation({
+    mutationFn: ({ email, name }) => {
+      return axiosInstance.put(API.USERS, {
+        email,
+        name,
+      });
+    },
+    onSuccess: () => {
+      toast.dismiss();
+      queryClient.invalidateQueries({
+        queryKey: ["users"],
+      });
+      toast.success("Update User Successfully!!");
+    },
+    onError: (err) => {
+      toast.dismiss();
+      console.error("Error:", err);
+      toast.error("Update User Failed");
+    },
+  });
+  return { mutate, ...rest };
+};
+
+export const useUpdateRoleUser = () => {
+  const queryClient = useQueryClient();
+  const { mutate, ...rest } = useMutation({
+    mutationFn: ({ email, role }) => {
+      return axiosInstance.put(`${API.USERS}${API.CHANGE_ROLE}`, {
+        email,
+        role,
+      });
+    },
+    onSuccess: () => {
+      toast.dismiss();
+      queryClient.invalidateQueries({
+        queryKey: ["users"],
+      });
+      toast.success("Change Role Successfully!!");
+    },
+    onError: (err) => {
+      toast.dismiss();
+      console.error("Error:", err);
+      toast.error("Change Role Failed");
     },
   });
   return { mutate, ...rest };
