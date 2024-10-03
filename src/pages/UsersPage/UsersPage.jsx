@@ -30,10 +30,10 @@ const UsersPage = () => {
 
   const handleDeleteUser = useCallback(
     (userId) => {
-      // console.log("Deleting user with ID:", userId);
+      console.log("Deleting user with ID:", userId);
       doDeleteUser({ id: userId });
     },
-    [doDeleteUser]
+    [doDeleteUser],
   );
 
   const paginatedData = useMemo(() => {
