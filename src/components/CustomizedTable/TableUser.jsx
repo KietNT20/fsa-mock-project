@@ -66,7 +66,6 @@ const TableUser = ({
 
   const handleDeleteClick = () => {
     setIsConfirmOpen(true);
-    handleClose();
   };
 
   const handleConfirmDelete = () => {
