@@ -1,4 +1,8 @@
 import {
+  clearSelectedRow,
+  setSelectedRow,
+} from "@/store/actions/infoRowAction";
+import {
   Delete as DeleteIcon,
   Edit as EditIcon,
   MoreHoriz as MoreHorizIcon,
@@ -18,13 +22,13 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography
+  Typography,
 } from "@mui/material";
-import { format, parseISO } from "date-fns";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import ConfirmationModal from "../ConfirmationModal";
 
-const CustomizedTable = ({
+const TableUser = ({
   title = "Table List",
   tableCell = [],
   tableDatas = [],
@@ -33,14 +37,16 @@ const CustomizedTable = ({
   onActionClick,
   deleteLoading,
 }) => {
+  const dispatch = useDispatch();
+  const { infoRow } = useSelector((state) => state.selectedRow);
+
   const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedRow, setSelectedRow] = useState(null);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   const handleClick = (event, row) => {
     console.log("row", row);
     setAnchorEl(event.currentTarget);
-    setSelectedRow(row);
+    dispatch(setSelectedRow(row));
     if (onActionClick) {
       onActionClick(row);
     }
@@ -48,25 +54,27 @@ const CustomizedTable = ({
 
   const handleClose = () => {
     setAnchorEl(null);
-    setSelectedRow(null);
+    dispatch(clearSelectedRow());
   };
 
   const handleUpdate = () => {
-    if (onUpdate) {
-      onUpdate(selectedRow);
+    if (onUpdate && infoRow) {
+      onUpdate(infoRow);
     }
     handleClose();
   };
 
   const handleDeleteClick = () => {
     setIsConfirmOpen(true);
+    handleClose();
   };
 
   const handleConfirmDelete = () => {
-    if (onDelete && selectedRow?.id) {
-      onDelete(selectedRow.id);
+    if (onDelete && infoRow?.id) {
+      onDelete(infoRow.id);
     }
     setIsConfirmOpen(false);
+    dispatch(clearSelectedRow());
   };
 
   const handleCancelDelete = () => {
@@ -76,26 +84,12 @@ const CustomizedTable = ({
   const capitalize = (string) =>
     string.charAt(0).toUpperCase() + string.slice(1);
 
-  const formatDate = (dateString) => {
-    try {
-      return format(parseISO(dateString), "dd/MM/yyyy HH:mm:ss");
-    } catch (error) {
-      console.error("Error parsing date:", error);
-      return dateString;
-    }
-  };
-
-  useEffect(() => {
-    console.log("selectedRow updated:", selectedRow);
-  }, [selectedRow]);
-
   return (
     <>
       <TableContainer
         component={Paper}
         style={{
           margin: "20px auto",
-          height: "75vh",
           maxWidth: "100%",
           overflowY: "auto",
           boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.2)",
@@ -191,7 +185,7 @@ const CustomizedTable = ({
                             },
                           }}
                         >
-                          <MenuItem onClick={() => handleUpdate(row)}>
+                          <MenuItem onClick={handleUpdate}>
                             <ListItemIcon>
                               <EditIcon
                                 fontSize="medium"
@@ -226,16 +220,12 @@ const CustomizedTable = ({
                           </MenuItem>
                         </Menu>
                       </>
-                      ) : cell === "priority" ? (
-                        row[cell] === 1 ? (
-                          "High"
-                        ) : row[cell] === 2 ? (
-                          "Medium"
-                        ) : (
-                          "Low"
-                        )
-                    )  : cell.includes("time") ? (
-                      formatDate(row[cell])
+                    ) : cell.includes("role") ? (
+                      row[cell] === 0 ? (
+                        "User"
+                      ) : (
+                        "Admin"
+                      )
                     ) : cell.includes("note") && row[cell] === "" ? (
                       "None"
                     ) : (
@@ -261,7 +251,7 @@ const CustomizedTable = ({
   );
 };
 
-export default CustomizedTable;
+export default TableUser;
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {

@@ -4,5 +4,6 @@ export const API = {
   REFRESH_TOKEN: "/refresh-token",
   USERS: "/user",
   PROJECTS: "/project",
+  CHANGE_ROLE: "/changerole",
   LOGIN_GOOGLE: "/login/google",
 };
