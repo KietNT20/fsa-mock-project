@@ -85,9 +85,9 @@ const ConfirmationModal = ({
             backgroundColor: "green",
             padding: "10px 20px",
             borderRadius: "50px",
-            fontSize: "1.2rem",
+            fontSize: "1.2rem", // Tăng kích thước font của nút
             textTransform: "none",
-            marginLeft: "15px",
+            marginLeft: "15px", // Khoảng cách giữa 2 nút
             "&:hover": {
               backgroundColor: "darkgreen",
             },

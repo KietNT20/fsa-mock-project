@@ -26,7 +26,6 @@
     "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
     "dotenv": "^16.4.5",
-    "firebase": "^10.14.0",
     "fsa-mock-project": "file:",
     "jwt-decode": "^4.0.0",
     "path": "^0.12.7",
