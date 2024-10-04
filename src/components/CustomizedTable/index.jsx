@@ -18,10 +18,10 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography
+  Typography,
 } from "@mui/material";
 import { format, parseISO } from "date-fns";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ConfirmationModal from "../ConfirmationModal";
 
 const CustomizedTable = ({
@@ -84,10 +84,6 @@ const CustomizedTable = ({
       return dateString;
     }
   };
-
-  useEffect(() => {
-    console.log("selectedRow updated:", selectedRow);
-  }, [selectedRow]);
 
   return (
     <>
@@ -226,15 +222,15 @@ const CustomizedTable = ({
                           </MenuItem>
                         </Menu>
                       </>
-                      ) : cell === "priority" ? (
-                        row[cell] === 1 ? (
-                          "High"
-                        ) : row[cell] === 2 ? (
-                          "Medium"
-                        ) : (
-                          "Low"
-                        )
-                    )  : cell.includes("time") ? (
+                    ) : cell === "priority" ? (
+                      row[cell] === 1 ? (
+                        "High"
+                      ) : row[cell] === 2 ? (
+                        "Medium"
+                      ) : (
+                        "Low"
+                      )
+                    ) : cell.includes("time") ? (
                       formatDate(row[cell])
                     ) : cell.includes("note") && row[cell] === "" ? (
                       "None"

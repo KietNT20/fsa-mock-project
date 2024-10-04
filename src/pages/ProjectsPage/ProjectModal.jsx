@@ -55,6 +55,7 @@ const ProjectModal = ({
   }, [mode, project]);
 
   const handleInputChange = (field, value) => {
+    console.log("handleInputChange", field, value);
     setProjectData((prev) => ({
       ...prev,
       [field]: value,
@@ -168,8 +169,9 @@ const ProjectModal = ({
             value={projectData.time_start}
             onChange={(newDate) => handleInputChange("time_start", newDate)}
             ampm={false}
-            minutesStep={1} // Allow selecting each minute
-            secondsStep={1} // Allow selecting each second
+            disabled
+            minutesStep={1}
+            secondsStep={1}
             views={["year", "month", "day", "hours", "minutes", "seconds"]} // Allow seconds selection
             slotProps={{
               textField: {
