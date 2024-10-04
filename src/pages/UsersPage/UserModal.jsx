@@ -100,7 +100,6 @@ const UserModal = ({
       <Box component={"form"} onSubmit={handleSubmit(onSubmit)}>
         {isSubmitDisabled && <Spinner />}
         <DialogTitle
-          id="user-modal-title"
           sx={{
             fontSize: "2.6rem",
             color: "#444",

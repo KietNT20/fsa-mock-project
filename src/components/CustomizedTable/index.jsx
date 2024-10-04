@@ -21,7 +21,7 @@ import {
   Typography
 } from "@mui/material";
 import { format, parseISO } from "date-fns";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ConfirmationModal from "../ConfirmationModal";
 
 const CustomizedTable = ({
@@ -33,13 +33,13 @@ const CustomizedTable = ({
   onActionClick,
   deleteLoading,
 }) => {
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorElTable, setAnchorElTable] = useState(null);
   const [selectedRow, setSelectedRow] = useState(null);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   const handleClick = (event, row) => {
     console.log("row", row);
-    setAnchorEl(event.currentTarget);
+    setAnchorElTable(event.currentTarget);
     setSelectedRow(row);
     if (onActionClick) {
       onActionClick(row);
@@ -47,7 +47,7 @@ const CustomizedTable = ({
   };
 
   const handleClose = () => {
-    setAnchorEl(null);
+    setAnchorElTable(null);
     setSelectedRow(null);
   };
 
@@ -67,6 +67,7 @@ const CustomizedTable = ({
       onDelete(selectedRow.id);
     }
     setIsConfirmOpen(false);
+    handleClose();
   };
 
   const handleCancelDelete = () => {
@@ -84,10 +85,6 @@ const CustomizedTable = ({
       return dateString;
     }
   };
-
-  useEffect(() => {
-    console.log("selectedRow updated:", selectedRow);
-  }, [selectedRow]);
 
   return (
     <>
@@ -176,10 +173,9 @@ const CustomizedTable = ({
                           <MoreHorizIcon />
                         </IconButton>
                         <Menu
-                          id="simple-menu"
-                          anchorEl={anchorEl}
+                          anchorEl={anchorElTable}
                           keepMounted
-                          open={Boolean(anchorEl)}
+                          open={Boolean(anchorElTable)}
                           onClose={handleClose}
                           slotProps={{
                             paper: {
@@ -248,6 +244,7 @@ const CustomizedTable = ({
           </TableBody>
         </Table>
       </TableContainer>
+
       <ConfirmationModal
         open={isConfirmOpen}
         onClose={handleCancelDelete}
