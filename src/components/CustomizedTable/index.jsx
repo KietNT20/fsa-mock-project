@@ -1,4 +1,3 @@
-import { MoreHoriz } from "@mui/icons-material";
 import {
   Delete as DeleteIcon,
   Edit as EditIcon,
@@ -11,9 +10,11 @@ import {
   Menu,
   MenuItem,
   Paper,
+  styled,
   Table,
   TableBody,
   TableCell,
+  tableCellClasses,
   TableContainer,
   TableHead,
   TableRow,
@@ -140,86 +141,95 @@ const CustomizedTable = ({
                 },
               }}
             >
-              {tableCell.map((cell, cellIndex) => (
-                <StyledTableCell
-                  key={cellIndex}
-                  align="center"
-                  style={{
-                    fontSize: "15px",
-                    padding: "15px",
-                    width: `${100 / tableCell.length}%`,
-                  }}
-                >
-                  {cell === "action" ? (
-                    <>
-                      <IconButton
-                        aria-controls="simple-menu"
-                        aria-haspopup="true"
-                        onClick={(event) => handleClick(event, row)}
-                      >
-                        <MoreHorizIcon />
-                      </IconButton>
-                      <Menu
-                        id="simple-menu"
-                        anchorEl={anchorEl}
-                        keepMounted
-                        open={Boolean(anchorEl)}
-                        onClose={handleClose}
-                        PaperProps={{
-                          style: {
-                            width: "fit-content",
-                            boxShadow: "none",
-                            border: "1px solid #ddd",
-                          },
-                        }}
-                      >
-                        <MenuItem onClick={() => handleUpdate(row)}>
-                          <ListItemIcon>
-                            <EditIcon
-                              fontSize="medium"
-                              sx={{ color: "#0d47a1" }}
+              {tableCell &&
+                tableCell.map((cell, cellIndex) => (
+                  <StyledTableCell
+                    key={cellIndex}
+                    align="center"
+                    style={{
+                      fontSize: "15px",
+                      padding: "15px",
+                      width: `${100 / tableCell.length}%`,
+                    }}
+                  >
+                    {cell === "action" ? (
+                      <>
+                        <IconButton
+                          aria-controls="simple-menu"
+                          aria-haspopup="true"
+                          onClick={(event) => handleClick(event, row)}
+                        >
+                          <MoreHorizIcon />
+                        </IconButton>
+                        <Menu
+                          id="simple-menu"
+                          anchorEl={anchorEl}
+                          keepMounted
+                          open={Boolean(anchorEl)}
+                          onClose={handleClose}
+                          PaperProps={{
+                            style: {
+                              width: "fit-content",
+                              boxShadow: "none",
+                              border: "1px solid #ddd",
+                            },
+                          }}
+                        >
+                          <MenuItem onClick={() => handleUpdate(row)}>
+                            <ListItemIcon>
+                              <EditIcon
+                                fontSize="medium"
+                                sx={{ color: "#0d47a1" }}
+                              />
+                            </ListItemIcon>
+                            <ListItemText
+                              primary="Update"
+                              primaryTypographyProps={{
+                                fontSize: "1.8rem",
+                                color: "#0d47a1",
+                              }}
                             />
-                          </ListItemIcon>
-                          <ListItemText
-                            primary="Update"
-                            primaryTypographyProps={{
-                              fontSize: "1.8rem",
-                              color: "#0d47a1",
-                            }}
-                          />
-                        </MenuItem>
-                        <MenuItem onClick={() => handleDelete(row)}>
-                          <ListItemIcon>
-                            <DeleteIcon
-                              fontSize="medium"
-                              sx={{ color: "#e83535" }}
+                          </MenuItem>
+                          <MenuItem onClick={() => handleDelete(row)}>
+                            <ListItemIcon>
+                              <DeleteIcon
+                                fontSize="medium"
+                                sx={{ color: "#e83535" }}
+                              />
+                            </ListItemIcon>
+                            <ListItemText
+                              primary="Delete"
+                              primaryTypographyProps={{
+                                fontSize: "1.8rem",
+                                color: "#e83535",
+                              }}
                             />
-                          </ListItemIcon>
-                          <ListItemText
-                            primary="Delete"
-                            primaryTypographyProps={{
-                              fontSize: "1.8rem",
-                              color: "#e83535",
-                            }}
-                          />
-                        </MenuItem>
-                      </Menu>
-                    </>
-                  ) : cell.includes("role") ? (
-                    row[cell] === 0 ? (
-                      "User"
+                          </MenuItem>
+                        </Menu>
+                      </>
+                    ) : cell === "priority" ? (
+                      row[cell] === 1 ? (
+                        "High"
+                      ) : row[cell] === 2 ? (
+                        "Medium"
+                      ) : (
+                        "Low"
+                      )
+                    ) : cell.includes("role") ? (
+                      row[cell] === 0 ? (
+                        "User"
+                      ) : (
+                        "Admin"
+                      )
+                    ) : cell.includes("time") ? (
+                      formatDate(row[cell])
+                    ) : cell.includes("note") && row[cell] === "" ? (
+                      "None"
                     ) : (
-                      "Admin"
-                    )
-                  ) : cell.includes("time") ? (
-                    formatDate(row[cell])
-                  ) : cell.includes("note") && row[cell] === "" ? (
-                    "None"
-                  ) : (
-                    row[cell]
-                  )}
-                </StyledTableCell>
-              ))}
+                      row[cell]
+                    )}
+                  </StyledTableCell>
+                ))}
             </StyledTableRow>
           ))}
         </TableBody>

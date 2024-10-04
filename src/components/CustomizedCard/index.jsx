@@ -15,6 +15,7 @@ const CustomizedCard = ({ cardCell = [], cardDatas = [] }) => {
       return dateString;
     }
   };
+
   return (
     <div
       style={{
@@ -66,11 +67,17 @@ const CustomizedCard = ({ cardCell = [], cardDatas = [] }) => {
                 }}
               >
                 {capitalize(cell)}:{" "}
-                {cell.includes("time")
-                  ? formatDate(item[cell])
-                  : cell.includes("note") && item[cell] === ""
-                    ? "None"
-                    : item[cell]}
+                {cell === "priority"
+                  ? item[cell] === 1
+                    ? "High"
+                    : item[cell] === 2
+                      ? "Medium"
+                      : "Low"
+                  : cell.includes("time")
+                    ? formatDate(item[cell])
+                    : cell.includes("note") && item[cell] === ""
+                      ? "None"
+                      : item[cell]}
               </Typography>
             ))}
           </CardContent>
