@@ -1,3 +1,4 @@
+import { useUpdateApiUser } from "@/hooks/useUsers";
 import { generateCartoonAvatar } from "@/utils/avatarUtils";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import EditIcon from "@mui/icons-material/Edit";
@@ -13,15 +14,30 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
+import { useState } from "react";
 import { useSelector } from "react-redux";
+import UserModal from "../UsersPage/UserModal";
 
-// Profile Page Component
 const Profile = () => {
-  // Fetching profile data from Redux store
   const { profile } = useSelector((state) => state.profile);
+  const { mutate: updateApiUser } = useUpdateApiUser();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleEditProfile = () => {
-    console.log("Edit Profile Clicked");
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleUpdateUser = async (data) => {
+    try {
+      await updateApiUser({ email: profile.email, name: data.name });
+      handleCloseModal();
+    } catch (error) {
+      console.error("Error updating user:", error);
+    }
   };
 
   return (
@@ -109,6 +125,15 @@ const Profile = () => {
           </Grid2>
         </Grid2>
       </Paper>
+
+      {/* UserModal */}
+      <UserModal
+        open={isModalOpen}
+        onClose={handleCloseModal}
+        mode="update"
+        user={profile}
+        onCreateUser={handleUpdateUser}
+      />
     </Container>
   );
 };
