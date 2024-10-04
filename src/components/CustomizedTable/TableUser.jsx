@@ -40,12 +40,12 @@ const TableUser = ({
   const dispatch = useDispatch();
   const { infoRow } = useSelector((state) => state.selectedRow);
 
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   const handleClick = (event, row) => {
     console.log("row", row);
-    setAnchorEl(event.currentTarget);
+    setAnchorElUser(event.currentTarget);
     dispatch(setSelectedRow(row));
     if (onActionClick) {
       onActionClick(row);
@@ -53,7 +53,7 @@ const TableUser = ({
   };
 
   const handleClose = () => {
-    setAnchorEl(null);
+    setAnchorElUser(null);
     dispatch(clearSelectedRow());
   };
 
@@ -169,10 +169,9 @@ const TableUser = ({
                           <MoreHorizIcon />
                         </IconButton>
                         <Menu
-                          id="simple-menu"
-                          anchorEl={anchorEl}
+                          anchorEl={anchorElUser}
                           keepMounted
-                          open={Boolean(anchorEl)}
+                          open={Boolean(anchorElUser)}
                           onClose={handleClose}
                           slotProps={{
                             paper: {

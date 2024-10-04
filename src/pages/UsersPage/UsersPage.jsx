@@ -42,7 +42,7 @@ const UsersPage = () => {
       console.log("Deleting user with ID:", userId);
       doDeleteUser({ id: userId });
     },
-    [doDeleteUser]
+    [doDeleteUser],
   );
 
   const filteredAndPaginatedData = useMemo(() => {
@@ -51,7 +51,7 @@ const UsersPage = () => {
       (user) =>
         (user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
           user.email.toLowerCase().includes(searchTerm.toLowerCase())) &&
-        (roleFilter === "all" || user.role.toString() === roleFilter)
+        (roleFilter === "all" || user.role.toString() === roleFilter),
     );
     const startIndex = (page - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;

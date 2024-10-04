@@ -20,8 +20,6 @@ const ConfirmationModal = ({
     <Dialog
       open={open}
       onClose={onClose}
-      aria-labelledby="alert-dialog-title"
-      aria-describedby="alert-dialog-description"
       PaperProps={{
         sx: {
           padding: "20px",
@@ -34,7 +32,6 @@ const ConfirmationModal = ({
       }}
     >
       <DialogTitle
-        id="alert-dialog-title"
         sx={{
           fontSize: "2.2rem",
           color: "#333",
@@ -46,7 +43,6 @@ const ConfirmationModal = ({
       </DialogTitle>
       <DialogContent>
         <DialogContentText
-          id="alert-dialog-description"
           sx={{
             fontSize: "1.4rem",
             color: "#555",

@@ -89,7 +89,6 @@ const ProjectModal = ({
         }}
       >
         <DialogTitle
-          id="create-project-dialog-title"
           sx={{
             fontSize: "2.6rem",
             color: "#444",
