@@ -18,7 +18,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
+  Typography
 } from "@mui/material";
 import { format, parseISO } from "date-fns";
 import { useEffect, useState } from "react";
@@ -226,13 +226,15 @@ const CustomizedTable = ({
                           </MenuItem>
                         </Menu>
                       </>
-                    ) : cell.includes("role") ? (
-                      row[cell] === 0 ? (
-                        "User"
-                      ) : (
-                        "Admin"
-                      )
-                    ) : cell.includes("time") ? (
+                      ) : cell === "priority" ? (
+                        row[cell] === 1 ? (
+                          "High"
+                        ) : row[cell] === 2 ? (
+                          "Medium"
+                        ) : (
+                          "Low"
+                        )
+                    )  : cell.includes("time") ? (
                       formatDate(row[cell])
                     ) : cell.includes("note") && row[cell] === "" ? (
                       "None"
