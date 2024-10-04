@@ -1,3 +1,4 @@
+import Spinner from "@/components/Spinner";
 import { useUpdateApiUser, useUpdateRoleUser } from "@/hooks/useUsers";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
@@ -65,12 +66,10 @@ const UserModal = ({
     if (mode === "create") {
       onCreateUser(data);
     } else if (mode === "update") {
-      // Cập nhật tên nếu có thay đổi
       if (data.name !== user.name) {
         await updateUserName({ email: user.email, name: data.name });
       }
 
-      // Cập nhật role nếu có thay đổi
       if (data.role !== user.role?.toString()) {
         await updateUserRole({ email: user.email, role: parseInt(data.role) });
       }
@@ -99,6 +98,7 @@ const UserModal = ({
       }}
     >
       <Box component={"form"} onSubmit={handleSubmit(onSubmit)}>
+        {isSubmitDisabled && <Spinner />}
         <DialogTitle
           id="user-modal-title"
           sx={{
