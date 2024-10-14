@@ -7,4 +7,5 @@ export const PATH = {
   PROJECT: "/projects",
   TASK: "/tasks",
   PROFILE: "/profile",
+  PROJECT_DETAIL: "/project/detail",
 };

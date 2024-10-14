@@ -22,8 +22,6 @@ const MenuList = () => {
         borderRight: "1px solid #ccc",
       }}
     >
-      {" "}
-      {/* Chỉnh width để đảm bảo căn ngang với header */}
       <List sx={{ padding: 0 }}>
         {ROUTES.map((item) => {
           if (
@@ -32,7 +30,10 @@ const MenuList = () => {
           ) {
             return null;
           }
-
+          if (item.label === "Tasks" && profile?.role === 1) {
+            return null;
+            
+          }
           return (
             <ListItem key={item.label} disablePadding sx={{ display: "block" }}>
               <ListItemButton

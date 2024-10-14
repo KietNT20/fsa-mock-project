@@ -34,7 +34,7 @@ const Profile = () => {
   const handleUpdateUser = async (data) => {
     try {
       await updateApiUser({ email: profile.email, name: data.name });
-      
+
       handleCloseModal();
     } catch (error) {
       console.error("Error updating user:", error);

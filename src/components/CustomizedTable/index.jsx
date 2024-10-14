@@ -1,5 +1,7 @@
+import { PATH } from "@/constant/path";
 import {
   Delete as DeleteIcon,
+  Launch as DetailIcon,
   Edit as EditIcon,
   MoreHoriz as MoreHorizIcon,
 } from "@mui/icons-material";
@@ -22,6 +24,7 @@ import {
 } from "@mui/material";
 import { format, parseISO } from "date-fns";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import ConfirmationModal from "../ConfirmationModal";
 
 const CustomizedTable = ({
@@ -36,6 +39,7 @@ const CustomizedTable = ({
   const [anchorElTable, setAnchorElTable] = useState(null);
   const [selectedRow, setSelectedRow] = useState(null);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleClick = (event, row) => {
     console.log("row", row);
@@ -57,6 +61,11 @@ const CustomizedTable = ({
     }
     handleClose();
   };
+  const handleViewDetailProject = () => {
+    console.log("heheh")
+    navigate(PATH.PROJECT_DETAIL)
+    
+  }
 
   const handleDeleteClick = () => {
     setIsConfirmOpen(true);
@@ -221,6 +230,21 @@ const CustomizedTable = ({
                               }}
                             />
                           </MenuItem>
+                          <MenuItem onClick={() => handleViewDetailProject(row)}>
+                            <ListItemIcon>
+                              <DetailIcon
+                                fontSize="medium"
+                                sx={{ color: "#636969" }}
+                              />
+                            </ListItemIcon>
+                            <ListItemText
+                              primary="View Detail"
+                              primaryTypographyProps={{
+                                fontSize: "1.8rem",
+                                color: "#636969",
+                              }}
+                            />
+                          </MenuItem>
                         </Menu>
                       </>
                     ) : cell === "priority" ? (
@@ -230,7 +254,7 @@ const CustomizedTable = ({
                         "Medium"
                       ) : (
                         "Low"
-                      ) 
+                      )
                     ) : cell.includes("time") ? (
                       formatDate(row[cell])
                     ) : cell.includes("note") && row[cell] === "" ? (

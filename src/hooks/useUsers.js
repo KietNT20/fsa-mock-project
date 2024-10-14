@@ -20,11 +20,11 @@ export const useGetApiUsers = () => {
     ...rest,
   };
 };
-export const useGetApiUserById = () => {
+export const useGetApiUserById = (id) => {
   const { data, ...rest } = useQuery({
-    queryKey: ["users"],
+    queryKey: ["users", id],
     queryFn: () => {
-      return axiosInstance.get(API.USERS);
+      return axiosInstance.get(`${API.USERS}/${id}`);
     },
     onError: (error) => {
       console.log("error", error);
@@ -36,7 +36,6 @@ export const useGetApiUserById = () => {
     ...rest,
   };
 };
-
 
 export const useDeleteApiUser = () => {
   const queryClient = useQueryClient();
