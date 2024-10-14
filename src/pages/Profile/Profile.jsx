@@ -34,6 +34,7 @@ const Profile = () => {
   const handleUpdateUser = async (data) => {
     try {
       await updateApiUser({ email: profile.email, name: data.name });
+      
       handleCloseModal();
     } catch (error) {
       console.error("Error updating user:", error);
@@ -55,7 +56,6 @@ const Profile = () => {
           {/* Avatar Section */}
           <Grid2 item xs={12} sm={4} textAlign="center">
             <Avatar
-              alt={profile.name}
               src={generateCartoonAvatar(profile.name)}
               sx={{
                 width: 180,

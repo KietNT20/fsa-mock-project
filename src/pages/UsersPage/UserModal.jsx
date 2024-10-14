@@ -100,7 +100,6 @@ const UserModal = ({
       <Box component={"form"} onSubmit={handleSubmit(onSubmit)}>
         {isSubmitDisabled && <Spinner />}
         <DialogTitle
-          id="user-modal-title"
           sx={{
             fontSize: "2.6rem",
             color: "#444",
@@ -151,10 +150,15 @@ const UserModal = ({
                 helperText={errors.name?.message}
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "1.6rem",
+                    borderRadius: "12px",
+                    fontSize: "1.8rem",
                   },
                   "& .MuiInputLabel-root": {
-                    fontSize: "1.6rem",
+                    fontSize: "1.8rem",
+                  },
+                  "& .MuiFormHelperText-root": {
+                    fontSize: "1.6rem", // Adjust this value to increase the font size of the error message
+                    color: "#d32f2f", // Ensures the error message remains red
                   },
                 }}
               />
@@ -175,10 +179,15 @@ const UserModal = ({
                 helperText={errors.email?.message}
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "1.6rem",
+                    borderRadius: "12px",
+                    fontSize: "1.8rem",
                   },
                   "& .MuiInputLabel-root": {
-                    fontSize: "1.6rem",
+                    fontSize: "1.8rem",
+                  },
+                  "& .MuiFormHelperText-root": {
+                    fontSize: "1.6rem", // Adjust this value to increase the font size of the error message
+                    color: "#d32f2f", // Ensures the error message remains red
                   },
                 }}
               />
@@ -199,10 +208,15 @@ const UserModal = ({
                 helperText={errors.role?.message}
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "1.6rem",
+                    borderRadius: "12px",
+                    fontSize: "1.8rem",
                   },
                   "& .MuiInputLabel-root": {
-                    fontSize: "1.6rem",
+                    fontSize: "1.8rem",
+                  },
+                  "& .MuiFormHelperText-root": {
+                    fontSize: "1.6rem", // Adjust this value to increase the font size of the error message
+                    color: "#d32f2f", // Ensures the error message remains red
                   },
                 }}
               >

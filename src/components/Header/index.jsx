@@ -74,16 +74,16 @@ const Header = () => {
               ...(open && { display: "none" }),
             }}
           >
-            <MenuIcon />
+            {/* Increase the size of the MenuIcon */}
+            <MenuIcon sx={{ fontSize: "2.5rem", marginLeft: "6px" }} />
           </IconButton>
-          <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
+          <Typography variant="h4" noWrap component="div" sx={{ flexGrow: 1 }}>
             Mini variant drawer
           </Typography>
 
           {/* User Avatar/Button to Open Menu */}
           <IconButton color="inherit" onClick={handleMenuClick}>
             <Avatar
-              alt={profile.name}
               src={generateCartoonAvatar(profile.name)}
               sx={{
                 border: "2px solid #fff",
@@ -144,7 +144,8 @@ const StyledMenu = styled(Menu)(({ theme }) => ({
 // Styled MenuItem
 const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
   fontSize: "1.5rem",
-  padding: theme.spacing(2),
+  padding: theme.spacing(1),
+  paddingLeft: "10px",
   display: "flex",
   alignItems: "center",
   "&:hover": {
@@ -198,6 +199,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   alignItems: "center",
   justifyContent: "flex-end",
   padding: theme.spacing(0, 1),
+  height: "80px",
   ...theme.mixins.toolbar,
 }));
 

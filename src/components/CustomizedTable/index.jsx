@@ -33,13 +33,13 @@ const CustomizedTable = ({
   onActionClick,
   deleteLoading,
 }) => {
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorElTable, setAnchorElTable] = useState(null);
   const [selectedRow, setSelectedRow] = useState(null);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   const handleClick = (event, row) => {
     console.log("row", row);
-    setAnchorEl(event.currentTarget);
+    setAnchorElTable(event.currentTarget);
     setSelectedRow(row);
     if (onActionClick) {
       onActionClick(row);
@@ -47,7 +47,7 @@ const CustomizedTable = ({
   };
 
   const handleClose = () => {
-    setAnchorEl(null);
+    setAnchorElTable(null);
     setSelectedRow(null);
   };
 
@@ -67,6 +67,7 @@ const CustomizedTable = ({
       onDelete(selectedRow.id);
     }
     setIsConfirmOpen(false);
+    handleClose();
   };
 
   const handleCancelDelete = () => {
@@ -91,7 +92,7 @@ const CustomizedTable = ({
         component={Paper}
         style={{
           margin: "20px auto",
-          height: "75vh",
+          minHeight: "57vh",
           maxWidth: "100%",
           overflowY: "auto",
           boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.2)",
@@ -157,6 +158,7 @@ const CustomizedTable = ({
                     key={cellIndex}
                     align="center"
                     style={{
+                      borderBottom: "0.1 solid #ddd",
                       fontSize: "15px",
                       padding: "15px",
                       width: `${100 / tableCell.length}%`,
@@ -172,10 +174,9 @@ const CustomizedTable = ({
                           <MoreHorizIcon />
                         </IconButton>
                         <Menu
-                          id="simple-menu"
-                          anchorEl={anchorEl}
+                          anchorEl={() => anchorElTable}
                           keepMounted
-                          open={Boolean(anchorEl)}
+                          open={Boolean(anchorElTable)}
                           onClose={handleClose}
                           slotProps={{
                             paper: {
@@ -229,7 +230,7 @@ const CustomizedTable = ({
                         "Medium"
                       ) : (
                         "Low"
-                      )
+                      ) 
                     ) : cell.includes("time") ? (
                       formatDate(row[cell])
                     ) : cell.includes("note") && row[cell] === "" ? (
@@ -244,6 +245,7 @@ const CustomizedTable = ({
           </TableBody>
         </Table>
       </TableContainer>
+
       <ConfirmationModal
         open={isConfirmOpen}
         onClose={handleCancelDelete}

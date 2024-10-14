@@ -10,7 +10,7 @@ export const useGetProject = () => {
   };
 
   const { data: dataProject } = useQuery({
-    queryKey: ["project"],
+    queryKey: ["projects"],
     queryFn: getProject,
     onError: (error) => {
       console.log("Error fetching projects:", error);
@@ -34,7 +34,7 @@ export const useDeleteProject = () => {
     onSuccess: () => {
       toast.dismiss();
       queryClient.invalidateQueries({
-        queryKey: ["project"],
+        queryKey: ["projects"],
       });
       toast.success("Delete successfully!!");
     },
@@ -73,7 +73,7 @@ export const useUpdateProject = () => {
     onSuccess: () => {
       toast.dismiss();
       queryClient.invalidateQueries({
-        queryKey: ["project"],
+        queryKey: ["projects"],
       });
       toast.success("Update successfully!!");
     },
@@ -102,7 +102,7 @@ export const useCreateProject = () => {
     onSuccess: () => {
       toast.dismiss();
       queryClient.invalidateQueries({
-        queryKey: ["project"],
+        queryKey: ["projects"],
       });
       toast.success("Create successfully!!");
     },

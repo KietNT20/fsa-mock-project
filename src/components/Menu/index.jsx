@@ -1,68 +1,80 @@
 import { ROUTES } from "@/routes/routes";
 import {
+  Box,
   List,
   ListItem,
   ListItemButton,
   ListItemIcon,
   Typography,
 } from "@mui/material";
-import { useSelector } from "react-redux"; // To get the user role from the state
+import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 
 const MenuList = () => {
-  const { profile } = useSelector((state) => state.profile); // Get the user profile and role
+  const { profile } = useSelector((state) => state.profile);
 
   return (
-    <List>
-      {ROUTES.map((item) => {
-        if (
-          (item.label === "Dashboard" || item.label === "Users") &&
-          profile?.role === 0
-        ) {
-          return null;
-        }
+    <Box
+      sx={{
+        width: "240px",
+        padding: "0",
+        height: "100vh",
+        borderRight: "1px solid #ccc",
+      }}
+    >
+      {" "}
+      {/* Chỉnh width để đảm bảo căn ngang với header */}
+      <List sx={{ padding: 0 }}>
+        {ROUTES.map((item) => {
+          if (
+            (item.label === "Dashboard" || item.label === "Users") &&
+            profile?.role === 0
+          ) {
+            return null;
+          }
 
-        return (
-          <ListItem key={item.label} disablePadding sx={{ display: "block" }}>
-            <ListItemButton
-              component={NavLink}
-              to={item.path}
-              sx={{
-                minHeight: 80,
-                justifyContent: "initial",
-                px: 3.2,
-                transition: "transform 0.3s ease, box-shadow 0.3s ease",
-                "&:hover": {
-                  transform: "scale(1.05)",
-                  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
-                  backgroundColor: "#f0f0f0",
-                },
-              }}
-            >
-              <ListItemIcon
+          return (
+            <ListItem key={item.label} disablePadding sx={{ display: "block" }}>
+              <ListItemButton
+                component={NavLink}
+                to={item.path}
                 sx={{
-                  minWidth: 0,
-                  mr: 4,
-                  justifyContent: "center",
-                  transition: "color 0.3s ease",
+                  minHeight: 80,
+                  justifyContent: "initial",
+                  px: 3.2,
+                  transition: "transform 0.3s ease, box-shadow 0.3s ease",
                   "&:hover": {
-                    color: "#0d47a1",
+                    transform: "scale(1.05)",
+                    boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
+                    backgroundColor: "#f0f0f0",
                   },
                 }}
               >
-                {<item.icon sx={{ fontSize: 25 }} />}
-              </ListItemIcon>
-              <Typography
-                variant="h5"
-                sx={{ transition: "color 0.3s ease", fontSize: "1.6rem" }}
-              >
-                {item.label}
-              </Typography>
-            </ListItemButton>
-          </ListItem>
-        );
-      })}
-    </List>
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: 4,
+                    justifyContent: "center",
+                    transition: "color 0.3s ease",
+                    "&:hover": {
+                      color: "#0d47a1",
+                    },
+                  }}
+                >
+                  {<item.icon sx={{ fontSize: 25 }} />}
+                </ListItemIcon>
+                <Typography
+                  variant="h5"
+                  sx={{ transition: "color 0.3s ease", fontSize: "1.6rem" }}
+                >
+                  {item.label}
+                </Typography>
+              </ListItemButton>
+            </ListItem>
+          );
+        })}
+      </List>
+    </Box>
   );
 };
 
