@@ -20,6 +20,7 @@ export const useGetApiUsers = () => {
     ...rest,
   };
 };
+
 export const useGetApiUserById = (id) => {
   const { data, ...rest } = useQuery({
     queryKey: ["users", id],

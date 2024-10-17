@@ -9,12 +9,6 @@ export const userModalSchema = yup.object().shape({
       return emailRegex.test(value);
     })
     .required("Email or username is required"),
-  name: yup
-    .string()
-    .test("is-name", "Enter a valid name", (value) => {
-      const nameRegex = REGEX.NAME;
-      return nameRegex.test(value);
-    })
-    .required("Username is required"),
+  name: yup.string().required("Username is required"),
   role: yup.string().required("Role is required"),
 });

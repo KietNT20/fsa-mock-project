@@ -62,10 +62,9 @@ const CustomizedTable = ({
     handleClose();
   };
   const handleViewDetailProject = () => {
-    console.log("heheh")
-    navigate(PATH.PROJECT_DETAIL)
-    
-  }
+    console.log("heheh");
+    navigate(PATH.PROJECT_DETAIL);
+  };
 
   const handleDeleteClick = () => {
     setIsConfirmOpen(true);
@@ -230,7 +229,9 @@ const CustomizedTable = ({
                               }}
                             />
                           </MenuItem>
-                          <MenuItem onClick={() => handleViewDetailProject(row)}>
+                          <MenuItem
+                            onClick={() => handleViewDetailProject(row)}
+                          >
                             <ListItemIcon>
                               <DetailIcon
                                 fontSize="medium"

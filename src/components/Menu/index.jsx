@@ -32,7 +32,6 @@ const MenuList = () => {
           }
           if (item.label === "Tasks" && profile?.role === 1) {
             return null;
-            
           }
           return (
             <ListItem key={item.label} disablePadding sx={{ display: "block" }}>
