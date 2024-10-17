@@ -71,7 +71,11 @@ const UserModal = ({
       onCreateUser(data);
     } else if (mode === "update") {
       if (data.name !== user.name) {
-        await updateUserName({ email: user.email, name: data.name });
+        await updateUserName({
+          email: user.email,
+          name: data.name,
+          password: data.password,
+        });
         dispatch(updateProfile({ name: data.name }));
       }
       if (data.role !== user.role?.toString()) {
@@ -181,6 +185,35 @@ const UserModal = ({
                 disabled={isSubmitDisabled || mode === "update"}
                 error={!!errors.email}
                 helperText={errors.email?.message}
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: "12px",
+                    fontSize: "1.8rem",
+                  },
+                  "& .MuiInputLabel-root": {
+                    fontSize: "1.8rem",
+                  },
+                  "& .MuiFormHelperText-root": {
+                    fontSize: "1.6rem",
+                    color: "#d32f2f",
+                  },
+                }}
+              />
+            )}
+          />
+
+          <Controller
+            name="password"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Password"
+                variant="outlined"
+                fullWidth
+                disabled={isSubmitDisabled}
+                error={!!errors.password}
+                helperText={errors.email?.password}
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     borderRadius: "12px",
