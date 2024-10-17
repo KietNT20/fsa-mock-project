@@ -61,11 +61,19 @@ const CustomizedTable = ({
     }
     handleClose();
   };
-  const handleViewDetailProject = () => {
-    console.log("heheh")
-    navigate(PATH.PROJECT_DETAIL)
-    
-  }
+
+  const handleViewDetailProject = (selectedRow) => {
+    console.log("Selected row data:", selectedRow);
+    if (selectedRow) {
+      // Store project details in session storage
+      sessionStorage.setItem("selectedProject", JSON.stringify(selectedRow));
+
+      // Navigate to the detail page without including the project ID
+      navigate(PATH.PROJECT_DETAIL);
+    } else {
+      console.error("Project data is missing");
+    }
+  };
 
   const handleDeleteClick = () => {
     setIsConfirmOpen(true);
@@ -149,7 +157,7 @@ const CustomizedTable = ({
           <TableBody>
             {tableDatas.map((row, index) => (
               <StyledTableRow
-                key={row.id || index}
+                key={row.id}
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
                   backgroundColor: index % 2 === 0 ? "#f5f5f5" : "#fff",
@@ -178,24 +186,18 @@ const CustomizedTable = ({
                         <IconButton
                           aria-controls="simple-menu"
                           aria-haspopup="true"
-                          onClick={(event) => handleClick(event, row)}
+                          onClick={(event) => {
+                            event.stopPropagation(); // Ngăn việc sự kiện onClick của hàng được kích hoạt khi nhấn vào action
+                            handleClick(event, row);
+                          }}
                         >
                           <MoreHorizIcon />
                         </IconButton>
                         <Menu
-                          anchorEl={() => anchorElTable}
+                          anchorEl={anchorElTable}
                           keepMounted
                           open={Boolean(anchorElTable)}
                           onClose={handleClose}
-                          slotProps={{
-                            paper: {
-                              style: {
-                                width: "fit-content",
-                                boxShadow: "none",
-                                border: "1px solid #ddd",
-                              },
-                            },
-                          }}
                         >
                           <MenuItem onClick={() => handleUpdate(row)}>
                             <ListItemIcon>
@@ -230,7 +232,9 @@ const CustomizedTable = ({
                               }}
                             />
                           </MenuItem>
-                          <MenuItem onClick={() => handleViewDetailProject(row)}>
+                          <MenuItem
+                            onClick={() => handleViewDetailProject(selectedRow)}
+                          >
                             <ListItemIcon>
                               <DetailIcon
                                 fontSize="medium"
