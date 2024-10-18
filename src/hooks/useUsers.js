@@ -19,6 +19,23 @@ export const useGetApiUsers = () => {
   };
 };
 
+export const useGetApiUserById = (id) => {
+  const { data, ...rest } = useQuery({
+    queryKey: ["users", id],
+    queryFn: () => {
+      return axiosInstance.get(`${API.USERS}/${id}`);
+    },
+    onError: (error) => {
+      console.log("error", error);
+    },
+  });
+
+  return {
+    data,
+    ...rest,
+  };
+};
+
 export const useDeleteApiUser = () => {
   const queryClient = useQueryClient();
   const { profile } = useSelector((state) => state.profile);
@@ -80,10 +97,11 @@ export const useCreateApiUser = () => {
 export const useUpdateApiUser = () => {
   const queryClient = useQueryClient();
   const { mutate, ...rest } = useMutation({
-    mutationFn: ({ email, name }) => {
+    mutationFn: ({ email, name, password }) => {
       return axiosInstance.put(API.USERS, {
         email,
         name,
+        password,
       });
     },
     onSuccess: () => {

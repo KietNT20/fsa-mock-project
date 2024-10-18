@@ -1,5 +1,7 @@
+import { PATH } from "@/constant/path";
 import {
   Delete as DeleteIcon,
+  Launch as DetailIcon,
   Edit as EditIcon,
   MoreHoriz as MoreHorizIcon,
 } from "@mui/icons-material";
@@ -18,10 +20,11 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography
+  Typography,
 } from "@mui/material";
 import { format, parseISO } from "date-fns";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import ConfirmationModal from "../ConfirmationModal";
 
 const CustomizedTable = ({
@@ -36,9 +39,11 @@ const CustomizedTable = ({
   const [anchorElTable, setAnchorElTable] = useState(null);
   const [selectedRow, setSelectedRow] = useState(null);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleClick = (event, row) => {
     console.log("row", row);
+    setAnchorElTable(event.currentTarget);
     setAnchorElTable(event.currentTarget);
     setSelectedRow(row);
     if (onActionClick) {
@@ -48,6 +53,7 @@ const CustomizedTable = ({
 
   const handleClose = () => {
     setAnchorElTable(null);
+    setAnchorElTable(null);
     setSelectedRow(null);
   };
 
@@ -56,6 +62,10 @@ const CustomizedTable = ({
       onUpdate(selectedRow);
     }
     handleClose();
+  };
+  const handleViewDetailProject = () => {
+    console.log("heheh");
+    navigate(PATH.PROJECT_DETAIL);
   };
 
   const handleDeleteClick = () => {
@@ -67,6 +77,7 @@ const CustomizedTable = ({
       onDelete(selectedRow.id);
     }
     setIsConfirmOpen(false);
+    handleClose();
     handleClose();
   };
 
@@ -92,7 +103,7 @@ const CustomizedTable = ({
         component={Paper}
         style={{
           margin: "20px auto",
-          height: "75vh",
+          minHeight: "57vh",
           maxWidth: "100%",
           overflowY: "auto",
           boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.2)",
@@ -158,6 +169,7 @@ const CustomizedTable = ({
                     key={cellIndex}
                     align="center"
                     style={{
+                      borderBottom: "0.1 solid #ddd",
                       fontSize: "15px",
                       padding: "15px",
                       width: `${100 / tableCell.length}%`,
@@ -173,7 +185,7 @@ const CustomizedTable = ({
                           <MoreHorizIcon />
                         </IconButton>
                         <Menu
-                          anchorEl={anchorElTable}
+                          anchorEl={() => anchorElTable}
                           keepMounted
                           open={Boolean(anchorElTable)}
                           onClose={handleClose}
@@ -220,17 +232,34 @@ const CustomizedTable = ({
                               }}
                             />
                           </MenuItem>
+                          <MenuItem
+                            onClick={() => handleViewDetailProject(row)}
+                          >
+                            <ListItemIcon>
+                              <DetailIcon
+                                fontSize="medium"
+                                sx={{ color: "#636969" }}
+                              />
+                            </ListItemIcon>
+                            <ListItemText
+                              primary="View Detail"
+                              primaryTypographyProps={{
+                                fontSize: "1.8rem",
+                                color: "#636969",
+                              }}
+                            />
+                          </MenuItem>
                         </Menu>
                       </>
-                      ) : cell === "priority" ? (
-                        row[cell] === 1 ? (
-                          "High"
-                        ) : row[cell] === 2 ? (
-                          "Medium"
-                        ) : (
-                          "Low"
-                        )
-                    )  : cell.includes("time") ? (
+                    ) : cell === "priority" ? (
+                      row[cell] === 1 ? (
+                        "High"
+                      ) : row[cell] === 2 ? (
+                        "Medium"
+                      ) : (
+                        "Low"
+                      )
+                    ) : cell.includes("time") ? (
                       formatDate(row[cell])
                     ) : cell.includes("note") && row[cell] === "" ? (
                       "None"
@@ -244,6 +273,7 @@ const CustomizedTable = ({
           </TableBody>
         </Table>
       </TableContainer>
+
 
       <ConfirmationModal
         open={isConfirmOpen}

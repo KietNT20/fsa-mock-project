@@ -5,6 +5,7 @@ import DashboardPage from "@/pages/Dashboard/DashboardPage";
 import HomePage from "@/pages/HomePage/HomePage";
 import LoginPage from "@/pages/LoginPage/LoginPage";
 import Profile from "@/pages/Profile/Profile";
+import ProjectDetail from "@/pages/ProjectsPage/ProjectDetail";
 import ProjectsPage from "@/pages/ProjectsPage/ProjectsPage";
 import TasksPage from "@/pages/TasksPage/TasksPage";
 import UsersPage from "@/pages/UsersPage/UsersPage";
@@ -22,6 +23,7 @@ const AppRoutes = () => {
           <Route index path={PATH.PROJECT} element={<ProjectsPage />} />
           <Route index path={PATH.TASK} element={<TasksPage />} />
           <Route index path={PATH.PROFILE} element={<Profile />} />
+          <Route index path={PATH.PROJECT_DETAIL} element={<ProjectDetail />} />
         </Route>
       </Route>
       <Route path={PATH.LOGIN} element={<LoginPage />} />

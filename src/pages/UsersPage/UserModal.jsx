@@ -1,5 +1,6 @@
 import Spinner from "@/components/Spinner";
 import { useUpdateApiUser, useUpdateRoleUser } from "@/hooks/useUsers";
+import { updateProfile } from "@/store/actions/profileAction";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
   Box,
@@ -14,7 +15,7 @@ import {
 } from "@mui/material";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { userModalSchema } from "./schemas/schema";
 
 const UserModal = ({
@@ -39,10 +40,13 @@ const UserModal = ({
     },
   });
   const { profile } = useSelector((state) => state.profile);
+  const dispatch = useDispatch();
+
   const isRoleDisabled = profile?.role === 0 || createLoading;
 
   const { mutate: updateUserName, isPending: updateUserNameLoading } =
     useUpdateApiUser();
+
   const { mutate: updateUserRole, isPending: updateUserRoleLoading } =
     useUpdateRoleUser();
 
@@ -67,9 +71,13 @@ const UserModal = ({
       onCreateUser(data);
     } else if (mode === "update") {
       if (data.name !== user.name) {
-        await updateUserName({ email: user.email, name: data.name });
+        await updateUserName({
+          email: user.email,
+          name: data.name,
+          password: data.password,
+        });
+        dispatch(updateProfile({ name: data.name }));
       }
-
       if (data.role !== user.role?.toString()) {
         await updateUserRole({ email: user.email, role: parseInt(data.role) });
       }
@@ -150,10 +158,15 @@ const UserModal = ({
                 helperText={errors.name?.message}
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "1.6rem",
+                    borderRadius: "12px",
+                    fontSize: "1.8rem",
                   },
                   "& .MuiInputLabel-root": {
+                    fontSize: "1.8rem",
+                  },
+                  "& .MuiFormHelperText-root": {
                     fontSize: "1.6rem",
+                    color: "#d32f2f",
                   },
                 }}
               />
@@ -174,10 +187,44 @@ const UserModal = ({
                 helperText={errors.email?.message}
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "1.6rem",
+                    borderRadius: "12px",
+                    fontSize: "1.8rem",
                   },
                   "& .MuiInputLabel-root": {
+                    fontSize: "1.8rem",
+                  },
+                  "& .MuiFormHelperText-root": {
                     fontSize: "1.6rem",
+                    color: "#d32f2f",
+                  },
+                }}
+              />
+            )}
+          />
+
+          <Controller
+            name="password"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Password"
+                variant="outlined"
+                fullWidth
+                disabled={isSubmitDisabled}
+                error={!!errors.password}
+                helperText={errors.email?.password}
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: "12px",
+                    fontSize: "1.8rem",
+                  },
+                  "& .MuiInputLabel-root": {
+                    fontSize: "1.8rem",
+                  },
+                  "& .MuiFormHelperText-root": {
+                    fontSize: "1.6rem",
+                    color: "#d32f2f",
                   },
                 }}
               />
@@ -198,10 +245,15 @@ const UserModal = ({
                 helperText={errors.role?.message}
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "1.6rem",
+                    borderRadius: "12px",
+                    fontSize: "1.8rem",
                   },
                   "& .MuiInputLabel-root": {
-                    fontSize: "1.6rem",
+                    fontSize: "1.8rem",
+                  },
+                  "& .MuiFormHelperText-root": {
+                    fontSize: "1.6rem", // Adjust this value to increase the font size of the error message
+                    color: "#d32f2f", // Ensures the error message remains red
                   },
                 }}
               >

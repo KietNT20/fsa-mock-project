@@ -1,3 +1,4 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import {
   Button,
   Dialog,
@@ -12,6 +13,8 @@ import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { projectModalSchema } from "./schemas/schema";
 
 const ProjectModal = ({
   open,
@@ -21,29 +24,42 @@ const ProjectModal = ({
   onCreateProject,
   onUpdateProject,
 }) => {
-  const [projectData, setProjectData] = useState({
-    name: "",
-    payment: "",
-    time_start: null,
-    time_end: null,
-    note: "",
-    priority: "",
+  const [currentDateTime, setCurrentDateTime] = useState(dayjs());
+
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(projectModalSchema),
+    defaultValues: {
+      name: "",
+      payment: "",
+      time_start: currentDateTime,
+      time_end: null,
+      note: "",
+      priority: "",
+    },
   });
 
-  // Populate form fields with project data when in update mode
   useEffect(() => {
+    // Set currentDateTime when the modal opens
+    if (mode === "create") {
+      setCurrentDateTime(dayjs());
+    }
+
     if (mode === "update" && project) {
-      setProjectData({
+      reset({
         name: project.name || "",
         payment: project.payment || "",
-        time_start: project.time_start ? dayjs(project.time_start) : dayjs(), // Ensure it's a dayjs object or current time
-        time_end: project.time_end ? dayjs(project.time_end) : null, // Ensure it's a dayjs object or null
+        time_start: project.time_start ? dayjs(project.time_start) : dayjs(),
+        time_end: project.time_end ? dayjs(project.time_end) : null,
         note: project.note || "",
         priority: project.priority || "",
       });
-    } else {
-      // Clear the form for create mode
-      setProjectData({
+    } else if (mode === "create") {
+      reset({
         name: "",
         payment: "",
         time_start: dayjs(), // Set to current time for create mode
@@ -52,20 +68,13 @@ const ProjectModal = ({
         priority: "",
       });
     }
-  }, [mode, project]);
+  }, [mode, project, reset]);
 
-  const handleInputChange = (field, value) => {
-    setProjectData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
-
-  const handleConfirm = () => {
+  const onSubmit = (data) => {
     if (mode === "create") {
-      onCreateProject(projectData);
+      onCreateProject(data);
     } else if (mode === "update") {
-      onUpdateProject({ ...projectData, id: project.id });
+      onUpdateProject({ ...data, id: project.id });
     }
     onClose();
   };
@@ -125,172 +134,230 @@ const ProjectModal = ({
           </DialogContentText>
 
           {/* Project Name */}
-          <TextField
-            label="Project Name"
-            variant="outlined"
-            fullWidth
-            value={projectData.name}
-            onChange={(e) => handleInputChange("name", e.target.value)}
-            sx={{
-              marginBottom: "15px",
-              "& .MuiOutlinedInput-root": {
-                borderRadius: "12px",
-                fontSize: "1.8rem",
-              },
-              "& .MuiInputLabel-root": {
-                fontSize: "1.8rem",
-              },
-            }}
+          <Controller
+            name="name"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Project Name"
+                variant="outlined"
+                fullWidth
+                error={!!errors.name}
+                helperText={errors.name?.message}
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: "12px",
+                    fontSize: "1.8rem",
+                  },
+                  "& .MuiInputLabel-root": {
+                    fontSize: "1.8rem",
+                  },
+                  "& .MuiFormHelperText-root": {
+                    fontSize: "1.6rem",
+                    color: "#d32f2f",
+                  },
+                }}
+              />
+            )}
           />
 
           {/* Payment */}
-          <TextField
-            label="Payment"
-            variant="outlined"
-            fullWidth
-            value={projectData.payment}
-            onChange={(e) => handleInputChange("payment", e.target.value)}
-            sx={{
-              "& .MuiOutlinedInput-root": {
-                borderRadius: "12px",
-                fontSize: "1.8rem",
-              },
-              "& .MuiInputLabel-root": {
-                fontSize: "1.8rem",
-              },
-            }}
+          <Controller
+            name="payment"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Payment"
+                variant="outlined"
+                fullWidth
+                error={!!errors.payment}
+                helperText={errors.payment?.message}
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: "12px",
+                    fontSize: "1.8rem",
+                  },
+                  "& .MuiInputLabel-root": {
+                    fontSize: "1.8rem",
+                  },
+                  "& .MuiFormHelperText-root": {
+                    fontSize: "1.6rem",
+                    color: "#d32f2f",
+                  },
+                }}
+              />
+            )}
           />
 
           {/* Start Date */}
-          <DateTimePicker
-            label="Start Date and Time"
-            value={projectData.time_start}
-            onChange={(newDate) => handleInputChange("time_start", newDate)}
-            ampm={false}
-            minutesStep={1} // Allow selecting each minute
-            secondsStep={1} // Allow selecting each second
-            views={["year", "month", "day", "hours", "minutes", "seconds"]} // Allow seconds selection
-            slotProps={{
-              textField: {
-                marginBottom: "30px",
-                fullWidth: true,
-                margin: "normal",
-                variant: "outlined",
-                inputProps: {
-                  style: {
-                    fontSize: "1.8rem",
-                    padding: "16px",
+          <Controller
+            name="time_start"
+            control={control}
+            render={({ field }) => (
+              <DateTimePicker
+                {...field}
+                label="Start Date and Time"
+                ampm={false}
+                minutesStep={1}
+                secondsStep={1}
+                minDateTime={currentDateTime} // Restrict past dates
+                disabled={mode === "update"} // Disable when in update mode
+                views={["year", "month", "day", "hours", "minutes", "seconds"]}
+                slotProps={{
+                  textField: {
+                    fullWidth: true,
+                    variant: "outlined",
+                    error: !!errors.time_start,
+                    helperText: errors.time_start?.message,
+                    inputProps: {
+                      style: {
+                        fontSize: "1.8rem",
+                        padding: "16px",
+                      },
+                    },
+                    InputLabelProps: {
+                      style: {
+                        fontSize: "1.8rem",
+                      },
+                    },
+                    InputProps: {
+                      style: {
+                        fontSize: "1.8rem",
+                      },
+                    },
+                    sx: {
+                      "& .MuiSvgIcon-root": {
+                        fontSize: "2.4rem",
+                      },
+                      "& .MuiFormHelperText-root": {
+                        fontSize: "1.6rem",
+                        color: "#d32f2f",
+                      },
+                    },
                   },
-                },
-                InputLabelProps: {
-                  style: {
-                    fontSize: "1.8rem",
-                  },
-                },
-                InputProps: {
-                  style: {
-                    fontSize: "1.8rem",
-                  },
-                },
-                sx: {
-                  "& .MuiSvgIcon-root": {
-                    fontSize: "2.4rem",
-                  },
-                },
-              },
-            }}
+                }}
+              />
+            )}
           />
 
           {/* End Date */}
-          <DateTimePicker
-            label="End Date and Time"
-            value={projectData.time_end}
-            onChange={(newDate) => handleInputChange("time_end", newDate)}
-            ampm={false}
-            minutesStep={1} // Allow selecting each minute
-            secondsStep={1} // Allow selecting each second
-            views={["year", "month", "day", "hours", "minutes", "seconds"]} // Allow seconds selection
-            slotProps={{
-              textField: {
-                fullWidth: true,
-                margin: "normal",
-                variant: "outlined",
-                inputProps: {
-                  style: {
-                    fontSize: "1.8rem", // Input text size
-                    padding: "16px", // Input padding
+          <Controller
+            name="time_end"
+            control={control}
+            render={({ field }) => (
+              <DateTimePicker
+                {...field}
+                label="End Date and Time"
+                ampm={false}
+                minutesStep={1}
+                secondsStep={1}
+                views={["year", "month", "day", "hours", "minutes", "seconds"]}
+                slotProps={{
+                  textField: {
+                    fullWidth: true,
+                    variant: "outlined",
+                    error: !!errors.time_end,
+                    helperText: errors.time_end?.message,
+                    inputProps: {
+                      style: {
+                        fontSize: "1.8rem",
+                        padding: "16px",
+                      },
+                    },
+                    InputLabelProps: {
+                      style: {
+                        fontSize: "1.8rem",
+                      },
+                    },
+                    InputProps: {
+                      style: {
+                        fontSize: "1.8rem",
+                      },
+                    },
+                    sx: {
+                      "& .MuiSvgIcon-root": {
+                        fontSize: "2.4rem",
+                      },
+                      "& .MuiFormHelperText-root": {
+                        fontSize: "1.6rem",
+                        color: "#d32f2f",
+                      },
+                    },
                   },
-                },
-                InputLabelProps: {
-                  style: {
-                    fontSize: "1.8rem", // Label size
-                  },
-                },
-                InputProps: {
-                  style: {
-                    fontSize: "1.8rem", // Label size
-                  },
-                },
-                sx: {
-                  "& .MuiSvgIcon-root": {
-                    fontSize: "2.4rem", // Icon size
-                  },
-                },
-              },
-            }}
+                }}
+              />
+            )}
           />
 
           {/* Note */}
-          <TextField
-            label="Note"
-            fullWidth
-            multiline
-            rows={2}
-            value={projectData.note}
-            onChange={(e) => handleInputChange("note", e.target.value)}
-            sx={{
-              marginTop: "10px",
-              marginBottom: "15px",
-              "& .MuiOutlinedInput-root": {
-                borderRadius: "12px",
-                fontSize: "1.8rem",
-              },
-              "& .MuiInputLabel-root": {
-                fontSize: "1.8rem",
-              },
-            }}
+          <Controller
+            name="note"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Note"
+                fullWidth
+                multiline
+                rows={2}
+                sx={{
+                  marginTop: "10px",
+                  marginBottom: "15px",
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: "12px",
+                    fontSize: "1.8rem",
+                  },
+                  "& .MuiInputLabel-root": {
+                    fontSize: "1.8rem",
+                  },
+                }}
+              />
+            )}
           />
 
           {/* Priority */}
-          <TextField
-            label="Priority"
-            select
-            fullWidth
-            value={projectData.priority}
-            onChange={(e) => handleInputChange("priority", e.target.value)}
-            sx={{
-              "& .MuiOutlinedInput-root": {
-                borderRadius: "12px",
-                fontSize: "1.8rem",
-              },
-              "& .MuiInputLabel-root": {
-                fontSize: "1.8rem",
-              },
-            }}
-          >
-            <MenuItem value="" sx={{ fontSize: "1.6rem" }}>
-              Priority
-            </MenuItem>
-            <MenuItem value="1" sx={{ fontSize: "1.6rem" }}>
-              High
-            </MenuItem>
-            <MenuItem value="2" sx={{ fontSize: "1.6rem" }}>
-              Medium
-            </MenuItem>
-            <MenuItem value="3" sx={{ fontSize: "1.6rem" }}>
-              Low
-            </MenuItem>
-          </TextField>
+          <Controller
+            name="priority"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Priority"
+                select
+                fullWidth
+                error={!!errors.priority}
+                helperText={errors.priority?.message}
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: "12px",
+                    fontSize: "1.8rem",
+                  },
+                  "& .MuiInputLabel-root": {
+                    fontSize: "1.8rem",
+                  },
+                  "& .MuiFormHelperText-root": {
+                    fontSize: "1.6rem",
+                    color: "#d32f2f",
+                  },
+                }}
+              >
+                <MenuItem value="" sx={{ fontSize: "1.6rem" }}>
+                  Priority
+                </MenuItem>
+                <MenuItem value="1" sx={{ fontSize: "1.6rem" }}>
+                  High
+                </MenuItem>
+                <MenuItem value="2" sx={{ fontSize: "1.6rem" }}>
+                  Medium
+                </MenuItem>
+                <MenuItem value="3" sx={{ fontSize: "1.6rem" }}>
+                  Low
+                </MenuItem>
+              </TextField>
+            )}
+          />
         </DialogContent>
 
         <DialogActions
@@ -300,7 +367,7 @@ const ProjectModal = ({
           }}
         >
           <Button
-            onClick={() => onClose()}
+            onClick={onClose}
             sx={{
               color: "#fff",
               backgroundColor: "#ff4d4d",
@@ -318,7 +385,7 @@ const ProjectModal = ({
             Cancel
           </Button>
           <Button
-            onClick={() => handleConfirm()}
+            onClick={handleSubmit(onSubmit)}
             sx={{
               color: "#fff",
               backgroundColor: mode === "create" ? "#4CAF50" : "#1565C0",

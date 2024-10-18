@@ -20,7 +20,7 @@ const CustomizedCard = ({ cardCell = [], cardDatas = [] }) => {
     <div
       style={{
         display: "flex",
-        justifyContent: "start",
+        justifyContent: "flex-start",
         flexWrap: "wrap",
         gap: "20px",
         padding: "30px 20px",
@@ -30,8 +30,8 @@ const CustomizedCard = ({ cardCell = [], cardDatas = [] }) => {
         <Card
           key={index}
           style={{
-            flex: "1 1 calc(20% - 20px)",
-            maxWidth: "350px",
+            flex: "1 1 calc(25% - 20px)",
+            maxWidth: "330px",
             minWidth: "250px",
             borderRadius: "20px",
             background: "linear-gradient(135deg, #bbdefb, #ffffff)",
