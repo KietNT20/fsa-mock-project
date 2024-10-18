@@ -23,6 +23,7 @@ const ProjectDetailModal = ({
   onSubmitTask,
   taskData,
   isUpdate,
+  disabled,
 }) => {
   const [currentDateTime] = useState(dayjs());
 
@@ -365,6 +366,7 @@ const ProjectDetailModal = ({
         >
           <Button
             onClick={() => handleClose()}
+            disabled={disabled}
             sx={{
               color: "#fff",
               backgroundColor: "#ff4d4d",
@@ -383,6 +385,7 @@ const ProjectDetailModal = ({
           </Button>
           <Button
             onClick={() => handleSubmit(onSubmit)()}
+            disabled={disabled}
             sx={{
               color: "#fff",
               backgroundColor: isUpdate ? "#1565C0" : "#4CAF50",

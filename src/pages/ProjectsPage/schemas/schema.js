@@ -2,13 +2,7 @@ import { REGEX } from "@/constant/regex";
 import * as yup from "yup";
 
 export const projectModalSchema = yup.object().shape({
-  name: yup
-    .string()
-    .test("is-name", "Enter a valid project name", (value) => {
-      const nameRegex = REGEX.NAME;
-      return nameRegex.test(value);
-    })
-    .required("Project name is required"),
+  name: yup.string().required("Project name is required"),
 
   payment: yup
     .string()

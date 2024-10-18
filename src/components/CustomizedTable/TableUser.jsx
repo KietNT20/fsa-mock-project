@@ -37,11 +37,10 @@ const TableUser = ({
   onActionClick,
   deleteLoading,
 }) => {
-  const dispatch = useDispatch();
-  const { infoRow } = useSelector((state) => state.selectedRow);
-
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const dispatch = useDispatch();
+  const { infoRow } = useSelector((state) => state.selectedRow);
 
   const handleClick = (event, row) => {
     console.log("row", row);

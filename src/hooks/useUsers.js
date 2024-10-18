@@ -20,10 +20,17 @@ export const useGetApiUsers = () => {
 };
 
 export const useGetApiUserById = (id) => {
-  const { data, ...rest } = useQuery({
+  const { data: userDetailData, ...rest } = useQuery({
     queryKey: ["users", id],
     queryFn: () => {
       return axiosInstance.get(`${API.USERS}/${id}`);
+    },
+    enabled: !!id,
+    select: (response) => {
+      if (response && response.length > 0) {
+        return response[0];
+      }
+      return null;
     },
     onError: (error) => {
       console.log("error", error);
@@ -31,7 +38,7 @@ export const useGetApiUserById = (id) => {
   });
 
   return {
-    data,
+    userDetailData,
     ...rest,
   };
 };

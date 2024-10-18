@@ -1,4 +1,5 @@
 import { PATH } from "@/constant/path";
+import { setSelectedRow } from "@/store/actions/infoRowAction";
 import {
   Delete as DeleteIcon,
   Launch as DetailIcon,
@@ -24,6 +25,7 @@ import {
 } from "@mui/material";
 import { format, parseISO } from "date-fns";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ConfirmationModal from "../ConfirmationModal";
 
@@ -37,15 +39,15 @@ const CustomizedTable = ({
   deleteLoading,
 }) => {
   const [anchorElTable, setAnchorElTable] = useState(null);
-  const [selectedRow, setSelectedRow] = useState(null);
+  // const [selectedRow, setSelectedRow] = useState(null);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const dispatch = useDispatch();
+  const { infoRow } = useSelector((state) => state.selectedRow);
   const navigate = useNavigate();
 
   const handleClick = (event, row) => {
-    console.log("row", row);
     setAnchorElTable(event.currentTarget);
-    setAnchorElTable(event.currentTarget);
-    setSelectedRow(row);
+    dispatch(setSelectedRow(row));
     if (onActionClick) {
       onActionClick(row);
     }
@@ -53,24 +55,22 @@ const CustomizedTable = ({
 
   const handleClose = () => {
     setAnchorElTable(null);
-    setAnchorElTable(null);
     setSelectedRow(null);
   };
 
   const handleUpdate = () => {
     if (onUpdate) {
-      onUpdate(selectedRow);
+      onUpdate(infoRow);
     }
     handleClose();
   };
 
   const handleViewDetailProject = (selectedRow) => {
-    console.log("Selected row data:", selectedRow);
+    // console.log("Selected row data:", selectedRow);
     if (selectedRow) {
-      // Store project details in session storage
-      sessionStorage.setItem("selectedProject", JSON.stringify(selectedRow));
-
+      // Navigate to the detail page with the project ID
       // Navigate to the detail page without including the project ID
+      dispatch(setSelectedRow(selectedRow?.id));
       navigate(PATH.PROJECT_DETAIL);
     } else {
       console.error("Project data is missing");
@@ -82,8 +82,8 @@ const CustomizedTable = ({
   };
 
   const handleConfirmDelete = () => {
-    if (onDelete && selectedRow?.id) {
-      onDelete(selectedRow.id);
+    if (onDelete && infoRow?.id) {
+      onDelete(infoRow.id);
     }
     setIsConfirmOpen(false);
     handleClose();
@@ -236,7 +236,7 @@ const CustomizedTable = ({
                             />
                           </MenuItem>
                           <MenuItem
-                            onClick={() => handleViewDetailProject(selectedRow)}
+                            onClick={() => handleViewDetailProject(infoRow)}
                           >
                             <ListItemIcon>
                               <DetailIcon
