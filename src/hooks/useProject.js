@@ -9,7 +9,7 @@ export const useGetProject = () => {
     return dataProject;
   };
 
-  const { data: dataProject } = useQuery({
+  const { data: dataProject, ...rest } = useQuery({
     queryKey: ["projects"],
     queryFn: getProject,
     throwOnError: true,
@@ -18,6 +18,29 @@ export const useGetProject = () => {
   return {
     dataProject,
     getProject,
+    ...rest,
+  };
+};
+export const useGetProjectDetail = (id) => {
+  const getProjectDetail = async () => {
+    if (!id) return; // Nếu không có id, không gọi API
+    const dataProjectDetail = await axiosInstance.get(`${API.PROJECTS}/${id}`);
+    return dataProjectDetail;
+  };
+
+  const { data: projectDetail, ...rest } = useQuery({
+    queryKey: ["projectDetail", id],
+    queryFn: getProjectDetail,
+    enabled: !!id, // Chỉ gọi API khi có id
+    onError: (error) => {
+      console.log("Error fetching project detail:", error);
+    },
+  });
+
+  return {
+    projectDetail,
+    getProjectDetail,
+    ...rest,
   };
 };
 

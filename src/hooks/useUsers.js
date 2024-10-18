@@ -70,11 +70,11 @@ export const useDeleteApiUser = () => {
 export const useCreateApiUser = () => {
   const queryClient = useQueryClient();
   const { mutate, ...rest } = useMutation({
-    mutationFn: ({ name, email, password, role }) => {
+    mutationFn: ({ name, email, role }) => {
       return axiosInstance.post(API.USERS, {
         name,
         email,
-        password,
+        password: "user@123",
         role,
       });
     },

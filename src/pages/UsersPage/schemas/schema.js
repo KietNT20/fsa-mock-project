@@ -11,5 +11,5 @@ export const userModalSchema = yup.object().shape({
     .required("Email or username is required"),
   name: yup.string().required("Username is required"),
   role: yup.string().required("Role is required"),
-  password: yup.string().required("Password is required"),
+  password: yup.string(),
 });

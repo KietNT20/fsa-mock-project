@@ -14,17 +14,17 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { projectModalSchema } from "./schemas/schema";
+import { projectModalDetailSchema } from "./schemas/schema";
 
-const ProjectModal = ({
+const ProjectDetailModal = ({
   open,
-  onClose,
-  mode,
-  project,
-  onCreateProject,
-  onUpdateProject,
+  handleClose,
+  projectId,
+  onSubmitTask,
+  taskData,
+  isUpdate,
 }) => {
-  const [currentDateTime, setCurrentDateTime] = useState(dayjs());
+  const [currentDateTime] = useState(dayjs());
 
   const {
     control,
@@ -32,58 +32,56 @@ const ProjectModal = ({
     reset,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(projectModalSchema),
     defaultValues: {
-      name: "",
-      payment: "",
-      time_start: currentDateTime,
-      time_end: null,
-      note: "",
-      priority: "",
+      task_name: taskData?.task_name || "",
+      user_mail: taskData?.user_mail || "",
+      project_id: projectId || taskData?.project_id || "",
+      status: taskData?.status || "",
+      note: taskData?.note || "",
+      time_start: taskData?.time_start || currentDateTime,
+      time_end: taskData?.time_end || null,
     },
+    resolver: yupResolver(projectModalDetailSchema),
   });
 
   useEffect(() => {
-    if (mode === "create") {
-      setCurrentDateTime(dayjs());
-    }
-
-    if (mode === "update" && project) {
+    if (taskData && isUpdate) {
+      // Reset form fields with task data when updating
       reset({
-        name: project.name || "",
-        payment: project.payment || "",
-        time_start: project.time_start ? dayjs(project.time_start) : dayjs(),
-        time_end: project.time_end ? dayjs(project.time_end) : null,
-        note: project.note || "",
-        priority: project.priority || "",
+        task_name: taskData.task_name,
+        user_mail: taskData.user_mail,
+        project_id: taskData.project_id,
+        status: taskData.status,
+        note: taskData.note,
+        time_start: taskData.time_start
+          ? dayjs(taskData.time_start)
+          : currentDateTime,
+        time_end: taskData.time_end ? dayjs(taskData.time_end) : null,
       });
-    } else if (mode === "create") {
+    } else {
       reset({
-        name: "",
-        payment: "",
-        time_start: dayjs(),
-        time_end: null,
+        user_mail: "",
+        project_id: projectId || "",
+        status: "1",
         note: "",
-        priority: "",
+        time_start: currentDateTime,
+        time_end: null,
       });
     }
-  }, [mode, project, reset]);
+  }, [open, projectId, reset, taskData, isUpdate, currentDateTime]);
 
   const onSubmit = (data) => {
-    if (mode === "create") {
-      onCreateProject(data);
-    } else if (mode === "update") {
-      onUpdateProject({ ...data, id: project.id });
-    }
-    onClose();
+    console.log(data);
+    onSubmitTask({ ...data, project_id: projectId });
+    handleClose();
   };
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Dialog
         open={open}
-        onClose={onClose}
-        aria-labelledby="create-project-dialog-title"
+        onClose={handleClose}
+        aria-labelledby="create-task-dialog-title"
         PaperProps={{
           sx: {
             padding: "30px",
@@ -106,7 +104,7 @@ const ProjectModal = ({
             letterSpacing: "0.1rem",
           }}
         >
-          {mode === "create" ? "Create New Project" : "Update Project"}
+          {isUpdate ? "Update Task" : "Create New Task"}
         </DialogTitle>
 
         <DialogContent
@@ -127,23 +125,51 @@ const ProjectModal = ({
               fontWeight: "500",
             }}
           >
-            {mode === "create"
-              ? "Fill in the project details below"
-              : "Update the project details below"}
+            {isUpdate
+              ? "Update the task details below"
+              : "Fill in the task details below"}
           </DialogContentText>
 
-          {/* Project Name */}
+          {/* Task Name */}
           <Controller
-            name="name"
+            name="task_name"
             control={control}
             render={({ field }) => (
               <TextField
                 {...field}
-                label="Project Name"
+                label="Task Name"
                 variant="outlined"
                 fullWidth
-                error={!!errors.name}
-                helperText={errors.name?.message}
+                error={!!errors.task_name}
+                helperText={errors.task_name?.message}
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: "5px",
+                    fontSize: "1.8rem",
+                  },
+                  "& .MuiInputLabel-root": {
+                    fontSize: "1.8rem",
+                  },
+                  "& .MuiFormHelperText-root": {
+                    fontSize: "1.6rem",
+                    color: "#d32f2f",
+                  },
+                }}
+              />
+            )}
+          />
+          {/* User Mail */}
+          <Controller
+            name="user_mail"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="User Mail"
+                variant="outlined"
+                fullWidth
+                error={!!errors.user_mail}
+                helperText={errors.user_mail?.message}
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     borderRadius: "5px",
@@ -161,18 +187,19 @@ const ProjectModal = ({
             )}
           />
 
-          {/* Payment */}
+          {/* Status */}
           <Controller
-            name="payment"
+            name="status"
             control={control}
             render={({ field }) => (
               <TextField
                 {...field}
-                label="Payment"
-                variant="outlined"
+                label="Status"
+                select
                 fullWidth
-                error={!!errors.payment}
-                helperText={errors.payment?.message}
+                error={!!errors.status}
+                helperText={errors.status?.message}
+                disabled
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     borderRadius: "5px",
@@ -186,11 +213,21 @@ const ProjectModal = ({
                     color: "#d32f2f",
                   },
                 }}
-              />
+              >
+                <MenuItem value="1" sx={{ fontSize: "1.6rem" }}>
+                  Not Started
+                </MenuItem>
+                <MenuItem value="2" sx={{ fontSize: "1.6rem" }}>
+                  In Process
+                </MenuItem>
+                <MenuItem value="3" sx={{ fontSize: "1.6rem" }}>
+                  Done
+                </MenuItem>
+              </TextField>
             )}
           />
 
-          {/* Start Date */}
+          {/* Time Start */}
           <Controller
             name="time_start"
             control={control}
@@ -202,7 +239,6 @@ const ProjectModal = ({
                 minutesStep={1}
                 secondsStep={1}
                 minDateTime={currentDateTime}
-                disabled={mode === "update"}
                 views={["year", "month", "day", "hours", "minutes", "seconds"]}
                 slotProps={{
                   textField: {
@@ -241,7 +277,7 @@ const ProjectModal = ({
             )}
           />
 
-          {/* End Date */}
+          {/* Time End */}
           <Controller
             name="time_end"
             control={control}
@@ -301,33 +337,8 @@ const ProjectModal = ({
                 fullWidth
                 multiline
                 rows={2}
-                sx={{
-                  marginTop: "10px",
-                  marginBottom: "15px",
-                  "& .MuiOutlinedInput-root": {
-                    borderRadius: "5px",
-                    fontSize: "1.8rem",
-                  },
-                  "& .MuiInputLabel-root": {
-                    fontSize: "1.8rem",
-                  },
-                }}
-              />
-            )}
-          />
-
-          {/* Priority */}
-          <Controller
-            name="priority"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                label="Priority"
-                select
-                fullWidth
-                error={!!errors.priority}
-                helperText={errors.priority?.message}
+                error={!!errors.user_mail}
+                helperText={errors.user_mail?.message}
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     borderRadius: "5px",
@@ -341,20 +352,7 @@ const ProjectModal = ({
                     color: "#d32f2f",
                   },
                 }}
-              >
-                <MenuItem value="" sx={{ fontSize: "1.6rem" }}>
-                  Priority
-                </MenuItem>
-                <MenuItem value="1" sx={{ fontSize: "1.6rem" }}>
-                  High
-                </MenuItem>
-                <MenuItem value="2" sx={{ fontSize: "1.6rem" }}>
-                  Medium
-                </MenuItem>
-                <MenuItem value="3" sx={{ fontSize: "1.6rem" }}>
-                  Low
-                </MenuItem>
-              </TextField>
+              />
             )}
           />
         </DialogContent>
@@ -366,7 +364,7 @@ const ProjectModal = ({
           }}
         >
           <Button
-            onClick={onClose}
+            onClick={() => handleClose()}
             sx={{
               color: "#fff",
               backgroundColor: "#ff4d4d",
@@ -384,22 +382,22 @@ const ProjectModal = ({
             Cancel
           </Button>
           <Button
-            onClick={handleSubmit(onSubmit)}
+            onClick={() => handleSubmit(onSubmit)()}
             sx={{
               color: "#fff",
-              backgroundColor: mode === "create" ? "#4CAF50" : "#1565C0",
+              backgroundColor: isUpdate ? "#1565C0" : "#4CAF50",
               padding: "14px 30px",
               borderRadius: "50px",
               fontSize: "1.4rem",
               textTransform: "none",
               fontWeight: "500",
-              boxShadow: "0px 4px 10px rgba(76, 175, 80, 0.3)",
+              boxShadow: `0px 4px 10px rgba(${isUpdate ? "33, 150, 243" : "76, 175, 80"}, 0.3)`,
               "&:hover": {
-                backgroundColor: mode === "create" ? "#388E3C" : "#0B4C8C",
+                backgroundColor: isUpdate ? "#0B4C8C" : "#388E3C",
               },
             }}
           >
-            {mode === "create" ? "Create" : "Update"}
+            {isUpdate ? "Update Task" : "Create Task"}
           </Button>
         </DialogActions>
       </Dialog>
@@ -407,4 +405,4 @@ const ProjectModal = ({
   );
 };
 
-export default ProjectModal;
+export default ProjectDetailModal;

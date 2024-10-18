@@ -13,7 +13,7 @@ export const projectModalSchema = yup.object().shape({
   payment: yup
     .string()
     .test("is-payment", "Enter a valid payment amount", (value) => {
-      const paymentRegex = REGEX.PAYMENT; // Define a regex for payment if necessary
+      const paymentRegex = REGEX.PAYMENT;
       return paymentRegex ? paymentRegex.test(value) : true;
     })
 
