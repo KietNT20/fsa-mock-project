@@ -1,7 +1,7 @@
 import { CLEAR_INFO_ROW, SET_INFO_ROW } from "../actions/infoRowAction";
 
 const initialState = {
-  infoRow: null,
+  infoRow: {},
 };
 
 const infoRowReducer = (state = initialState, action) => {
@@ -14,7 +14,7 @@ const infoRowReducer = (state = initialState, action) => {
     case CLEAR_INFO_ROW:
       return {
         ...state,
-        infoRow: null,
+        infoRow: {},
       };
     default:
       return state;

@@ -8,7 +8,14 @@ import {
   useGetProject,
   useUpdateProject,
 } from "@/hooks/useProject";
-import { Box, Button, Grid2, Pagination, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Grid2,
+  Pagination,
+  Skeleton,
+  Typography,
+} from "@mui/material";
 import React, { useCallback, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import ProjectModal from "./ProjectModal";
@@ -17,11 +24,16 @@ const itemsPerPage = 6;
 
 const ProjectsPage = () => {
   const { dataProject } = useGetProject();
-  const { mutate: doDeleteProject } = useDeleteProject();
-  const { mutate: doCreateProject } = useCreateProject();
-  const { mutate: doUpdateProject } = useUpdateProject();
+  const { mutate: doDeleteProject, isPending: deleteProjectPending } =
+    useDeleteProject();
+  const { mutate: doCreateProject, isPending: addProjectPending } =
+    useCreateProject();
+  const { mutate: doUpdateProject, isPending: updateProjectPending } =
+    useUpdateProject();
   const { profile } = useSelector((state) => state.profile);
   const userRole = profile?.role;
+  const disabled =
+    deleteProjectPending || addProjectPending || updateProjectPending;
 
   const [page, setPage] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
@@ -67,6 +79,19 @@ const ProjectsPage = () => {
     setPriorityFilter(value);
     setPage(1);
   };
+
+  const TableSkeleton = () => (
+    <>
+      {[...Array(itemsPerPage)].map((_, index) => (
+        <Skeleton
+          key={index}
+          variant="rectangular"
+          height={53}
+          sx={{ my: 1 }}
+        />
+      ))}
+    </>
+  );
 
   const dataHeader = [
     "name",
@@ -187,13 +212,16 @@ const ProjectsPage = () => {
         <CustomizedCard cardCell={dataHeader} cardDatas={filteredProjects} />
       ) : (
         <>
-          {/* For role 1, use paginated projects and show pagination */}
-          <CustomizedTable
-            tableCell={dataHeader}
-            tableDatas={paginatedProjects}
-            onUpdate={(project) => handleOpenModal("update", project)}
-            onDelete={(projectId) => handleDeleteProject(projectId)}
-          />
+          {disabled ? (
+            <TableSkeleton />
+          ) : (
+            <CustomizedTable
+              tableCell={dataHeader}
+              tableDatas={paginatedProjects}
+              onUpdate={(project) => handleOpenModal("update", project)}
+              onDelete={(projectId) => handleDeleteProject(projectId)}
+            />
+          )}
 
           {/* Show pagination for role 1 */}
           {filteredProjects.length > 0 && pageCount > 1 && (

@@ -1,5 +1,11 @@
+import { PATH } from "@/constant/path";
+import { generateCartoonAvatar } from "@/utils/avatarUtils";
 import { useTheme } from "@emotion/react";
 import { Menu as MenuIcon } from "@mui/icons-material";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle"; // Profile icon
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import LogoutIcon from "@mui/icons-material/Logout"; // Logout icon
 import {
   AppBar,
   Avatar,
@@ -12,13 +18,6 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-
-import { PATH } from "@/constant/path";
-import { generateCartoonAvatar } from "@/utils/avatarUtils";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle"; // Profile icon
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import LogoutIcon from "@mui/icons-material/Logout"; // Logout icon
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";

@@ -17,7 +17,7 @@ import profileReducer from "./reducers/profileReducer";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["profile"],
+  whitelist: ["profile", "selectedRow"],
 };
 
 const rootReducer = combineReducers({

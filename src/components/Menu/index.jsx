@@ -16,9 +16,8 @@ const MenuList = () => {
   return (
     <Box
       sx={{
-        width: "240px",
+        width: "100%",
         padding: "0",
-        height: "100vh",
         borderRight: "1px solid #ccc",
       }}
     >

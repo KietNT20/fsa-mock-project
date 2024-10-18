@@ -19,7 +19,7 @@ const ProjectDetail = () => {
   const { infoRow } = useSelector((state) => state.selectedRow);
   const { profile } = useSelector((state) => state.profile);
   const roleUser = profile?.role === 0;
-  // console.log("infoRow", infoRow);
+  console.log("infoRow", infoRow);
   const { projectDetail } = useGetProjectDetail(infoRow);
   // console.log('projectDetail', projectDetail);
   const project = projectDetail;
