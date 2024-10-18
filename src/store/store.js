@@ -11,6 +11,7 @@ import {
   REHYDRATE,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // mặc định sử dụng localStorage
+import infoRowReducer from "./reducers/infoRowReducer";
 import profileReducer from "./reducers/profileReducer";
 
 const persistConfig = {
@@ -21,6 +22,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   profile: profileReducer,
+  selectedRow: infoRowReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

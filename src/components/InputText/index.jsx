@@ -7,7 +7,6 @@ const InputText = (
 ) => (
   <TextField
     label={label}
-    fullWidth
     type={type}
     placeholder={placeholder}
     size="medium"

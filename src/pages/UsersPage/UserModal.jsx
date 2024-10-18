@@ -1,3 +1,6 @@
+import Spinner from "@/components/Spinner";
+import { useUpdateApiUser, useUpdateRoleUser } from "@/hooks/useUsers";
+import { updateProfile } from "@/store/actions/profileAction";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
   Box,
@@ -12,6 +15,7 @@ import {
 } from "@mui/material";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
 import { userModalSchema } from "./schemas/schema";
 
 const UserModal = ({
@@ -20,9 +24,7 @@ const UserModal = ({
   mode,
   user,
   onCreateUser,
-  onUpdateUser,
   createLoading,
-  updateLoading,
 }) => {
   const {
     control,
@@ -37,13 +39,23 @@ const UserModal = ({
       role: "",
     },
   });
+  const { profile } = useSelector((state) => state.profile);
+  const dispatch = useDispatch();
+
+  const isRoleDisabled = profile?.role === 0 || createLoading;
+
+  const { mutate: updateUserName, isPending: updateUserNameLoading } =
+    useUpdateApiUser();
+
+  const { mutate: updateUserRole, isPending: updateUserRoleLoading } =
+    useUpdateRoleUser();
 
   useEffect(() => {
     if (mode === "update" && user) {
       reset({
         name: user.name || "",
         email: user.email || "",
-        role: user.role || "",
+        role: user.role?.toString() || "",
       });
     } else {
       reset({
@@ -54,14 +66,27 @@ const UserModal = ({
     }
   }, [mode, user, reset]);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     if (mode === "create") {
       onCreateUser(data);
     } else if (mode === "update") {
-      onUpdateUser({ ...data, id: user.id });
+      if (data.name !== user.name) {
+        await updateUserName({
+          email: user.email,
+          name: data.name,
+          password: data.password,
+        });
+        dispatch(updateProfile({ name: data.name }));
+      }
+      if (data.role !== user.role?.toString()) {
+        await updateUserRole({ email: user.email, role: parseInt(data.role) });
+      }
     }
     onClose();
   };
+
+  const isSubmitDisabled =
+    createLoading || updateUserNameLoading || updateUserRoleLoading;
 
   return (
     <Dialog
@@ -81,8 +106,8 @@ const UserModal = ({
       }}
     >
       <Box component={"form"} onSubmit={handleSubmit(onSubmit)}>
+        {isSubmitDisabled && <Spinner />}
         <DialogTitle
-          id="user-modal-title"
           sx={{
             fontSize: "2.6rem",
             color: "#444",
@@ -128,16 +153,20 @@ const UserModal = ({
                 label="User Name"
                 variant="outlined"
                 fullWidth
-                disabled={createLoading || updateLoading}
+                disabled={isSubmitDisabled}
                 error={!!errors.name}
                 helperText={errors.name?.message}
                 sx={{
-                  marginBottom: "15px",
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "1.6rem",
+                    borderRadius: "12px",
+                    fontSize: "1.8rem",
                   },
                   "& .MuiInputLabel-root": {
+                    fontSize: "1.8rem",
+                  },
+                  "& .MuiFormHelperText-root": {
                     fontSize: "1.6rem",
+                    color: "#d32f2f",
                   },
                 }}
               />
@@ -153,15 +182,49 @@ const UserModal = ({
                 label="Email"
                 variant="outlined"
                 fullWidth
-                disabled={createLoading || updateLoading}
+                disabled={isSubmitDisabled || mode === "update"}
                 error={!!errors.email}
                 helperText={errors.email?.message}
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "1.6rem",
+                    borderRadius: "12px",
+                    fontSize: "1.8rem",
                   },
                   "& .MuiInputLabel-root": {
+                    fontSize: "1.8rem",
+                  },
+                  "& .MuiFormHelperText-root": {
                     fontSize: "1.6rem",
+                    color: "#d32f2f",
+                  },
+                }}
+              />
+            )}
+          />
+
+          <Controller
+            name="password"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Password"
+                variant="outlined"
+                fullWidth
+                disabled={isSubmitDisabled}
+                error={!!errors.password}
+                helperText={errors.email?.password}
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: "12px",
+                    fontSize: "1.8rem",
+                  },
+                  "& .MuiInputLabel-root": {
+                    fontSize: "1.8rem",
+                  },
+                  "& .MuiFormHelperText-root": {
+                    fontSize: "1.6rem",
+                    color: "#d32f2f",
                   },
                 }}
               />
@@ -176,15 +239,21 @@ const UserModal = ({
                 {...field}
                 select
                 label="Role"
+                disabled={isRoleDisabled || isSubmitDisabled}
                 fullWidth
                 error={!!errors.role}
                 helperText={errors.role?.message}
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "1.6rem",
+                    borderRadius: "12px",
+                    fontSize: "1.8rem",
                   },
                   "& .MuiInputLabel-root": {
-                    fontSize: "1.6rem",
+                    fontSize: "1.8rem",
+                  },
+                  "& .MuiFormHelperText-root": {
+                    fontSize: "1.6rem", // Adjust this value to increase the font size of the error message
+                    color: "#d32f2f", // Ensures the error message remains red
                   },
                 }}
               >
@@ -202,7 +271,8 @@ const UserModal = ({
         <DialogActions
           sx={{
             width: "100%",
-            justifyContent: "space-around",
+            gap: "2rem",
+            justifyContent: "center",
           }}
         >
           <Button
@@ -210,7 +280,7 @@ const UserModal = ({
             sx={{
               color: "#fff",
               backgroundColor: "#ff4d4d",
-              padding: "14px 80px",
+              padding: "1.4rem 8rem",
               borderRadius: "10px",
               fontSize: "1.4rem",
               textTransform: "none",
@@ -225,11 +295,11 @@ const UserModal = ({
           </Button>
           <Button
             type="submit"
-            disabled={createLoading || updateLoading}
+            disabled={isSubmitDisabled}
             sx={{
               color: "#fff",
               backgroundColor: mode === "create" ? "#4CAF50" : "#1565C0",
-              padding: "14px 80px",
+              padding: "1.4rem 8rem",
               borderRadius: "10px",
               fontSize: "1.4rem",
               textTransform: "none",

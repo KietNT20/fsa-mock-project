@@ -9,17 +9,38 @@ export const useGetProject = () => {
     return dataProject;
   };
 
-  const { data: dataProject } = useQuery({
-    queryKey: ["project"],
+  const { data: dataProject, ...rest } = useQuery({
+    queryKey: ["projects"],
     queryFn: getProject,
-    onError: (error) => {
-      console.log("Error fetching projects:", error);
-    },
+    throwOnError: true,
   });
 
   return {
     dataProject,
     getProject,
+    ...rest,
+  };
+};
+export const useGetProjectDetail = (id) => {
+  const getProjectDetail = async () => {
+    if (!id) return; // Nếu không có id, không gọi API
+    const dataProjectDetail = await axiosInstance.get(`${API.PROJECTS}/${id}`);
+    return dataProjectDetail;
+  };
+
+  const { data: projectDetail, ...rest } = useQuery({
+    queryKey: ["projectDetail", id],
+    queryFn: getProjectDetail,
+    enabled: !!id, // Chỉ gọi API khi có id
+    onError: (error) => {
+      console.log("Error fetching project detail:", error);
+    },
+  });
+
+  return {
+    projectDetail,
+    getProjectDetail,
+    ...rest,
   };
 };
 
@@ -34,7 +55,7 @@ export const useDeleteProject = () => {
     onSuccess: () => {
       toast.dismiss();
       queryClient.invalidateQueries({
-        queryKey: ["project"],
+        queryKey: ["projects"],
       });
       toast.success("Delete successfully!!");
     },
@@ -73,7 +94,7 @@ export const useUpdateProject = () => {
     onSuccess: () => {
       toast.dismiss();
       queryClient.invalidateQueries({
-        queryKey: ["project"],
+        queryKey: ["projects"],
       });
       toast.success("Update successfully!!");
     },
@@ -102,7 +123,7 @@ export const useCreateProject = () => {
     onSuccess: () => {
       toast.dismiss();
       queryClient.invalidateQueries({
-        queryKey: ["project"],
+        queryKey: ["projects"],
       });
       toast.success("Create successfully!!");
     },

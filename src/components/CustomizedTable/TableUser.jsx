@@ -1,7 +1,9 @@
-import { PATH } from "@/constant/path";
+import {
+  clearSelectedRow,
+  setSelectedRow,
+} from "@/store/actions/infoRowAction";
 import {
   Delete as DeleteIcon,
-  Launch as DetailIcon,
   Edit as EditIcon,
   MoreHoriz as MoreHorizIcon,
 } from "@mui/icons-material";
@@ -22,12 +24,11 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { format, parseISO } from "date-fns";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import ConfirmationModal from "../ConfirmationModal";
 
-const CustomizedTable = ({
+const TableUser = ({
   title = "Table List",
   tableCell = [],
   tableDatas = [],
@@ -36,45 +37,31 @@ const CustomizedTable = ({
   onActionClick,
   deleteLoading,
 }) => {
-  const [anchorElTable, setAnchorElTable] = useState(null);
-  const [selectedRow, setSelectedRow] = useState(null);
+  const dispatch = useDispatch();
+  const { infoRow } = useSelector((state) => state.selectedRow);
+
+  const [anchorElUser, setAnchorElUser] = useState(null);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-  const navigate = useNavigate();
 
   const handleClick = (event, row) => {
     console.log("row", row);
-    setAnchorElTable(event.currentTarget);
-    setAnchorElTable(event.currentTarget);
-    setSelectedRow(row);
+    setAnchorElUser(event.currentTarget);
+    dispatch(setSelectedRow(row));
     if (onActionClick) {
       onActionClick(row);
     }
   };
 
   const handleClose = () => {
-    setAnchorElTable(null);
-    setAnchorElTable(null);
-    setSelectedRow(null);
+    setAnchorElUser(null);
+    dispatch(clearSelectedRow());
   };
 
   const handleUpdate = () => {
-    if (onUpdate) {
-      onUpdate(selectedRow);
+    if (onUpdate && infoRow) {
+      onUpdate(infoRow);
     }
     handleClose();
-  };
-
-  const handleViewDetailProject = (selectedRow) => {
-    console.log("Selected row data:", selectedRow);
-    if (selectedRow) {
-      // Store project details in session storage
-      sessionStorage.setItem("selectedProject", JSON.stringify(selectedRow));
-
-      // Navigate to the detail page without including the project ID
-      navigate(PATH.PROJECT_DETAIL);
-    } else {
-      console.error("Project data is missing");
-    }
   };
 
   const handleDeleteClick = () => {
@@ -82,12 +69,11 @@ const CustomizedTable = ({
   };
 
   const handleConfirmDelete = () => {
-    if (onDelete && selectedRow?.id) {
-      onDelete(selectedRow.id);
+    if (onDelete && infoRow?.id) {
+      onDelete(infoRow.id);
     }
     setIsConfirmOpen(false);
-    handleClose();
-    handleClose();
+    dispatch(clearSelectedRow());
   };
 
   const handleCancelDelete = () => {
@@ -97,22 +83,12 @@ const CustomizedTable = ({
   const capitalize = (string) =>
     string.charAt(0).toUpperCase() + string.slice(1);
 
-  const formatDate = (dateString) => {
-    try {
-      return format(parseISO(dateString), "dd/MM/yyyy HH:mm:ss");
-    } catch (error) {
-      console.error("Error parsing date:", error);
-      return dateString;
-    }
-  };
-
   return (
     <>
       <TableContainer
         component={Paper}
         style={{
           margin: "20px auto",
-          minHeight: "57vh",
           maxWidth: "100%",
           overflowY: "auto",
           boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.2)",
@@ -160,7 +136,7 @@ const CustomizedTable = ({
           <TableBody>
             {tableDatas.map((row, index) => (
               <StyledTableRow
-                key={row.id}
+                key={row.id || index}
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
                   backgroundColor: index % 2 === 0 ? "#f5f5f5" : "#fff",
@@ -178,7 +154,6 @@ const CustomizedTable = ({
                     key={cellIndex}
                     align="center"
                     style={{
-                      borderBottom: "0.1 solid #ddd",
                       fontSize: "15px",
                       padding: "15px",
                       width: `${100 / tableCell.length}%`,
@@ -189,20 +164,26 @@ const CustomizedTable = ({
                         <IconButton
                           aria-controls="simple-menu"
                           aria-haspopup="true"
-                          onClick={(event) => {
-                            event.stopPropagation(); // Ngăn việc sự kiện onClick của hàng được kích hoạt khi nhấn vào action
-                            handleClick(event, row);
-                          }}
+                          onClick={(event) => handleClick(event, row)}
                         >
                           <MoreHorizIcon />
                         </IconButton>
                         <Menu
-                          anchorEl={anchorElTable}
+                          anchorEl={anchorElUser}
                           keepMounted
-                          open={Boolean(anchorElTable)}
+                          open={Boolean(anchorElUser)}
                           onClose={handleClose}
+                          slotProps={{
+                            paper: {
+                              style: {
+                                width: "fit-content",
+                                boxShadow: "none",
+                                border: "1px solid #ddd",
+                              },
+                            },
+                          }}
                         >
-                          <MenuItem onClick={() => handleUpdate(row)}>
+                          <MenuItem onClick={handleUpdate}>
                             <ListItemIcon>
                               <EditIcon
                                 fontSize="medium"
@@ -235,35 +216,14 @@ const CustomizedTable = ({
                               }}
                             />
                           </MenuItem>
-                          <MenuItem
-                            onClick={() => handleViewDetailProject(selectedRow)}
-                          >
-                            <ListItemIcon>
-                              <DetailIcon
-                                fontSize="medium"
-                                sx={{ color: "#636969" }}
-                              />
-                            </ListItemIcon>
-                            <ListItemText
-                              primary="View Detail"
-                              primaryTypographyProps={{
-                                fontSize: "1.8rem",
-                                color: "#636969",
-                              }}
-                            />
-                          </MenuItem>
                         </Menu>
                       </>
-                    ) : cell === "priority" ? (
-                      row[cell] === 1 ? (
-                        "High"
-                      ) : row[cell] === 2 ? (
-                        "Medium"
+                    ) : cell.includes("role") ? (
+                      row[cell] === 0 ? (
+                        "User"
                       ) : (
-                        "Low"
+                        "Admin"
                       )
-                    ) : cell.includes("time") ? (
-                      formatDate(row[cell])
                     ) : cell.includes("note") && row[cell] === "" ? (
                       "None"
                     ) : (
@@ -276,7 +236,6 @@ const CustomizedTable = ({
           </TableBody>
         </Table>
       </TableContainer>
-
       <ConfirmationModal
         open={isConfirmOpen}
         onClose={handleCancelDelete}
@@ -290,7 +249,7 @@ const CustomizedTable = ({
   );
 };
 
-export default CustomizedTable;
+export default TableUser;
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {

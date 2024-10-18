@@ -1,3 +1,4 @@
+import { updateProfile } from "@/store/actions/profileAction";
 import { generateCartoonAvatar } from "@/utils/avatarUtils";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import EditIcon from "@mui/icons-material/Edit";
@@ -13,15 +14,31 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import UserModal from "../UsersPage/UserModal";
 
-// Profile Page Component
 const Profile = () => {
-  // Fetching profile data from Redux store
   const { profile } = useSelector((state) => state.profile);
+  console.log("profile", profile);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const dispatch = useDispatch();
 
   const handleEditProfile = () => {
-    console.log("Edit Profile Clicked");
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleUpdateUser = async (data) => {
+    try {
+      await dispatch(updateProfile(data));
+      handleCloseModal();
+    } catch (error) {
+      console.error("Error updating user:", error);
+    }
   };
 
   return (
@@ -39,8 +56,7 @@ const Profile = () => {
           {/* Avatar Section */}
           <Grid2 item xs={12} sm={4} textAlign="center">
             <Avatar
-              alt={profile.name}
-              src={generateCartoonAvatar(profile.name)}
+              src={generateCartoonAvatar(profile?.name)}
               sx={{
                 width: 180,
                 height: 180,
@@ -109,6 +125,15 @@ const Profile = () => {
           </Grid2>
         </Grid2>
       </Paper>
+
+      {/* UserModal */}
+      <UserModal
+        open={isModalOpen}
+        onClose={handleCloseModal}
+        mode="update"
+        user={profile}
+        onCreateUser={handleUpdateUser}
+      />
     </Container>
   );
 };
