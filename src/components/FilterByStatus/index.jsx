@@ -28,7 +28,11 @@ const FilterByStatus = ({ onFilter, currentFilter, menuItems }) => {
         }}
       >
         {menuItems.map((menuItem) => (
-          <MenuItem key={menuItem.value} value={menuItem.value} sx={{ fontSize: "1.4rem" }}>
+          <MenuItem
+            key={menuItem.value}
+            value={menuItem.value}
+            sx={{ fontSize: "1.4rem" }}
+          >
             <Box display="flex" justifyContent="space-between" width="100%">
               {menuItem.label}
             </Box>

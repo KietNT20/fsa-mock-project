@@ -44,6 +44,7 @@ const CustomizedTable = ({
   const handleClick = (event, row) => {
     console.log("row", row);
     setAnchorElTable(event.currentTarget);
+    setAnchorElTable(event.currentTarget);
     setSelectedRow(row);
     if (onActionClick) {
       onActionClick(row);
@@ -51,6 +52,7 @@ const CustomizedTable = ({
   };
 
   const handleClose = () => {
+    setAnchorElTable(null);
     setAnchorElTable(null);
     setSelectedRow(null);
   };
@@ -84,6 +86,7 @@ const CustomizedTable = ({
       onDelete(selectedRow.id);
     }
     setIsConfirmOpen(false);
+    handleClose();
     handleClose();
   };
 

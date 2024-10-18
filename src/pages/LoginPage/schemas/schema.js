@@ -21,16 +21,7 @@ export const registerSchema = yup.object().shape({
     .email("Invalid email")
     .matches(REGEX.EMAIL, "Invalid email")
     .required("Email is required"),
-  name: yup
-    .string()
-    .test("is-name", "Enter a valid name", (value) => {
-      const nameRegex = REGEX.NAME;
-      return nameRegex.test(value);
-    })
-    .required("Username is required"),
-  // Kiểm tra email hợp lệ bằng regex
-
-  // Kiểm tra mật khẩu có tối thiểu 8 ký tự
+  name: yup.string().required("Username is required"),
   password: yup
     .string()
     .min(5, "Password must be at least 5 characters")

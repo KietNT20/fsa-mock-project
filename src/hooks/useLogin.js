@@ -36,7 +36,7 @@ export const useLogin = () => {
     onError: (err) => {
       toast.dismiss();
       console.error("Login Error:", err);
-      toast.error("Login failed");
+      toast.error("Login failed, Check your email or password!!");
     },
   });
 

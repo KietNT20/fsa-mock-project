@@ -10,9 +10,7 @@ export const useGetApiUsers = () => {
     queryFn: () => {
       return axiosInstance.get(API.USERS);
     },
-    onError: (error) => {
-      console.log("error", error);
-    },
+    throwOnError: true,
   });
 
   return {
@@ -20,6 +18,7 @@ export const useGetApiUsers = () => {
     ...rest,
   };
 };
+
 export const useGetApiUserById = (id) => {
   const { data, ...rest } = useQuery({
     queryKey: ["users", id],

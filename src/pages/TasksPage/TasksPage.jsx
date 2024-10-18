@@ -1,18 +1,31 @@
-import FilterByStatus from '@/components/FilterByStatus';
-import SearchBar from '@/components/SearchBar';
-import { useGetApiTask, useUpdateTask } from '@/hooks/useTask';
-import { DateRange as DateRangeIcon, EventNote as EventNoteIcon, Folder as FolderIcon, PriorityHigh as PriorityHighIcon } from '@mui/icons-material';
-import { Box, Card, CardContent, CircularProgress, Divider, Grid2, Typography } from '@mui/material';
-import { format, parseISO } from 'date-fns';
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
-import TaskUpdateModal from './TaskUpdateModal';
+import FilterByStatus from "@/components/FilterByStatus";
+import SearchBar from "@/components/SearchBar";
+import { useGetApiTask, useUpdateTask } from "@/hooks/useTask";
+import {
+  DateRange as DateRangeIcon,
+  EventNote as EventNoteIcon,
+  Folder as FolderIcon,
+  PriorityHigh as PriorityHighIcon,
+} from "@mui/icons-material";
+import {
+  Box,
+  Card,
+  CardContent,
+  CircularProgress,
+  Divider,
+  Grid2,
+  Typography,
+} from "@mui/material";
+import { format, parseISO } from "date-fns";
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import TaskUpdateModal from "./TaskUpdateModal";
 
 const formatDate = (dateString) => {
   try {
-    return format(parseISO(dateString), 'dd/MM/yyyy HH:mm:ss');
+    return format(parseISO(dateString), "dd/MM/yyyy HH:mm:ss");
   } catch (error) {
-    console.error('Error parsing date:', error);
+    console.error("Error parsing date:", error);
     return dateString;
   }
 };
@@ -70,10 +83,12 @@ const TasksPage = () => {
     const matchesUserEmail = task.user_mail === profile.email;
 
     // Handle search filter by task_name
-    const matchesSearch = searchTerm === "" || task.task_name.toLowerCase().includes(searchTerm);
+    const matchesSearch =
+      searchTerm === "" || task.task_name.toLowerCase().includes(searchTerm);
 
     // Handle status filter
-    const matchesStatus = statusFilter === "all" || task.status === parseInt(statusFilter);
+    const matchesStatus =
+      statusFilter === "all" || task.status === parseInt(statusFilter);
 
     // Return tasks that match both search and status
     return matchesUserEmail && matchesSearch && matchesStatus;
@@ -107,7 +122,10 @@ const TasksPage = () => {
 
   return (
     <div>
-      <Typography variant="h3" sx={{ textAlign: 'center', fontWeight: 'bold', marginBottom: 6 }}>
+      <Typography
+        variant="h3"
+        sx={{ textAlign: "center", fontWeight: "bold", marginBottom: 6 }}
+      >
         Task Page
       </Typography>
 
@@ -139,22 +157,24 @@ const TasksPage = () => {
             <Grid2 item xs={12} key={task.id}>
               <Card
                 style={{
-                  width: '40vw',
-                  borderRadius: '15px',
-                  background: '#ffffff',
-                  boxShadow: '0 8px 20px rgba(0, 0, 0, 0.3)',
-                  transition: 'transform 0.3s, box-shadow 0.3s',
-                  padding: '10px',
-                  cursor: 'pointer',
-                  margin: '5px',
+                  width: "40vw",
+                  borderRadius: "15px",
+                  background: "#ffffff",
+                  boxShadow: "0 8px 20px rgba(0, 0, 0, 0.3)",
+                  transition: "transform 0.3s, box-shadow 0.3s",
+                  padding: "10px",
+                  cursor: "pointer",
+                  margin: "5px",
                 }}
                 onMouseOver={(e) => {
-                  e.currentTarget.style.transform = 'scale(1.05)';
-                  e.currentTarget.style.boxShadow = '0 12px 24px rgba(0, 0, 0, 0.4)';
+                  e.currentTarget.style.transform = "scale(1.05)";
+                  e.currentTarget.style.boxShadow =
+                    "0 12px 24px rgba(0, 0, 0, 0.4)";
                 }}
                 onMouseOut={(e) => {
-                  e.currentTarget.style.transform = 'scale(1)';
-                  e.currentTarget.style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.3)';
+                  e.currentTarget.style.transform = "scale(1)";
+                  e.currentTarget.style.boxShadow =
+                    "0 8px 20px rgba(0, 0, 0, 0.3)";
                 }}
                 onClick={() => handleCardClick(task)}
               >
@@ -163,103 +183,238 @@ const TasksPage = () => {
                   <Typography
                     variant="h5"
                     style={{
-                      textAlign: 'center',
-                      fontWeight: 'bold',
-                      fontSize: '24px',
-                      color: 'black',
+                      textAlign: "center",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      color: "black",
                       backgroundColor: getStatusColor(task.status),
-                      padding: '10px',
-                      borderRadius: '10px',
+                      padding: "10px",
+                      borderRadius: "10px",
                     }}
                   >
                     {task.task_name}
                   </Typography>
 
-                  <Divider style={{ margin: '10px 0', border: '0.5px solid #666666' }} />
+                  <Divider
+                    style={{ margin: "10px 0", border: "0.5px solid #666666" }}
+                  />
 
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0' }}>
-                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                      <Typography variant="body2" sx={{ color: '#2d2f30', fontWeight: 'bold', fontSize: '1.6rem' }}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      padding: "10px 0",
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          color: "#2d2f30",
+                          fontWeight: "bold",
+                          fontSize: "1.6rem",
+                        }}
+                      >
                         Project
                       </Typography>
-                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <FolderIcon sx={{ marginRight: 1, color: '#2d2f30' }} />
-                        <Typography variant="body1" sx={{ fontSize: '1.8rem', color: '#2d2f30' }}>
+                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                        <FolderIcon sx={{ marginRight: 1, color: "#2d2f30" }} />
+                        <Typography
+                          variant="body1"
+                          sx={{ fontSize: "1.8rem", color: "#2d2f30" }}
+                        >
                           {task.project_name}
                         </Typography>
                       </Box>
                     </Box>
 
-                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                      <Typography variant="body2" sx={{ color: '#2d2f30', fontWeight: 'bold', fontSize: '1.6rem' }}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          color: "#2d2f30",
+                          fontWeight: "bold",
+                          fontSize: "1.6rem",
+                        }}
+                      >
                         Start Project
                       </Typography>
-                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <DateRangeIcon sx={{ marginRight: 1, color: '#2d2f30' }} />
-                        <Typography variant="body1" sx={{ fontSize: '1.8rem', color: '#2d2f30' }}>
+                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                        <DateRangeIcon
+                          sx={{ marginRight: 1, color: "#2d2f30" }}
+                        />
+                        <Typography
+                          variant="body1"
+                          sx={{ fontSize: "1.8rem", color: "#2d2f30" }}
+                        >
                           {formatDate(task.project_start)}
                         </Typography>
                       </Box>
                     </Box>
 
-                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                      <Typography variant="body2" sx={{ color: '#2d2f30', fontWeight: 'bold', fontSize: '1.6rem' }}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          color: "#2d2f30",
+                          fontWeight: "bold",
+                          fontSize: "1.6rem",
+                        }}
+                      >
                         End Project
                       </Typography>
-                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <DateRangeIcon sx={{ marginRight: 1, color: '#2d2f30' }} />
-                        <Typography variant="body1" sx={{ fontSize: '1.8rem', color: '#2d2f30' }}>
+                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                        <DateRangeIcon
+                          sx={{ marginRight: 1, color: "#2d2f30" }}
+                        />
+                        <Typography
+                          variant="body1"
+                          sx={{ fontSize: "1.8rem", color: "#2d2f30" }}
+                        >
                           {formatDate(task.project_end)}
                         </Typography>
                       </Box>
                     </Box>
                   </Box>
 
-                  <Divider style={{ margin: '10px 0', border: '0.5px solid #2d2f30' }} />
+                  <Divider
+                    style={{ margin: "10px 0", border: "0.5px solid #2d2f30" }}
+                  />
 
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <Box
+                    sx={{ display: "flex", justifyContent: "space-between" }}
+                  >
                     <Box sx={{ flex: 1 }}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '10px' }}>
-                        <EventNoteIcon sx={{ marginRight: 1, color: '#2d2f30' }} />
-                        <Typography variant="body1" sx={{ fontSize: '1.8rem', color: '#2d2f30' }}>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          marginTop: "10px",
+                        }}
+                      >
+                        <EventNoteIcon
+                          sx={{ marginRight: 1, color: "#2d2f30" }}
+                        />
+                        <Typography
+                          variant="body1"
+                          sx={{ fontSize: "1.8rem", color: "#2d2f30" }}
+                        >
                           User Email: {task.user_mail}
                         </Typography>
                       </Box>
 
-                      <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '10px' }}>
-                        <EventNoteIcon sx={{ marginRight: 1, color: '#2d2f30' }} />
-                        <Typography variant="body1" sx={{ fontSize: '1.8rem', color: '#2d2f30' }}>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          marginTop: "10px",
+                        }}
+                      >
+                        <EventNoteIcon
+                          sx={{ marginRight: 1, color: "#2d2f30" }}
+                        />
+                        <Typography
+                          variant="body1"
+                          sx={{ fontSize: "1.8rem", color: "#2d2f30" }}
+                        >
                           User Name: {task.user_name}
                         </Typography>
                       </Box>
 
-                      <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '10px' }}>
-                        <EventNoteIcon sx={{ marginRight: 1, color: '#2d2f30' }} />
-                        <Typography variant="body1" sx={{ fontSize: '1.8rem', color: '#2d2f30' }}>
-                          Note: {task.note || 'None'}
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          marginTop: "10px",
+                        }}
+                      >
+                        <EventNoteIcon
+                          sx={{ marginRight: 1, color: "#2d2f30" }}
+                        />
+                        <Typography
+                          variant="body1"
+                          sx={{ fontSize: "1.8rem", color: "#2d2f30" }}
+                        >
+                          Note: {task.note || "None"}
                         </Typography>
                       </Box>
                     </Box>
 
                     <Box sx={{ flex: 1 }}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '10px' }}>
-                        <DateRangeIcon sx={{ marginRight: 1, color: '#2d2f30' }} />
-                        <Typography variant="body1" sx={{ fontSize: '1.8rem', color: '#2d2f30' }}>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          marginTop: "10px",
+                        }}
+                      >
+                        <DateRangeIcon
+                          sx={{ marginRight: 1, color: "#2d2f30" }}
+                        />
+                        <Typography
+                          variant="body1"
+                          sx={{ fontSize: "1.8rem", color: "#2d2f30" }}
+                        >
                           Start Task: {formatDate(task.time_start)}
                         </Typography>
                       </Box>
 
-                      <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '10px' }}>
-                        <DateRangeIcon sx={{ marginRight: 1, color: '#2d2f30' }} />
-                        <Typography variant="body1" sx={{ fontSize: '1.8rem', color: '#2d2f30' }}>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          marginTop: "10px",
+                        }}
+                      >
+                        <DateRangeIcon
+                          sx={{ marginRight: 1, color: "#2d2f30" }}
+                        />
+                        <Typography
+                          variant="body1"
+                          sx={{ fontSize: "1.8rem", color: "#2d2f30" }}
+                        >
                           End Task: {formatDate(task.time_end)}
                         </Typography>
                       </Box>
 
-                      <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '10px' }}>
-                        <PriorityHighIcon sx={{ marginRight: 1, color: '#2d2f30' }} />
-                        <Typography variant="body1" sx={{ fontSize: '1.8rem', color: '#2d2f30' }}>
-                          Status: {task.status === 1 ? 'Pending' : task.status === 2 ? 'In Progress' : 'Complete'}
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          marginTop: "10px",
+                        }}
+                      >
+                        <PriorityHighIcon
+                          sx={{ marginRight: 1, color: "#2d2f30" }}
+                        />
+                        <Typography
+                          variant="body1"
+                          sx={{ fontSize: "1.8rem", color: "#2d2f30" }}
+                        >
+                          Status:{" "}
+                          {task.status === 1
+                            ? "Pending"
+                            : task.status === 2
+                              ? "In Progress"
+                              : "Complete"}
                         </Typography>
                       </Box>
                     </Box>
@@ -273,19 +428,18 @@ const TasksPage = () => {
         <Typography
           variant="h4"
           sx={{
-            textAlign: 'center',
-            fontWeight: 'bold',
-            color: '#546e7a',  // Darker color for stronger emphasis
-            paddingTop: '20px',
-            fontSize: '2rem',
-            letterSpacing: '0.05rem',
-            textTransform: 'uppercase',
-            animation: 'fadeIn 1.5s ease-in-out',
+            textAlign: "center",
+            fontWeight: "bold",
+            color: "#546e7a", // Darker color for stronger emphasis
+            paddingTop: "20px",
+            fontSize: "2rem",
+            letterSpacing: "0.05rem",
+            textTransform: "uppercase",
+            animation: "fadeIn 1.5s ease-in-out",
           }}
         >
           No tasks found
         </Typography>
-
       )}
 
       {/* Render Modal */}

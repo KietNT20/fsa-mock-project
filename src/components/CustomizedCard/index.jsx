@@ -62,8 +62,7 @@ const CustomizedCard = ({ cardCell = [], cardDatas = [] }) => {
             e.currentTarget.style.boxShadow = "0 8px 15px rgba(0, 0, 0, 0.3)";
           }}
         >
-          <CardContent
-          >
+          <CardContent>
             {/* Project title with background color based on priority */}
             <Typography
               variant="h5"
@@ -80,28 +79,29 @@ const CustomizedCard = ({ cardCell = [], cardDatas = [] }) => {
             </Typography>
 
             {/* Other fields */}
-            {cardCell.map((cell, cellIndex) => (
-              cell !== "priority" && ( // Exclude priority as we moved it to the title
-                <Typography
-                  key={cellIndex}
-                  variant={cellIndex === 0 ? "h6" : "body1"}
-                  style={{
-                    fontWeight: "normal",
-                    fontSize: cellIndex === 0 ? "22px" : "18px",
-                    padding: "8px 0",
-                    marginTop: "10px",
-                    color: "#000000",
-                  }}
-                >
-                  {capitalize(cell)}:{" "}
-                  {cell.includes("time")
-                    ? formatDate(item[cell])
-                    : cell.includes("note") && item[cell] === ""
-                    ? "None"
-                    : item[cell]}
-                </Typography>
-              )
-            ))}
+            {cardCell.map(
+              (cell, cellIndex) =>
+                cell !== "priority" && ( // Exclude priority as we moved it to the title
+                  <Typography
+                    key={cellIndex}
+                    variant={cellIndex === 0 ? "h6" : "body1"}
+                    style={{
+                      fontWeight: "normal",
+                      fontSize: cellIndex === 0 ? "22px" : "18px",
+                      padding: "8px 0",
+                      marginTop: "10px",
+                      color: "#000000",
+                    }}
+                  >
+                    {capitalize(cell)}:{" "}
+                    {cell.includes("time")
+                      ? formatDate(item[cell])
+                      : cell.includes("note") && item[cell] === ""
+                        ? "None"
+                        : item[cell]}
+                  </Typography>
+                ),
+            )}
           </CardContent>
         </Card>
       ))}

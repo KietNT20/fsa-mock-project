@@ -166,7 +166,7 @@ const ProjectDetail = () => {
           borderRadius: "12px",
           background: "#ffffff",
           color: "#636969",
-          boxShadow: '0 8px 20px rgba(0, 0, 0, 0.3)',
+          boxShadow: "0 8px 20px rgba(0, 0, 0, 0.3)",
           mx: "auto",
           mt: 3,
         }}
@@ -257,7 +257,7 @@ const ProjectDetail = () => {
           p: 3,
           borderRadius: "12px",
           backgroundColor: "#f9f9f9",
-          boxShadow: '0 8px 20px rgba(0, 0, 0, 0.2)',
+          boxShadow: "0 8px 20px rgba(0, 0, 0, 0.2)",
           color: "#424242",
           maxHeight: "400px",
           overflowY: "auto",

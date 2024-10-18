@@ -12,9 +12,7 @@ export const useGetProject = () => {
   const { data: dataProject, ...rest } = useQuery({
     queryKey: ["projects"],
     queryFn: getProject,
-    onError: (error) => {
-      console.log("Error fetching projects:", error);
-    },
+    throwOnError: true,
   });
 
   return {
