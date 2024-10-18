@@ -6,7 +6,6 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { PersistGate } from "redux-persist/integration/react"; // import PersistGate
 import App, { queryClient } from "./App.jsx";
-import "./index.css";
 import store, { persistor } from "./store/store.js"; // import persistor
 
 createRoot(document.getElementById("root")).render(

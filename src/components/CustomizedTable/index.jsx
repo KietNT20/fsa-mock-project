@@ -190,7 +190,7 @@ const CustomizedTable = ({
                           aria-controls="simple-menu"
                           aria-haspopup="true"
                           onClick={(event) => {
-                            event.stopPropagation(); // Ngăn việc sự kiện onClick của hàng được kích hoạt khi nhấn vào action
+                            event.stopPropagation();
                             handleClick(event, row);
                           }}
                         >

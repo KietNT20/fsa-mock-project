@@ -1,3 +1,5 @@
+@use "mixins";
+
 .header {
   height: var(--height-header);
   width: 100%;
@@ -9,13 +11,13 @@
   &__toolbar {
     width: 100vw;
     height: 100%;
-    @include mid(flex);
+    @include mixins.mid(flex);
     justify-content: space-between;
 
     .header__toolbar-btn {
       height: var(--height-button);
       width: fit-content;
-      @include text(vnSemiBold, 1.6rem, normal, var(--white-cl));
+      @include mixins.text(vnSemiBold, 1.6rem, normal, var(--white-cl));
     }
 
     &-icon {

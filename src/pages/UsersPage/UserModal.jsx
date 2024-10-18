@@ -55,12 +55,14 @@ const UserModal = ({
       reset({
         name: user.name || "",
         email: user.email || "",
+        password: user.password || "",
         role: user.role?.toString() || "",
       });
     } else {
       reset({
         name: "",
         email: "",
+        password: "",
         role: "",
       });
     }
@@ -212,8 +214,9 @@ const UserModal = ({
                 variant="outlined"
                 fullWidth
                 disabled={isSubmitDisabled}
+                value={field.value}
                 error={!!errors.password}
-                helperText={errors.email?.password}
+                helperText={errors.password?.message}
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     borderRadius: "12px",

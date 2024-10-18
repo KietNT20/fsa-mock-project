@@ -1,3 +1,4 @@
+import "@/assets/scss/style.scss";
 import { QueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { Toaster } from "react-hot-toast";
