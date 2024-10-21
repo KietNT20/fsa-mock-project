@@ -7,7 +7,11 @@ const PrivateRoute = ({ redirectPath = PATH.LOGIN }) => {
     return <Navigate replace to={redirectPath} />;
   }
 
-  return <Outlet />;
+  return (
+    <>
+      <Outlet />
+    </>
+  );
 };
 
 export default PrivateRoute;

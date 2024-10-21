@@ -1,6 +1,5 @@
 import Spinner from "@/components/Spinner";
 import { useUpdateApiUser, useUpdateRoleUser } from "@/hooks/useUsers";
-import { updateProfile } from "@/store/actions/profileAction";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
   Box,
@@ -15,7 +14,7 @@ import {
 } from "@mui/material";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { userModalSchema } from "./schemas/schema";
 
 const UserModal = ({
@@ -39,12 +38,11 @@ const UserModal = ({
       role: "",
     },
   });
-  const { profile } = useSelector((state) => state.profile);
-  const dispatch = useDispatch();
+  const { userProfile } = useSelector((state) => state.userProfile);
 
-  const isRoleDisabled = profile?.role === 0 || createLoading;
+  const isRoleDisabled = userProfile?.role === 0 || createLoading;
 
-  const { mutate: updateUserName, isPending: updateUserNameLoading } =
+  const { mutate: updateUserInfo, isPending: updateUserNameLoading } =
     useUpdateApiUser();
 
   const { mutate: updateUserRole, isPending: updateUserRoleLoading } =
@@ -72,13 +70,13 @@ const UserModal = ({
     if (mode === "create") {
       onCreateUser(data);
     } else if (mode === "update") {
-      if (data.name !== user.name) {
-        await updateUserName({
+      console.log("data", data);
+      if (data.name !== user.name || data.password !== user.password) {
+        await updateUserInfo({
           email: user.email,
           name: data.name,
           password: data.password,
         });
-        dispatch(updateProfile({ name: data.name }));
       }
       if (data.role !== user.role?.toString()) {
         await updateUserRole({ email: user.email, role: parseInt(data.role) });

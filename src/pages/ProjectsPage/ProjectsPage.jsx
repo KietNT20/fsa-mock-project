@@ -30,8 +30,8 @@ const ProjectsPage = () => {
     useCreateProject();
   const { mutate: doUpdateProject, isPending: updateProjectPending } =
     useUpdateProject();
-  const { profile } = useSelector((state) => state.profile);
-  const userRole = profile?.role;
+  const { userProfile } = useSelector((state) => state.userProfile);
+  const userRole = userProfile?.role;
   const disabled =
     deleteProjectPending || addProjectPending || updateProjectPending;
 
@@ -100,7 +100,7 @@ const ProjectsPage = () => {
     "time_end",
     "note",
     "priority",
-    ...(profile?.role === 1 ? ["action"] : []),
+    ...(userProfile?.role === 1 ? ["action"] : []),
   ];
 
   // Filtered and paginated projects based on search term and priority filter
@@ -207,7 +207,7 @@ const ProjectsPage = () => {
         onUpdateProject={handleUpdateProject}
       />
 
-      {profile?.role === 0 ? (
+      {userProfile?.role === 0 ? (
         // For role 0, display all filtered projects without pagination
         <CustomizedCard cardCell={dataHeader} cardDatas={filteredProjects} />
       ) : (

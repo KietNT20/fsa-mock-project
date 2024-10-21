@@ -45,7 +45,7 @@ export const useGetApiUserById = (id) => {
 
 export const useDeleteApiUser = () => {
   const queryClient = useQueryClient();
-  const { profile } = useSelector((state) => state.profile);
+  const { userProfile } = useSelector((state) => state.userProfile);
 
   const { mutate, ...rest } = useMutation({
     mutationFn: ({ id }) => {
@@ -63,7 +63,7 @@ export const useDeleteApiUser = () => {
     onError: (err) => {
       toast.dismiss();
       console.error("Error:", err);
-      if (profile?.role === 1) {
+      if (userProfile?.role === 1) {
         toast.error("You can not delete this user has role admin");
       } else {
         toast.error("Delete failed");
@@ -105,6 +105,7 @@ export const useUpdateApiUser = () => {
   const queryClient = useQueryClient();
   const { mutate, ...rest } = useMutation({
     mutationFn: ({ email, name, password }) => {
+      console.log("useUpdateApiUser ->", email, name, password);
       return axiosInstance.put(API.USERS, {
         email,
         name,

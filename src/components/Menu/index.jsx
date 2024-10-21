@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 
 const MenuList = () => {
-  const { profile } = useSelector((state) => state.profile);
+  const { userProfile } = useSelector((state) => state.userProfile);
 
   return (
     <Box
@@ -25,11 +25,11 @@ const MenuList = () => {
         {ROUTES.map((item) => {
           if (
             (item.label === "Dashboard" || item.label === "Users") &&
-            profile?.role === 0
+            userProfile?.role === 0
           ) {
             return null;
           }
-          if (item.label === "Tasks" && profile?.role === 1) {
+          if (item.label === "Tasks" && userProfile?.role === 1) {
             return null;
           }
           return (
