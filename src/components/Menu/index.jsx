@@ -18,7 +18,6 @@ const MenuList = () => {
       sx={{
         width: "100%",
         padding: "0",
-        borderRight: "1px solid #ccc",
       }}
     >
       <List sx={{ padding: 0 }}>

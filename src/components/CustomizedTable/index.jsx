@@ -24,10 +24,11 @@ import {
   Typography,
 } from "@mui/material";
 import { format, parseISO } from "date-fns";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ConfirmationModal from "../ConfirmationModal";
+import SortMenuComponent from "../Sort"; // Import SortMenuComponent
 
 const CustomizedTable = ({
   title = "Table List",
@@ -39,11 +40,51 @@ const CustomizedTable = ({
   deleteLoading,
 }) => {
   const [anchorElTable, setAnchorElTable] = useState(null);
-  // const [selectedRow, setSelectedRow] = useState(null);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [sortedData, setSortedData] = useState(tableDatas); // Lưu trữ dữ liệu sau khi sắp xếp
+  const [sortField, setSortField] = useState(""); // Lưu cột hiện tại đang được sắp xếp
+  const [sortDirection, setSortDirection] = useState("asc"); // Lưu hướng sắp xếp: asc hoặc desc
   const dispatch = useDispatch();
   const { infoRow } = useSelector((state) => state.selectedRow);
   const navigate = useNavigate();
+
+  // Các field để sắp xếp
+  const sortFields = [
+    { label: "Name", value: "name" },
+    { label: "Payment", value: "payment" },
+    { label: "Time Start", value: "time_start" },
+    { label: "Time End", value: "time_end" },
+  ];
+
+  // Hàm xử lý sắp xếp
+  const handleSort = (field) => {
+    const isAsc = sortField === field && sortDirection === "asc";
+    setSortDirection(isAsc ? "desc" : "asc");
+    setSortField(field);
+  };
+
+  // Tự động sắp xếp lại khi tableDatas, sortField, hoặc sortDirection thay đổi
+  useEffect(() => {
+    let sortedArray = [...tableDatas];
+    if (sortField === "name") {
+      sortedArray.sort((a, b) =>
+        sortDirection === "asc"
+          ? a.name.localeCompare(b.name)
+          : b.name.localeCompare(a.name),
+      );
+    } else if (sortField === "payment") {
+      sortedArray.sort((a, b) =>
+        sortDirection === "asc" ? a.payment - b.payment : b.payment - a.payment,
+      );
+    } else if (sortField === "time_start" || sortField === "time_end") {
+      sortedArray.sort((a, b) =>
+        sortDirection === "asc"
+          ? new Date(a[sortField]) - new Date(b[sortField])
+          : new Date(b[sortField]) - new Date(a[sortField]),
+      );
+    }
+    setSortedData(sortedArray);
+  }, [tableDatas, sortField, sortDirection]);
 
   const handleClick = (event, row) => {
     setAnchorElTable(event.currentTarget);
@@ -66,10 +107,7 @@ const CustomizedTable = ({
   };
 
   const handleViewDetailProject = (selectedRow) => {
-    // console.log("Selected row data:", selectedRow);
     if (selectedRow) {
-      // Navigate to the detail page with the project ID
-      // Navigate to the detail page without including the project ID
       dispatch(setSelectedRow(selectedRow?.id));
       navigate(PATH.PROJECT_DETAIL);
     } else {
@@ -132,9 +170,15 @@ const CustomizedTable = ({
             borderRadius: "8px 8px 0 0",
             padding: "15px",
             marginBottom: "20px",
+            position: "relative", // Để canh chỉnh icon
           }}
         >
           {title}
+          {/* Truyền hàm handleSort và fields cho SortMenuComponent */}
+          <SortMenuComponent
+            onSortFieldChange={handleSort}
+            fields={sortFields}
+          />
         </Typography>
 
         <Table sx={{ minWidth: 500, width: "100%" }}>
@@ -158,7 +202,7 @@ const CustomizedTable = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {tableDatas.map((row, index) => (
+            {sortedData.map((row, index) => (
               <StyledTableRow
                 key={row.id}
                 sx={{
