@@ -17,8 +17,8 @@ const ProjectDetail = () => {
   const [searchTerm, setSearchTerm] = useState(""); // State for search input (user_name)
   const [statusFilter, setStatusFilter] = useState("all"); // State for status filter
   const { infoRow } = useSelector((state) => state.selectedRow);
-  const { profile } = useSelector((state) => state.profile);
-  const roleUser = profile?.role === 0;
+  const { userProfile } = useSelector((state) => state.userProfile);
+  const roleUser = userProfile?.role === 0;
   console.log("infoRow", infoRow);
   const { projectDetail } = useGetProjectDetail(infoRow);
   // console.log('projectDetail', projectDetail);

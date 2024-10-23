@@ -4,23 +4,21 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
 export const useGetProject = () => {
-  const getProject = async () => {
-    const dataProject = await axiosInstance.get(API.PROJECTS);
-    return dataProject;
-  };
-
-  const { data: dataProject, ...rest } = useQuery({
+  const { data, ...rest } = useQuery({
     queryKey: ["projects"],
-    queryFn: getProject,
-    throwOnError: true,
+    queryFn: () => {
+      return axiosInstance.get(API.PROJECTS);
+    },
+    onError: (error) => {
+      console.log("error", error);
+    },
   });
 
   return {
-    dataProject,
+    data,
     ...rest,
   };
 };
-
 export const useGetProjectDetail = (id) => {
   const { data: projectDetail, ...rest } = useQuery({
     queryKey: ["projects", id],

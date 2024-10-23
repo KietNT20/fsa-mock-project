@@ -1,38 +1,34 @@
 export const calculateProjectStats = (projects, currentDate) => {
-  let runningProjects = 0;
-  let projectsReleasingSoon = 0;
-  let prioritizedProjects = 0;
+  let runningProjects = [];
+  let projectsReleasingSoon = [];
+  let prioritizedProjects = [];
+  let totalProjects = projects.length;
 
   projects.forEach((project) => {
     const timeStart = new Date(project.time_start);
     const timeEnd = new Date(project.time_end);
-    const timeDifference = (timeEnd - currentDate) / (1000 * 60 * 60 * 24); // Tính khoảng cách ngày
+    const timeDifference = (timeEnd - currentDate) / (1000 * 60 * 60 * 24);
 
     // Project đang chạy
-    if (timeStart <= currentDate && timeEnd > currentDate) {
-      runningProjects++;
+    if (timeStart <= currentDate && timeEnd >= currentDate) {
+      runningProjects.push({ name: project.name });
     }
 
     // Project sẽ release trong 7 ngày tới
     if (timeDifference <= 7 && timeDifference >= 0) {
-      projectsReleasingSoon++;
+      projectsReleasingSoon.push({ name: project.name });
     }
 
     // Project đang được ưu tiên (priority = 1)
     if (project.priority === 1) {
-      prioritizedProjects++;
+      prioritizedProjects.push({ name: project.name });
     }
   });
-
-  console.log("Project Stats:", {
-    runningProjects,
-    projectsReleasingSoon,
-    prioritizedProjects,
-  }); // Log kết quả tính toán
 
   return {
     runningProjects,
     projectsReleasingSoon,
     prioritizedProjects,
+    totalProjects,
   };
 };

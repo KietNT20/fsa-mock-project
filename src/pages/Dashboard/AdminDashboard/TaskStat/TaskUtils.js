@@ -1,8 +1,9 @@
 export const calculateTaskStats = (tasks, currentDate) => {
-  let lateTasks = 0;
-  let waitingTasks = 0;
-  let inProgressTasks = 0;
-  let tasksDueInThreeDays = 0;
+  let lateTasks = [];
+  let waitingTasks = [];
+  let inProgressTasks = [];
+  let tasksDueInThreeDays = [];
+  let totalTasks = tasks.length; // Tổng số nhiệm vụ
 
   tasks.forEach((task) => {
     const timeStart = new Date(task.time_start);
@@ -11,22 +12,22 @@ export const calculateTaskStats = (tasks, currentDate) => {
 
     // Task trễ hạn (task đã quá hạn và chưa hoàn thành)
     if (timeEnd < currentDate && task.status !== 3) {
-      lateTasks++;
+      lateTasks.push({ name: task.task_name });
     }
 
     // Task đang chờ nhận việc (chưa bắt đầu và đang ở trạng thái 1 - chờ)
     if (timeStart > currentDate && task.status === 1) {
-      waitingTasks++;
+      waitingTasks.push({ name: task.task_name });
     }
 
     // Task đang thực hiện (status == 2)
     if (task.status === 2) {
-      inProgressTasks++;
+      inProgressTasks.push({ name: task.task_name });
     }
 
     // Task cần hoàn thành trong 3 ngày tới
     if (timeDifference < 3 && task.status !== 3) {
-      tasksDueInThreeDays++;
+      tasksDueInThreeDays.push({ name: task.task_name });
     }
   });
 
@@ -35,5 +36,6 @@ export const calculateTaskStats = (tasks, currentDate) => {
     waitingTasks,
     inProgressTasks,
     tasksDueInThreeDays,
+    totalTasks, // Trả về tổng số nhiệm vụ
   };
 };

@@ -1,6 +1,6 @@
 // reducer.js
 
-import { SAVE_PROFILE, UPDATE_PROFILE } from "../actions/profileAction";
+import { SAVE_PROFILE } from "../actions/profileAction";
 
 // State khởi tạo
 const initialState = {
@@ -14,14 +14,6 @@ const profileReducer = (state = initialState, action) => {
       return {
         ...state,
         profile: action.payload,
-      };
-    case UPDATE_PROFILE:
-      return {
-        ...state,
-        profile: {
-          ...state.profile,
-          ...action.payload,
-        },
       };
 
     default:

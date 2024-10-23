@@ -1,12 +1,27 @@
 import { Typography } from "@mui/material";
-import { ArcElement, Chart as ChartJS, Legend, Tooltip } from "chart.js";
-import { Pie } from "react-chartjs-2";
+import {
+  BarElement,
+  CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LinearScale,
+  Title,
+  Tooltip,
+} from "chart.js";
+import { Bar } from "react-chartjs-2";
 import "../../assets/scss/pages/_chartPie.scss";
 
 // Đăng ký các thành phần cần thiết cho Chart.js
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+);
 
-const ChartComponent = ({ data, labels, title }) => {
+const BarChartComponent = ({ data, labels, title }) => {
   if (!data || !labels || !title) {
     return <Typography>Không có dữ liệu để hiển thị biểu đồ.</Typography>;
   }
@@ -43,6 +58,14 @@ const ChartComponent = ({ data, labels, title }) => {
   const options = {
     responsive: true, // Tự động thay đổi kích thước
     maintainAspectRatio: false, // Để biểu đồ linh hoạt với tỷ lệ khung hình
+    scales: {
+      x: {
+        beginAtZero: true, // Bắt đầu từ 0 trên trục X
+      },
+      y: {
+        beginAtZero: true, // Bắt đầu từ 0 trên trục Y
+      },
+    },
   };
 
   return (
@@ -51,10 +74,10 @@ const ChartComponent = ({ data, labels, title }) => {
         {title}
       </Typography>
       <div className="chart-wrapper">
-        <Pie data={chartData} options={options} />
+        <Bar data={chartData} options={options} />
       </div>
     </div>
   );
 };
 
-export default ChartComponent;
+export default BarChartComponent;

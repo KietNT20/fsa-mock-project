@@ -52,7 +52,7 @@ const getStatusColor = (status) => {
 
 const TasksPage = () => {
   const { data: taskData, isLoading, error } = useGetApiTask();
-  const { profile } = useSelector((state) => state.profile);
+  const { userProfile } = useSelector((state) => state.userProfile);
   const [selectedTask, setSelectedTask] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState(""); // State for search input (user_name)
@@ -80,7 +80,7 @@ const TasksPage = () => {
 
   // Filter tasks based on user_mail, searchTerm (task_name), and status
   const filteredTasks = taskData.filter((task) => {
-    const matchesUserEmail = task.user_mail === profile.email;
+    const matchesUserEmail = task.user_mail === userProfile.email;
 
     // Handle search filter by task_name
     const matchesSearch =

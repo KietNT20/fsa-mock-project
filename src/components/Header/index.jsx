@@ -18,8 +18,9 @@ import { useNavigate } from "react-router-dom";
 const drawerWidth = 240;
 
 const Header = ({ handleDrawerToggle }) => {
-  const { profile } = useSelector((state) => state.profile);
   const [anchorEl, setAnchorEl] = useState(null);
+  const { userProfile } = useSelector((state) => state.userProfile);
+  console.log("userProfile", userProfile);
   const navigate = useNavigate();
 
   const handleMenuClick = (event) => {
@@ -72,7 +73,7 @@ const Header = ({ handleDrawerToggle }) => {
           {/* User Avatar/Button to Open Menu */}
           <IconButton color="inherit" onClick={handleMenuClick}>
             <Avatar
-              src={generateCartoonAvatar(profile.name)}
+              src={generateCartoonAvatar(userProfile.name)}
               sx={{
                 border: "2px solid #fff",
                 boxShadow: "0 0 8px rgba(0, 0, 0, 0.3)",
