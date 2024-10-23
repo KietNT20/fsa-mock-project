@@ -23,7 +23,7 @@ import ProjectModal from "./ProjectModal";
 const itemsPerPage = 6;
 
 const ProjectsPage = () => {
-  const { dataProject } = useGetProject();
+  const { data: dataProject, isLoading, isError, error } = useGetProject();
   const { mutate: doDeleteProject, isPending: deleteProjectPending } =
     useDeleteProject();
   const { mutate: doCreateProject, isPending: addProjectPending } =
@@ -127,6 +127,10 @@ const ProjectsPage = () => {
     ? Math.ceil(filteredProjects.length / itemsPerPage)
     : 0;
 
+  if (isError) {
+    return <Typography color="error">Error: {error.message}</Typography>;
+  }
+
   return (
     <React.Fragment>
       <Box>
@@ -224,7 +228,7 @@ const ProjectsPage = () => {
           )}
 
           {/* Show pagination for role 1 */}
-          {filteredProjects.length > 0 && pageCount > 1 && (
+          {!isLoading && dataProject && dataProject.length > 0 && (
             <Pagination
               count={pageCount}
               page={page}

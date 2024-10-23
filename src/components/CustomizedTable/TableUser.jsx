@@ -24,9 +24,10 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ConfirmationModal from "../ConfirmationModal";
+import SortMenuComponent from "../Sort";
 
 const TableUser = ({
   title = "Table List",
@@ -39,11 +40,45 @@ const TableUser = ({
 }) => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [sortedData, setSortedData] = useState(tableDatas); // Lưu trữ dữ liệu sau khi sắp xếp
+  const [sortField, setSortField] = useState(""); // Lưu cột hiện tại đang được sắp xếp
+  const [sortDirection, setSortDirection] = useState("asc"); // Lưu hướng sắp xếp: asc hoặc desc
   const dispatch = useDispatch();
   const { infoRow } = useSelector((state) => state.selectedRow);
 
+  // Các trường có thể sắp xếp
+  const sortFields = [
+    { label: "Name", value: "name" },
+    { label: "Email", value: "email" },
+  ];
+
+  // Hàm xử lý sắp xếp
+  const handleSort = (field) => {
+    const isAsc = sortField === field && sortDirection === "asc";
+    setSortDirection(isAsc ? "desc" : "asc");
+    setSortField(field);
+  };
+
+  // Sắp xếp dữ liệu khi tableDatas, sortField hoặc sortDirection thay đổi
+  useEffect(() => {
+    let sortedArray = [...tableDatas];
+    if (sortField === "name") {
+      sortedArray.sort((a, b) =>
+        sortDirection === "asc"
+          ? a.name.localeCompare(b.name)
+          : b.name.localeCompare(a.name),
+      );
+    } else if (sortField === "email") {
+      sortedArray.sort((a, b) =>
+        sortDirection === "asc"
+          ? a.email.localeCompare(b.email)
+          : b.email.localeCompare(a.email),
+      );
+    }
+    setSortedData(sortedArray);
+  }, [tableDatas, sortField, sortDirection]);
+
   const handleClick = (event, row) => {
-    console.log("row", row);
     setAnchorElUser(event.currentTarget);
     dispatch(setSelectedRow(row));
     if (onActionClick) {
@@ -107,9 +142,15 @@ const TableUser = ({
             borderRadius: "8px 8px 0 0",
             padding: "15px",
             marginBottom: "20px",
+            position: "relative",
           }}
         >
           {title}
+          {/* Truyền fields và handleSort cho SortMenuComponent */}
+          <SortMenuComponent
+            onSortFieldChange={handleSort}
+            fields={sortFields}
+          />
         </Typography>
 
         <Table sx={{ minWidth: 500, width: "100%" }}>
@@ -133,7 +174,7 @@ const TableUser = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {tableDatas.map((row, index) => (
+            {sortedData.map((row, index) => (
               <StyledTableRow
                 key={row.id || index}
                 sx={{

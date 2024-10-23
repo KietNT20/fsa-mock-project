@@ -1,15 +1,13 @@
-// components/ProjectsPage.js
-import { Typography } from "@mui/material";
+// src/pages/DashboardPage.jsx
+
+import { useSelector } from "react-redux";
+import AdminDashboardPage from "./AdminDashboard/AdminDashboardPage";
+import UserDashboardPage from "./UserDashboard/UserDashboardPage";
 
 const DashboardPage = () => {
-  return (
-    <div>
-      <Typography variant="h4" gutterBottom>
-        Dashboard Page
-      </Typography>
-      <Typography>Đây là trang quản lý thông số.</Typography>
-    </div>
-  );
+  const { userProfile } = useSelector((state) => state.userProfile);
+  const userRole = userProfile?.role;
+  return <>{userRole === 1 ? <AdminDashboardPage /> : <UserDashboardPage />}</>;
 };
 
 export default DashboardPage;

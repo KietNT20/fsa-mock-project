@@ -18,15 +18,11 @@ const MenuList = () => {
       sx={{
         width: "100%",
         padding: "0",
-        borderRight: "1px solid #ccc",
       }}
     >
       <List sx={{ padding: 0 }}>
         {ROUTES.map((item) => {
-          if (
-            (item.label === "Dashboard" || item.label === "Users") &&
-            userProfile?.role === 0
-          ) {
+          if (item.label === "Users" && userProfile?.role === 0) {
             return null;
           }
           if (item.label === "Tasks" && userProfile?.role === 1) {
