@@ -17,10 +17,10 @@ export const handleGoogleLogin = async () => {
   try {
     const result = await signInWithPopup(auth, provider);
     const token = await result.user.getIdToken();
-    console.log("Google ID Token:", token);
+    // console.log("Google ID Token:", token);
 
     const data = await axiosInstance.post(API.LOGIN_GOOGLE, { token });
-    console.log("Server Response:", data);
+    // console.log("Server Response:", data);
 
     if (data.access_token) {
       toast.success("Login successfully!!");

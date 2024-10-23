@@ -1,0 +1,15 @@
+/* Core variables and mixins*/
+@use "core/reset";
+@use "core/mixins";
+@use "core/variables";
+@use "core/layouts";
+@use "core/components";
+
+/* Navigation, header, footer*/
+@use "core/header";
+@use "core/nav";
+@use "core/footer";
+
+/* Pages*/
+@use "pages/home";
+@use "pages/auth";

@@ -8,7 +8,14 @@ import {
   useGetProject,
   useUpdateProject,
 } from "@/hooks/useProject";
-import { Box, Button, Grid2, Pagination, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Grid2,
+  Pagination,
+  Skeleton,
+  Typography,
+} from "@mui/material";
 import React, { useCallback, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import ProjectModal from "./ProjectModal";
@@ -16,12 +23,17 @@ import ProjectModal from "./ProjectModal";
 const itemsPerPage = 6;
 
 const ProjectsPage = () => {
-  const { dataProject } = useGetProject();
-  const { mutate: doDeleteProject } = useDeleteProject();
-  const { mutate: doCreateProject } = useCreateProject();
-  const { mutate: doUpdateProject } = useUpdateProject();
-  const { profile } = useSelector((state) => state.profile);
-  const userRole = profile?.role;
+  const { data: dataProject, isLoading, isError, error } = useGetProject();
+  const { mutate: doDeleteProject, isPending: deleteProjectPending } =
+    useDeleteProject();
+  const { mutate: doCreateProject, isPending: addProjectPending } =
+    useCreateProject();
+  const { mutate: doUpdateProject, isPending: updateProjectPending } =
+    useUpdateProject();
+  const { userProfile } = useSelector((state) => state.userProfile);
+  const userRole = userProfile?.role;
+  const disabled =
+    deleteProjectPending || addProjectPending || updateProjectPending;
 
   const [page, setPage] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
@@ -68,6 +80,19 @@ const ProjectsPage = () => {
     setPage(1);
   };
 
+  const TableSkeleton = () => (
+    <>
+      {[...Array(itemsPerPage)].map((_, index) => (
+        <Skeleton
+          key={index}
+          variant="rectangular"
+          height={53}
+          sx={{ my: 1 }}
+        />
+      ))}
+    </>
+  );
+
   const dataHeader = [
     "name",
     "payment",
@@ -75,7 +100,7 @@ const ProjectsPage = () => {
     "time_end",
     "note",
     "priority",
-    ...(profile?.role === 1 ? ["action"] : []),
+    ...(userProfile?.role === 1 ? ["action"] : []),
   ];
 
   // Filtered and paginated projects based on search term and priority filter
@@ -101,6 +126,10 @@ const ProjectsPage = () => {
   const pageCount = filteredProjects
     ? Math.ceil(filteredProjects.length / itemsPerPage)
     : 0;
+
+  if (isError) {
+    return <Typography color="error">Error: {error.message}</Typography>;
+  }
 
   return (
     <React.Fragment>
@@ -182,21 +211,24 @@ const ProjectsPage = () => {
         onUpdateProject={handleUpdateProject}
       />
 
-      {profile?.role === 0 ? (
+      {userProfile?.role === 0 ? (
         // For role 0, display all filtered projects without pagination
         <CustomizedCard cardCell={dataHeader} cardDatas={filteredProjects} />
       ) : (
         <>
-          {/* For role 1, use paginated projects and show pagination */}
-          <CustomizedTable
-            tableCell={dataHeader}
-            tableDatas={paginatedProjects}
-            onUpdate={(project) => handleOpenModal("update", project)}
-            onDelete={(projectId) => handleDeleteProject(projectId)}
-          />
+          {disabled ? (
+            <TableSkeleton />
+          ) : (
+            <CustomizedTable
+              tableCell={dataHeader}
+              tableDatas={paginatedProjects}
+              onUpdate={(project) => handleOpenModal("update", project)}
+              onDelete={(projectId) => handleDeleteProject(projectId)}
+            />
+          )}
 
           {/* Show pagination for role 1 */}
-          {filteredProjects.length > 0 && pageCount > 1 && (
+          {!isLoading && dataProject && dataProject.length > 0 && (
             <Pagination
               count={pageCount}
               page={page}

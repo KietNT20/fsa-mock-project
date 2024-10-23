@@ -1,4 +1,4 @@
-import { updateProfile } from "@/store/actions/profileAction";
+import { useGetApiUserById } from "@/hooks/useUsers";
 import { generateCartoonAvatar } from "@/utils/avatarUtils";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import EditIcon from "@mui/icons-material/Edit";
@@ -15,14 +15,15 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import UserModal from "../UsersPage/UserModal";
 
 const Profile = () => {
-  const { profile } = useSelector((state) => state.profile);
-  console.log("profile", profile);
+  const { userProfile } = useSelector((state) => state.userProfile);
+  console.log("userProfile", userProfile);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const dispatch = useDispatch();
+  const { userDetailData } = useGetApiUserById(userProfile.id);
+  // const dispatch = useDispatch();
 
   const handleEditProfile = () => {
     setIsModalOpen(true);
@@ -32,13 +33,8 @@ const Profile = () => {
     setIsModalOpen(false);
   };
 
-  const handleUpdateUser = async (data) => {
-    try {
-      await dispatch(updateProfile(data));
-      handleCloseModal();
-    } catch (error) {
-      console.error("Error updating user:", error);
-    }
+  const handleUpdateUser = () => {
+    handleCloseModal();
   };
 
   return (
@@ -56,7 +52,7 @@ const Profile = () => {
           {/* Avatar Section */}
           <Grid2 item xs={12} sm={4} textAlign="center">
             <Avatar
-              src={generateCartoonAvatar(profile?.name)}
+              src={generateCartoonAvatar(userDetailData?.name)}
               sx={{
                 width: 180,
                 height: 180,
@@ -69,6 +65,7 @@ const Profile = () => {
             />
             <Button
               variant="contained"
+              disabled={userProfile.email === "admin@gmail.com"}
               startIcon={<EditIcon />}
               sx={{
                 fontSize: "1.4rem",
@@ -84,7 +81,7 @@ const Profile = () => {
           {/* Profile Details Section */}
           <Grid2 item xs={12} sm={8}>
             <Typography variant="h3" sx={{ fontWeight: "bold", mb: 3 }}>
-              {profile.name}
+              {userDetailData?.name}
             </Typography>
 
             <Box>
@@ -92,7 +89,7 @@ const Profile = () => {
               <Box display="flex" alignItems="center" mb={2}>
                 <EmailIcon sx={{ mr: 2, fontSize: "2rem", color: "#1565c0" }} />
                 <Typography variant="body1" sx={{ fontSize: "1.6rem" }}>
-                  <strong>Email: </strong> {profile.email}
+                  <strong>Email: </strong> {userDetailData?.email}
                 </Typography>
               </Box>
 
@@ -100,7 +97,8 @@ const Profile = () => {
               <Box display="flex" alignItems="center" mb={2}>
                 <PhoneIcon sx={{ mr: 2, fontSize: "2rem", color: "#1565c0" }} />
                 <Typography variant="body1" sx={{ fontSize: "1.6rem" }}>
-                  <strong>Phone: </strong> {profile.phone || "Not provided"}
+                  <strong>Phone: </strong>{" "}
+                  {userDetailData?.phone || "Not provided"}
                 </Typography>
               </Box>
 
@@ -108,7 +106,8 @@ const Profile = () => {
               <Box display="flex" alignItems="center" mb={2}>
                 <HomeIcon sx={{ mr: 2, fontSize: "2rem", color: "#1565c0" }} />
                 <Typography variant="body1" sx={{ fontSize: "1.6rem" }}>
-                  <strong>Address: </strong> {profile.address || "Not provided"}
+                  <strong>Address: </strong>{" "}
+                  {userDetailData?.address || "Not provided"}
                 </Typography>
               </Box>
 
@@ -118,7 +117,8 @@ const Profile = () => {
                   sx={{ mr: 2, fontSize: "2rem", color: "#1565c0" }}
                 />
                 <Typography variant="body1" sx={{ fontSize: "1.6rem" }}>
-                  <strong>Joined: </strong> {profile.joined || "Unknown"}
+                  <strong>Joined: </strong>{" "}
+                  {userDetailData?.joined || "Unknown"}
                 </Typography>
               </Box>
             </Box>
@@ -131,7 +131,7 @@ const Profile = () => {
         open={isModalOpen}
         onClose={handleCloseModal}
         mode="update"
-        user={profile}
+        user={userProfile}
         onCreateUser={handleUpdateUser}
       />
     </Container>

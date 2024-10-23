@@ -13,16 +13,18 @@ import {
 import storage from "redux-persist/lib/storage"; // mặc định sử dụng localStorage
 import infoRowReducer from "./reducers/infoRowReducer";
 import profileReducer from "./reducers/profileReducer";
+import userProfileReducer from "./reducers/userProfileReducer";
 
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["profile"],
+  whitelist: ["profile", "selectedRow", "userProfile"],
 };
 
 const rootReducer = combineReducers({
   profile: profileReducer,
   selectedRow: infoRowReducer,
+  userProfile: userProfileReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

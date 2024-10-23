@@ -1,24 +1,28 @@
 import FilterByStatus from "@/components/FilterByStatus";
 import SearchBar from "@/components/SearchBar";
-import { PATH } from "@/constant/path";
+import { useGetProjectDetail } from "@/hooks/useProject";
 import { useCreateTask, useGetApiTask } from "@/hooks/useTask"; // Hook to fetch all tasks
-import { Money, Note } from "@mui/icons-material";
+import { Note, Payments } from "@mui/icons-material";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
-import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
 import { Box, Button, Divider, Grid2, Paper, Typography } from "@mui/material";
-import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useMemo, useState } from "react";
+import { useSelector } from "react-redux";
+import PriorityDisplay from "./PriorityDisplay";
 import ProjectDetailModal from "./ProjectDetailModal";
 import TaskByProject from "./TaskByProject";
 
 const ProjectDetail = () => {
-  const navigate = useNavigate();
-  const [project, setProject] = useState(null);
   const [open, setOpen] = useState(false);
   const { mutate: createTask } = useCreateTask();
-
   const [searchTerm, setSearchTerm] = useState(""); // State for search input (user_name)
   const [statusFilter, setStatusFilter] = useState("all"); // State for status filter
+  const { infoRow } = useSelector((state) => state.selectedRow);
+  const { userProfile } = useSelector((state) => state.userProfile);
+  const roleUser = userProfile?.role === 0;
+  console.log("infoRow", infoRow);
+  const { projectDetail } = useGetProjectDetail(infoRow);
+  // console.log('projectDetail', projectDetail);
+  const project = projectDetail;
 
   const menuItems = [
     { value: "all", label: "All Statuses" },
@@ -37,16 +41,6 @@ const ProjectDetail = () => {
       },
     });
   };
-
-  useEffect(() => {
-    const storedProject = sessionStorage.getItem("selectedProject");
-    if (storedProject) {
-      setProject(JSON.parse(storedProject));
-    } else {
-      console.error("No project data found");
-      navigate(PATH.HOME);
-    }
-  }, [navigate]);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -127,6 +121,7 @@ const ProjectDetail = () => {
             <Button
               variant="contained"
               onClick={handleOpen}
+              disabled={taskLoading || roleUser}
               sx={{
                 background: "linear-gradient(135deg, #0d47a1 , #90caf9)",
                 padding: "12px 24px",
@@ -156,6 +151,7 @@ const ProjectDetail = () => {
         handleClose={handleClose}
         projectId={project?.id}
         onSubmitTask={handleCreateTask}
+        disabled={taskLoading || roleUser}
       />
 
       {/* Project Details */}
@@ -193,7 +189,7 @@ const ProjectDetail = () => {
         >
           <Grid2 item xs={12} md={3}>
             <Box display="flex" alignItems="center">
-              <Money sx={{ mr: 1, fontSize: "2.4rem", color: "#464849" }} />
+              <Payments sx={{ mr: 1, fontSize: "2.4rem", color: "#464849" }} />
               <Typography variant="body1" sx={{ fontSize: "1.8rem" }}>
                 <strong>Payment: </strong> {project.payment}
               </Typography>
@@ -201,19 +197,7 @@ const ProjectDetail = () => {
           </Grid2>
 
           <Grid2 item xs={12} md={3}>
-            <Box display="flex" alignItems="center">
-              <PriorityHighIcon
-                sx={{ mr: 1, fontSize: "2.4rem", color: "#464849" }}
-              />
-              <Typography variant="body1" sx={{ fontSize: "1.8rem" }}>
-                <strong>Priority: </strong>{" "}
-                {project.priority === 1
-                  ? "High"
-                  : project.priority === 2
-                    ? "Medium"
-                    : "Low"}
-              </Typography>
-            </Box>
+            <PriorityDisplay priority={project.priority} />
           </Grid2>
 
           <Grid2 item xs={12} md={3}>

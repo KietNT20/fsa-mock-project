@@ -4,34 +4,32 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
 export const useGetProject = () => {
-  const getProject = async () => {
-    const dataProject = await axiosInstance.get(API.PROJECTS);
-    return dataProject;
-  };
-
-  const { data: dataProject, ...rest } = useQuery({
+  const { data, ...rest } = useQuery({
     queryKey: ["projects"],
-    queryFn: getProject,
-    throwOnError: true,
+    queryFn: () => {
+      return axiosInstance.get(API.PROJECTS);
+    },
+    onError: (error) => {
+      console.log("error", error);
+    },
   });
 
   return {
-    dataProject,
-    getProject,
+    data,
     ...rest,
   };
 };
 export const useGetProjectDetail = (id) => {
-  const getProjectDetail = async () => {
-    if (!id) return; // Nếu không có id, không gọi API
-    const dataProjectDetail = await axiosInstance.get(`${API.PROJECTS}/${id}`);
-    return dataProjectDetail;
-  };
-
   const { data: projectDetail, ...rest } = useQuery({
-    queryKey: ["projectDetail", id],
-    queryFn: getProjectDetail,
-    enabled: !!id, // Chỉ gọi API khi có id
+    queryKey: ["projects", id],
+    queryFn: () => axiosInstance.get(`${API.PROJECTS}/${id}`),
+    enabled: !!id,
+    select: (response) => {
+      if (response && response.length > 0) {
+        return response[0];
+      }
+      return null;
+    },
     onError: (error) => {
       console.log("Error fetching project detail:", error);
     },
@@ -39,7 +37,6 @@ export const useGetProjectDetail = (id) => {
 
   return {
     projectDetail,
-    getProjectDetail,
     ...rest,
   };
 };

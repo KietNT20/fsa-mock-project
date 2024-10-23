@@ -29,8 +29,8 @@ const UsersPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
 
-  const { profile } = useSelector((state) => state.profile);
-  const userRole = profile?.role;
+  const { userProfile } = useSelector((state) => state.userProfile);
+  const userRole = userProfile?.role;
   const { data: dataUsers, isLoading, isError, error } = useGetApiUsers();
   const { mutate: doDeleteUser, isPending: deleteUserLoading } =
     useDeleteApiUser();

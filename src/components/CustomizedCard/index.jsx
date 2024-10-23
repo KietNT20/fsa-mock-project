@@ -41,7 +41,7 @@ const CustomizedCard = ({ cardCell = [], cardDatas = [] }) => {
     >
       {cardDatas.map((item, index) => (
         <Card
-          key={index}
+          key={item.id || index}
           style={{
             flex: "1 1 calc(25% - 20px)",
             maxWidth: "330px",

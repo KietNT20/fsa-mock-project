@@ -161,10 +161,11 @@ const TaskByProject = ({ taskList, taskLoading, taskError }) => {
                 variant="h6"
                 sx={{
                   fontWeight: "bold",
+                  textAlign: "center",
                   marginBottom: 2,
                   fontSize: "2rem",
                   backgroundColor: getStatusColor(task.status),
-                  padding: "5px",
+                  padding: "20px",
                   borderRadius: "10px",
                 }}
               >
@@ -473,6 +474,7 @@ const TaskByProject = ({ taskList, taskLoading, taskError }) => {
             >
               <Button
                 onClick={handleClose}
+                disabled={taskLoading}
                 color="secondary"
                 sx={{
                   color: "#fff",
@@ -495,6 +497,7 @@ const TaskByProject = ({ taskList, taskLoading, taskError }) => {
               <Box>
                 <Button
                   onClick={() => handleUpdateClick()}
+                  disabled={taskLoading}
                   variant="contained"
                   color="primary"
                   sx={{
@@ -515,6 +518,7 @@ const TaskByProject = ({ taskList, taskLoading, taskError }) => {
                 </Button>
                 <Button
                   onClick={() => handleDeleteClick()}
+                  disabled={taskLoading}
                   variant="contained"
                   color="error"
                   sx={{
