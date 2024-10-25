@@ -1,5 +1,4 @@
 import { PATH } from "@/constant/path";
-import { generateCartoonAvatar } from "@/utils/avatarUtils";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle"; // Profile icon
 import LogoutIcon from "@mui/icons-material/Logout"; // Logout icon
 import {
@@ -20,7 +19,6 @@ const drawerWidth = 240;
 const Header = ({ handleDrawerToggle }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const { userProfile } = useSelector((state) => state.userProfile);
-  console.log("userProfile", userProfile);
   const navigate = useNavigate();
 
   const handleMenuClick = (event) => {
@@ -73,7 +71,7 @@ const Header = ({ handleDrawerToggle }) => {
           {/* User Avatar/Button to Open Menu */}
           <IconButton color="inherit" onClick={handleMenuClick}>
             <Avatar
-              src={generateCartoonAvatar(userProfile.name)}
+              src={userProfile.avarta}
               sx={{
                 border: "2px solid #fff",
                 boxShadow: "0 0 8px rgba(0, 0, 0, 0.3)",
@@ -87,12 +85,32 @@ const Header = ({ handleDrawerToggle }) => {
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}
             onClose={handleMenuClose}
+            PaperProps={{
+              sx: {
+                mt: 1.5,
+                borderRadius: 2,
+                minWidth: 150,
+                padding: 1,
+              },
+            }}
           >
-            <MenuItem onClick={handleProfile}>
-              <AccountCircleIcon sx={{ mr: 1.5, fontSize: "2rem" }} /> Profile
+            <MenuItem
+              onClick={handleProfile}
+              sx={{
+                fontSize: "1.6rem",
+                padding: "12px 20px",
+              }}
+            >
+              <AccountCircleIcon sx={{ mr: 1.5, fontSize: "2.2rem" }} /> Profile
             </MenuItem>
-            <MenuItem onClick={handleLogout}>
-              <LogoutIcon sx={{ mr: 1.5, fontSize: "2rem" }} /> Logout
+            <MenuItem
+              onClick={handleLogout}
+              sx={{
+                fontSize: "1.6rem",
+                padding: "12px 20px",
+              }}
+            >
+              <LogoutIcon sx={{ mr: 1.5, fontSize: "2.2rem" }} /> Logout
             </MenuItem>
           </Menu>
         </Toolbar>

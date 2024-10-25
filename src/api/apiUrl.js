@@ -8,4 +8,5 @@ export const API = {
   LOGIN_GOOGLE: "/login/google",
   TASK: "/task",
   TASK_BY_USER: "/task/gettaskbyuser",
+  AVATAR: "upload/avarta",
 };
