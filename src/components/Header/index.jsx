@@ -1,6 +1,7 @@
 import { PATH } from "@/constant/path";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle"; // Profile icon
 import LogoutIcon from "@mui/icons-material/Logout"; // Logout icon
+import MenuIcon from "@mui/icons-material/Menu"
 import {
   AppBar,
   Avatar,
@@ -63,7 +64,7 @@ const Header = ({ handleDrawerToggle }) => {
             onClick={handleDrawerToggle}
             sx={{ mr: 2, display: { sm: "none" } }}
           >
-            <Menu />
+            <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
             Responsive drawer
