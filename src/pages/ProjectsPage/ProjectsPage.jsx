@@ -1,7 +1,6 @@
 import CustomizedCard from "@/components/CustomizedCard";
 import CustomizedTable from "@/components/CustomizedTable";
 import FilterByPriority from "@/components/FilterByPriority";
-import SearchBar from "@/components/SearchBar";
 import {
   useCreateProject,
   useDeleteProject,
@@ -19,6 +18,7 @@ import {
 import React, { useCallback, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import ProjectModal from "./ProjectModal";
+import ProjectSearch from "./ProjectSearch";
 
 const itemsPerPage = 6;
 
@@ -159,7 +159,7 @@ const ProjectsPage = () => {
           }}
         >
           <Grid2 size={6} item xs={12} md={4}>
-            <SearchBar onSearch={handleSearch} />
+            <ProjectSearch data={dataProject || []} onSearch={handleSearch} />
           </Grid2>
           <Grid2 size={2} item xs={12} md={4}>
             <FilterByPriority

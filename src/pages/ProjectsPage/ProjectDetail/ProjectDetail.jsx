@@ -5,6 +5,7 @@ import { useCreateTask, useGetApiTask } from "@/hooks/useTask"; // Hook to fetch
 import { Note, Payments } from "@mui/icons-material";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import { Box, Button, Divider, Grid2, Paper, Typography } from "@mui/material";
+import { format } from "date-fns";
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import PriorityDisplay from "./PriorityDisplay";
@@ -207,7 +208,7 @@ const ProjectDetail = () => {
               />
               <Typography variant="body1" sx={{ fontSize: "1.8rem" }}>
                 <strong>Start Date: </strong>{" "}
-                {new Date(project.time_start).toLocaleString()}
+                {format(new Date(project.time_start), "dd/MM/yyyy HH:mm a")}
               </Typography>
             </Box>
           </Grid2>
@@ -219,7 +220,7 @@ const ProjectDetail = () => {
               />
               <Typography variant="body1" sx={{ fontSize: "1.8rem" }}>
                 <strong>End Date: </strong>{" "}
-                {new Date(project.time_end).toLocaleString()}
+                {format(new Date(project.time_end), "dd/MM/yyyy HH:mm a")}
               </Typography>
             </Box>
           </Grid2>
