@@ -1,5 +1,6 @@
 import { Launch as DetailIcon } from "@mui/icons-material";
 import {
+  Box,
   Button,
   Card,
   CardContent,
@@ -10,16 +11,7 @@ import {
 
 const TaskStatsCard = ({ taskStats, handleOpenTaskModal }) => {
   return (
-    <Grid2
-      item
-      xs={12}
-      md={6}
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
+    <>
       <Card
         style={{
           width: "100%",
@@ -30,8 +22,8 @@ const TaskStatsCard = ({ taskStats, handleOpenTaskModal }) => {
         }}
       >
         <CardContent>
-          <Grid2 container spacing={3}>
-            <Grid2 item xs={12} sm={6} md={3}>
+          <Grid2 container spacing={2}>
+            <Grid2 size={{ xs: 12, sm: 6 }}>
               <Typography
                 variant="h4"
                 style={{ fontSize: "1.6rem", fontWeight: "bold" }}
@@ -45,7 +37,7 @@ const TaskStatsCard = ({ taskStats, handleOpenTaskModal }) => {
                 {taskStats.lateTasks.length}
               </Typography>
             </Grid2>
-            <Grid2 item xs={12} sm={6} md={3}>
+            <Grid2 size={{ xs: 12, sm: 6 }}>
               <Typography
                 variant="h4"
                 style={{ fontSize: "1.6rem", fontWeight: "bold" }}
@@ -59,7 +51,7 @@ const TaskStatsCard = ({ taskStats, handleOpenTaskModal }) => {
                 {taskStats.waitingTasks.length}
               </Typography>
             </Grid2>
-            <Grid2 item xs={12} sm={6} md={3}>
+            <Grid2 size={{ xs: 12, sm: 6 }}>
               <Typography
                 variant="h4"
                 style={{ fontSize: "1.6rem", fontWeight: "bold" }}
@@ -73,7 +65,7 @@ const TaskStatsCard = ({ taskStats, handleOpenTaskModal }) => {
                 {taskStats.inProgressTasks.length}
               </Typography>
             </Grid2>
-            <Grid2 item xs={12} sm={6} md={3}>
+            <Grid2 size={{ xs: 12, sm: 6 }}>
               <Typography
                 variant="h4"
                 style={{ fontSize: "1.6rem", fontWeight: "bold" }}
@@ -91,16 +83,15 @@ const TaskStatsCard = ({ taskStats, handleOpenTaskModal }) => {
 
           <Divider sx={{ my: 3 }} />
 
-          <Grid2
-            container
-            spacing={3}
+          <Box
+            component={"div"}
             sx={{
               display: "flex",
-              justifyContent: "space-between",
               alignItems: "center",
+              justifyContent: "space-between",
             }}
           >
-            <Grid2 item xs={12} sm={6} md={9}>
+            <Box>
               <Typography
                 variant="h4"
                 style={{ fontSize: "1.6rem", fontWeight: "bold" }}
@@ -113,8 +104,8 @@ const TaskStatsCard = ({ taskStats, handleOpenTaskModal }) => {
               >
                 {taskStats.totalTasks}
               </Typography>
-            </Grid2>
-            <Grid2 item xs={12} sm={6} md={3}>
+            </Box>
+            <Box>
               <Button
                 variant="contained"
                 color="primary"
@@ -139,11 +130,11 @@ const TaskStatsCard = ({ taskStats, handleOpenTaskModal }) => {
                 />
                 View Details
               </Button>
-            </Grid2>
-          </Grid2>
+            </Box>
+          </Box>
         </CardContent>
       </Card>
-    </Grid2>
+    </>
   );
 };
 

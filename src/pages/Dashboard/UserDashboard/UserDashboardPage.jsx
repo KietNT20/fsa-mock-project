@@ -4,7 +4,7 @@ import { useGetApiUsers } from "@/hooks/useUsers";
 import { Grid2, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux"; // Import useSelector from react-redux
-import DashboarDetailModal from "../DashboarDetailModal";
+import DashboarDetailModal from "../DashboardDetailModal";
 import TaskByUserStatCard from "./TaskByUser/TaskByUserStatCard";
 import { calculateTaskByUsersStats } from "./TaskByUser/TaskByUserUtils";
 

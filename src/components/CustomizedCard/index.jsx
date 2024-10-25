@@ -8,7 +8,7 @@ const CustomizedCard = ({ cardCell = [], cardDatas = [] }) => {
 
   const formatDate = (dateString) => {
     try {
-      return format(parseISO(dateString), "dd/MM/yyyy HH:mm:ss");
+      return format(parseISO(dateString), "dd/MM/yyyy HH:mm:ss a");
     } catch (error) {
       console.error("Error parsing date:", error);
       return dateString;

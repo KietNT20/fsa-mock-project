@@ -72,7 +72,7 @@ const ProjectDetailModal = ({
   }, [open, projectId, reset, taskData, isUpdate, currentDateTime]);
 
   const onSubmit = (data) => {
-    console.log(data);
+    console.log("onSubmit", data);
     onSubmitTask({ ...data, project_id: projectId });
     handleClose();
   };
