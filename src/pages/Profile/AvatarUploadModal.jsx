@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   Button,
   Dialog,
@@ -64,22 +65,22 @@ const AvatarUploadModal = ({
             textAlign="center"
             sx={{
               position: "relative",
-              width: 500,
-              height: 500,
+              height: "100%",
+              backgroundColor: "#2e3436",
               overflow: "hidden",
               borderRadius: "10px",
               boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)",
               mb: 4,
             }}
           >
-            <Box
+            <Avatar
+              src={previewAvatar}
               sx={{
-                width: 500,
-                height: 500,
-                backgroundImage: `url(${previewAvatar})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                cursor: "grab",
+                width: 180,
+                height: 180,
+                boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
+                border: "1px solid #1e88e5",
+                borderRadius: "50%",
               }}
             />
           </Box>

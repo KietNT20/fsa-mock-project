@@ -111,13 +111,36 @@ const TaskByProject = ({ taskList, taskLoading, taskError }) => {
 
   return (
     <>
-      <Grid2 container spacing={4}>
-        {taskList.map((task) => (
-          <Grid2 size={{ xs: 12, md: 4 }} key={task.id}>
-            <TaskCard task={task} onClick={handleClickOpen} />
-          </Grid2>
-        ))}
-      </Grid2>
+      <Box sx={{ flexGrow: 1, height: "100%", p: 2 }}>
+        <Grid2
+          container
+          spacing={4}
+          sx={{
+            display: "grid",
+            gridTemplateColumns: {
+              xs: "1fr",
+              sm: "repeat(2, 1fr)",
+              md: "repeat(3, 1fr)",
+            },
+            gap: 2,
+            alignItems: "stretch",
+          }}
+        >
+          {taskList.map((task) => (
+            <Grid2 item key={task.id} sx={{ height: "100%" }}>
+              <TaskCard
+                task={task}
+                onClick={handleClickOpen}
+                sx={{
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              />
+            </Grid2>
+          ))}
+        </Grid2>
+      </Box>
 
       {selectedTask && (
         <>

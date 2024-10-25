@@ -12,9 +12,9 @@ import {
 import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { projectModalDetailSchema } from "./schemas/schema";
+import { createProjectModalDetailSchema } from "./schemas/schema";
 
 const ProjectDetailModal = ({
   open,
@@ -24,8 +24,13 @@ const ProjectDetailModal = ({
   taskData,
   isUpdate,
   disabled,
+  projectTimeStart,
+  projectTimeEnd,
 }) => {
-  const [currentDateTime] = useState(dayjs());
+  const projectModalDetailSchema = createProjectModalDetailSchema(
+    projectTimeStart,
+    projectTimeEnd,
+  );
 
   const {
     control,
@@ -39,7 +44,7 @@ const ProjectDetailModal = ({
       project_id: projectId || taskData?.project_id || "",
       status: taskData?.status || "",
       note: taskData?.note || "",
-      time_start: taskData?.time_start || currentDateTime,
+      time_start: taskData?.time_start || dayjs(projectTimeStart),
       time_end: taskData?.time_end || null,
     },
     resolver: yupResolver(projectModalDetailSchema),
@@ -47,7 +52,6 @@ const ProjectDetailModal = ({
 
   useEffect(() => {
     if (taskData && isUpdate) {
-      // Reset form fields with task data when updating
       reset({
         task_name: taskData.task_name,
         user_mail: taskData.user_mail,
@@ -56,20 +60,21 @@ const ProjectDetailModal = ({
         note: taskData.note,
         time_start: taskData.time_start
           ? dayjs(taskData.time_start)
-          : currentDateTime,
+          : dayjs(projectTimeStart),
         time_end: taskData.time_end ? dayjs(taskData.time_end) : null,
       });
     } else {
       reset({
+        task_name: "",
         user_mail: "",
         project_id: projectId || "",
         status: "1",
         note: "",
-        time_start: currentDateTime,
+        time_start: dayjs(projectTimeStart),
         time_end: null,
       });
     }
-  }, [open, projectId, reset, taskData, isUpdate, currentDateTime]);
+  }, [open, projectId, reset, taskData, isUpdate, projectTimeStart]);
 
   const onSubmit = (data) => {
     console.log("onSubmit", data);
@@ -237,9 +242,8 @@ const ProjectDetailModal = ({
                 {...field}
                 label="Start Date and Time"
                 ampm={false}
-                minutesStep={1}
-                secondsStep={1}
-                minDateTime={currentDateTime}
+                minDateTime={dayjs(projectTimeStart)}
+                maxDateTime={dayjs(projectTimeEnd)}
                 views={["year", "month", "day", "hours", "minutes", "seconds"]}
                 slotProps={{
                   textField: {
@@ -287,8 +291,8 @@ const ProjectDetailModal = ({
                 {...field}
                 label="End Date and Time"
                 ampm={false}
-                minutesStep={1}
-                secondsStep={1}
+                minDateTime={field.value?.time_start || dayjs(projectTimeStart)}
+                maxDateTime={dayjs(projectTimeEnd)}
                 views={["year", "month", "day", "hours", "minutes", "seconds"]}
                 slotProps={{
                   textField: {
