@@ -1,9 +1,9 @@
-import BarChartComponent from "@/components/ChartBar";
+import RadarChartComponent from "@/components/ChartRardar";
 import { useGetApiTask } from "@/hooks/useTask";
 import { useGetApiUsers } from "@/hooks/useUsers";
 import { Grid2, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux"; // Import useSelector from react-redux
+import { useSelector } from "react-redux";
 import DashboarDetailModal from "../DashboarDetailModal";
 import TaskByUserStatCard from "./TaskByUser/TaskByUserStatCard";
 import { calculateTaskByUsersStats } from "./TaskByUser/TaskByUserUtils";
@@ -48,8 +48,8 @@ const UserDashboardPage = () => {
   if (taskError || userError) {
     return <Typography>Error fetching data</Typography>;
   }
+
   const handleOpenTaskByUserModal = () => {
-    // Lấy tên các task cần hoàn thành trong 7 ngày cho user hiện tại
     const taskNames =
       TaskByUserStat.usersWithTasksDueIn7Days[0]?.tasks.map(
         (task) => task.task_name,
@@ -83,7 +83,8 @@ const UserDashboardPage = () => {
             alignItems: "center",
           }}
         >
-          {/* User Task Stats Bar Chart */}
+
+          {/* User Task Status Breakdown Radar Chart */}
           <Grid2 item xs={12} md={6}>
             <div
               style={{
@@ -92,17 +93,35 @@ const UserDashboardPage = () => {
                 alignItems: "center",
               }}
             >
-              <BarChartComponent
-                data={TaskByUserStat.usersWithTasksDueIn7Days.map(
+<RadarChartComponent
+    data={{
+        labels: ["Total Tasks", "Not Started", "In Progress","Tasks Due in 7 Days", "Bug Fixing", "Completed"],
+        datasets: [
+            {
+                label: "User Task Stats",
+                data: [
+                  TaskByUserStat?.totalUserTasks, // Total tasks
+                    TaskByUserStat?.notStartedCount,
+                    TaskByUserStat?.inProgressCount,
+                    TaskByUserStat?.usersWithTasksDueIn7Days.map(
                   (user) => user.taskCount,
-                )}
-                labels={TaskByUserStat.usersWithTasksDueIn7Days.map(
-                  (user) => user.email,
-                )}
-                title="User Task Stats"
-              />
+                ),
+                    TaskByUserStat?.bugFixingCount,
+                    TaskByUserStat?.completedCount,
+                ],
+                backgroundColor: "rgba(54, 162, 235, 0.5)",
+                borderColor: "rgba(54, 162, 235, 1)",
+                borderWidth: 1,
+            },
+        ],
+    }}
+    suggestedMax={TaskByUserStat.totalUserTasks || 10}
+    title="User Task Stat"
+/>
+
             </div>
           </Grid2>
+
           {/* Project Stats Card */}
           <Grid2
             container

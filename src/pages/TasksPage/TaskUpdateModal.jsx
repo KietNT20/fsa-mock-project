@@ -73,6 +73,9 @@ const TaskUpdateModal = ({ open, handleClose, task, handleUpdate }) => {
               In Progress
             </MenuItem>
             <MenuItem sx={{ fontSize: "1.8rem" }} value={3}>
+              QA Testing
+            </MenuItem>
+            <MenuItem sx={{ fontSize: "1.8rem" }} value={4}>
               Completed
             </MenuItem>
           </Select>

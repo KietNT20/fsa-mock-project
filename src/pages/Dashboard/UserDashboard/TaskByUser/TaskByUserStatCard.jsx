@@ -51,6 +51,51 @@ const TaskByUserStatCard = ({ TaskByUserStat, handleOpenTaskByUserModal }) => {
 
           <Divider sx={{ my: 3 }} />
 
+          <Grid2 container spacing={2}>
+            <Grid2 item xs={6} sm={4}>
+              <Typography variant="h5" style={{ fontWeight: "bold" }}>
+                Total Tasks
+              </Typography>
+              <Typography variant="body1" style={{ fontSize: "1.8rem", color: "#000000" }}>
+                {TaskByUserStat.totalUserTasks}
+              </Typography>
+            </Grid2>
+            <Grid2 item xs={6} sm={4}>
+              <Typography variant="h5" style={{ fontWeight: "bold" }}>
+                Not Started
+              </Typography>
+              <Typography variant="body1" style={{ fontSize: "1.8rem", color: "#000000" }}>
+                {TaskByUserStat.notStartedCount|| 0}
+              </Typography>
+            </Grid2>
+            <Grid2 item xs={6} sm={4}>
+              <Typography variant="h5" style={{ fontWeight: "bold" }}>
+                In Progress
+              </Typography>
+              <Typography variant="body1" style={{ fontSize: "1.8rem", color: "#000000" }}>
+                {TaskByUserStat.inProgressCount || 0}
+              </Typography>
+            </Grid2>
+            <Grid2 item xs={6} sm={4}>
+              <Typography variant="h5" style={{ fontWeight: "bold" }}>
+                Bug Fixing
+              </Typography>
+              <Typography variant="body1" style={{ fontSize: "1.8rem", color: "#000000" }}>
+                {TaskByUserStat.bugFixingCount}
+              </Typography>
+            </Grid2>
+            <Grid2 item xs={6} sm={4}>
+              <Typography variant="h5" style={{ fontWeight: "bold" }}>
+                Completed
+              </Typography>
+              <Typography variant="body1" style={{ fontSize: "1.8rem", color: "#000000" }}>
+                {TaskByUserStat.completedCount}
+              </Typography>
+            </Grid2>
+          </Grid2>
+
+          <Divider sx={{ my: 3 }} />
+
           <Grid2
             container
             spacing={3}
@@ -60,20 +105,6 @@ const TaskByUserStatCard = ({ TaskByUserStat, handleOpenTaskByUserModal }) => {
               alignItems: "center",
             }}
           >
-            <Grid2 item xs={12} sm={6} md={9}>
-              <Typography
-                variant="h4"
-                style={{ fontSize: "1.6rem", fontWeight: "bold" }}
-              >
-                Total Tasks
-              </Typography>
-              <Typography
-                variant="body1"
-                style={{ fontSize: "1.8rem", color: "#000000" }}
-              >
-                {TaskByUserStat.totalTasks}
-              </Typography>
-            </Grid2>
             <Grid2 item xs={12} sm={6} md={3}>
               <Button
                 variant="contained"

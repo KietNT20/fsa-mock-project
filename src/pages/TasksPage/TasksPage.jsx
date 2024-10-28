@@ -33,7 +33,8 @@ const menuItems = [
   { value: "all", label: "All Statuses" },
   { value: "1", label: "Pending" },
   { value: "2", label: "In Progress" },
-  { value: "3", label: "Done" },
+  { value: "3", label: "QA Testing" },
+  { value: "4", label: "Done" },
 ];
 
 // Function to return color based on status
@@ -44,6 +45,8 @@ const getStatusColor = (status) => {
     case 2:
       return "rgba(54, 162, 235, 0.5)";
     case 3:
+      return "rgba(255, 99, 132, 0.3)";
+    case 4:
       return "rgba(75, 192, 192, 0.5)";
     default:
       return "rgba(0, 0, 0, 0.1)";
@@ -414,7 +417,8 @@ const TasksPage = () => {
                             ? "Pending"
                             : task.status === 2
                               ? "In Progress"
-                              : "Complete"}
+                              :task.status === 3?
+                            "QA Testing": "Completed"}
                         </Typography>
                       </Box>
                     </Box>
