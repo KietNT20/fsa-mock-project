@@ -58,3 +58,15 @@
   font-style: italic;
   color: #666;
 }
+
+.MuiTableCell-body {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 200px;
+}
+
+.MuiPickersDay-root,
+.MuiDayCalendar-weekDayLabel {
+  font-size: 1rem;
+}

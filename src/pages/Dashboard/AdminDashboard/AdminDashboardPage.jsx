@@ -3,9 +3,16 @@ import ChartComponent from "@/components/ChartPie";
 import { useGetProject } from "@/hooks/useProject";
 import { useGetApiTask } from "@/hooks/useTask";
 import { useGetApiUsers } from "@/hooks/useUsers";
-import { Divider, Grid2, Typography } from "@mui/material";
+import {
+  Box,
+  Container,
+  Divider,
+  Grid2,
+  Paper,
+  Typography,
+} from "@mui/material";
 import { useEffect, useState } from "react";
-import DashboarDetailModal from "../DashboarDetailModal";
+import DashboardDetailModal from "../DashboardDetailModal";
 import ProjectStatsCard from "./ProjectStat/ProjectStatsCard";
 import { calculateProjectStats } from "./ProjectStat/ProjectUtils";
 import TaskStatsCard from "./TaskStat/TaskStatsCard";
@@ -111,222 +118,180 @@ const AdminDashboardPage = () => {
   const handleCloseUserModal = () => setOpenUserModal(false);
 
   if (taskLoading || projectLoading || userLoading) {
-    return <Typography>Loading...</Typography>;
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", p: 4 }}>
+        <Typography>Loading...</Typography>
+      </Box>
+    );
   }
 
   if (taskError || projectError || userError) {
-    return <Typography>Error fetching data</Typography>;
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", p: 4 }}>
+        <Typography color="error">Error fetching data</Typography>
+      </Box>
+    );
   }
 
   return (
-    <div>
-      <Typography
-        variant="h3"
-        sx={{ textAlign: "center", fontWeight: "bold", marginBottom: 6 }}
-      >
+    <Container maxWidth="xl">
+      <Typography variant="h3" sx={styles.pageTitle}>
         Admin Dashboard Page
       </Typography>
 
       {/* Task Stats Section */}
       {taskStats && (
-        <Grid2
-          container
-          spacing={2}
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            marginTop: 60,
-            marginBottom: 60,
-          }}
-        >
-          {/* Task Chart */}
-          <Grid2 item xs={12} md={6}>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <ChartComponent
-                data={[
-                  taskStats.lateTasks.length,
-                  taskStats.waitingTasks.length,
-                  taskStats.inProgressTasks.length,
-                  taskStats.tasksDueInThreeDays.length,
-                ]}
-                labels={[
-                  "Late Tasks",
-                  "Waiting Tasks",
-                  "In-Progress Tasks",
-                  "Tasks Due in 3 Days",
-                ]}
-                title="Task Stats"
-              />
-            </div>
-          </Grid2>
-
-          {/* Task Stats Card */}
-          <Grid2
-            container
-            spacing={2}
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              marginTop: 90,
-              marginBottom: 90,
-            }}
-          >
-            <TaskStatsCard
-              taskStats={taskStats}
-              handleOpenTaskModal={handleOpenTaskModal}
-            />
-          </Grid2>
-        </Grid2>
+        <Box sx={styles.sectionContainer}>
+          <Paper elevation={2} sx={{ p: 3 }}>
+            <Grid2 container spacing={4}>
+              <Grid2 size={{ xs: 12, md: 6 }}>
+                <Box sx={styles.chartContainer}>
+                  <ChartComponent
+                    data={[
+                      taskStats.lateTasks.length,
+                      taskStats.waitingTasks.length,
+                      taskStats.inProgressTasks.length,
+                      taskStats.tasksDueInThreeDays.length,
+                    ]}
+                    labels={[
+                      "Late Tasks",
+                      "Waiting Tasks",
+                      "In-Progress Tasks",
+                      "Tasks Due in 3 Days",
+                    ]}
+                    title="Task Stats"
+                  />
+                </Box>
+              </Grid2>
+              <Grid2 size={{ xs: 12, md: 6 }}>
+                <Box sx={styles.cardContainer}>
+                  <TaskStatsCard
+                    taskStats={taskStats}
+                    handleOpenTaskModal={handleOpenTaskModal}
+                  />
+                </Box>
+              </Grid2>
+            </Grid2>
+          </Paper>
+        </Box>
       )}
-      <Divider sx={{ my: 3 }} />
+
+      <Divider />
 
       {/* Project Stats Section */}
       {projectStats && (
-        <Grid2
-          container
-          spacing={2}
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            marginTop: 60,
-            marginBottom: 60,
-          }}
-        >
-          {/* Project Chart */}
-          <Grid2 item xs={12} md={6}>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <ChartComponent
-                data={[
-                  projectStats.runningProjects.length,
-                  projectStats.projectsReleasingSoon.length,
-                  projectStats.prioritizedProjects.length,
-                ]}
-                labels={[
-                  "Running Projects",
-                  "Releasing in 7 Days",
-                  "Prioritized Projects",
-                ]}
-                title="Project Stats"
-              />
-            </div>
-          </Grid2>
-
-          {/* Project Stats Card */}
-          <Grid2
-            container
-            spacing={2}
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              marginTop: 90,
-              marginBottom: 90,
-            }}
-          >
-            <ProjectStatsCard
-              projectStats={projectStats}
-              handleOpenProjectModal={handleOpenProjectModal}
-            />
-          </Grid2>
-        </Grid2>
+        <Box sx={styles.sectionContainer}>
+          <Paper elevation={2} sx={{ p: 3 }}>
+            <Grid2 container spacing={4}>
+              <Grid2 size={{ xs: 12, md: 6 }}>
+                <Box sx={styles.chartContainer}>
+                  <ChartComponent
+                    data={[
+                      projectStats.runningProjects.length,
+                      projectStats.projectsReleasingSoon.length,
+                      projectStats.prioritizedProjects.length,
+                    ]}
+                    labels={[
+                      "Running Projects",
+                      "Releasing in 7 Days",
+                      "Prioritized Projects",
+                    ]}
+                    title="Project Stats"
+                  />
+                </Box>
+              </Grid2>
+              <Grid2 size={{ xs: 12, md: 6 }}>
+                <Box sx={styles.cardContainer}>
+                  <ProjectStatsCard
+                    projectStats={projectStats}
+                    handleOpenProjectModal={handleOpenProjectModal}
+                  />
+                </Box>
+              </Grid2>
+            </Grid2>
+          </Paper>
+        </Box>
       )}
 
-      <Divider sx={{ my: 3 }} />
-      {/* User Task Stats Section */}
+      <Divider />
+
+      {/* User Stats Section */}
       {userTaskStats && (
-        <Grid2
-          container
-          spacing={2}
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            marginTop: 60,
-            marginBottom: 60,
-          }}
-        >
-          {/* User Task Stats Bar Chart */}
-          <Grid2 item xs={12} md={6}>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <BarChartComponent
-                data={[
-                  userTaskStats.usersWithoutTasks.length,
-                  userTaskStats.usersWithTasksDueIn7Days.length,
-                ]}
-                labels={[
-                  "Users Without Tasks",
-                  "Users With Tasks Due in 7 Days",
-                ]}
-                title="User Task Stats"
-              />
-            </div>
-          </Grid2>
-          {/* User Stats Card */}
-          <Grid2
-            container
-            spacing={2}
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              marginTop: 90,
-              marginBottom: 90,
-            }}
-          >
-            <UserStatCard
-              userTaskStats={userTaskStats}
-              handleOpenUserModal={handleOpenUserModal}
-            />
-          </Grid2>
-        </Grid2>
+        <Box sx={styles.sectionContainer}>
+          <Paper elevation={2} sx={{ p: 3 }}>
+            <Grid2 container spacing={4}>
+              <Grid2 size={{ xs: 12, md: 6 }}>
+                <Box sx={styles.chartContainer}>
+                  <BarChartComponent
+                    data={[
+                      userTaskStats.usersWithoutTasks.length,
+                      userTaskStats.usersWithTasksDueIn7Days.length,
+                    ]}
+                    labels={[
+                      "Users Without Tasks",
+                      "Users With Tasks Due in 7 Days",
+                    ]}
+                    title="User Task Stats"
+                  />
+                </Box>
+              </Grid2>
+              <Grid2 size={{ xs: 12, md: 6 }}>
+                <Box sx={styles.cardContainer}>
+                  <UserStatCard
+                    userTaskStats={userTaskStats}
+                    handleOpenUserModal={handleOpenUserModal}
+                  />
+                </Box>
+              </Grid2>
+            </Grid2>
+          </Paper>
+        </Box>
       )}
 
-      {/* Modal cho Task Details */}
-      <DashboarDetailModal
+      {/* Modals */}
+      <DashboardDetailModal
         open={openTaskModal}
         onClose={handleCloseTaskModal}
         title={modalTitle}
         details={modalDetails}
       />
-
-      {/* Modal cho Project Details */}
-      <DashboarDetailModal
+      <DashboardDetailModal
         open={openProjectModal}
         onClose={handleCloseProjectModal}
         title={modalTitle}
         details={modalDetails}
       />
-
-      {/* Modal cho User Details */}
-      <DashboarDetailModal
+      <DashboardDetailModal
         open={openUserModal}
         onClose={handleCloseUserModal}
         title={modalTitle}
         details={modalDetails}
       />
-    </div>
+    </Container>
   );
 };
 
 export default AdminDashboardPage;
+
+const styles = {
+  sectionContainer: {
+    py: 4,
+  },
+  chartContainer: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100%",
+  },
+  cardContainer: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100%",
+  },
+  pageTitle: {
+    textAlign: "center",
+    fontWeight: "bold",
+    mb: 6,
+  },
+};

@@ -37,26 +37,31 @@ const UsersPage = () => {
   const { mutate: doCreateUser, isPending: createUserLoading } =
     useCreateApiUser();
 
+  // Filter users based on search and role
+  const filteredUsers = useMemo(() => {
+    if (!dataUsers) return [];
+    const searchLower = searchTerm.toLowerCase();
+    return dataUsers.filter(
+      (user) =>
+        (user.name?.toLowerCase().includes(searchLower) ||
+          user.email?.toLowerCase().includes(searchLower)) &&
+        (roleFilter === "all" || user.role.toString() === roleFilter),
+    );
+  }, [dataUsers, searchTerm, roleFilter]);
+
+  // Get paginated data
+  const filteredAndPaginatedData = useMemo(() => {
+    const startIndex = (page - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return filteredUsers.slice(startIndex, endIndex);
+  }, [filteredUsers, page]);
+
   const handleDeleteUser = useCallback(
     (userId) => {
-      console.log("Deleting user with ID:", userId);
       doDeleteUser({ id: userId });
     },
     [doDeleteUser],
   );
-
-  const filteredAndPaginatedData = useMemo(() => {
-    if (!dataUsers) return [];
-    const filtered = dataUsers.filter(
-      (user) =>
-        (user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          user.email.toLowerCase().includes(searchTerm.toLowerCase())) &&
-        (roleFilter === "all" || user.role.toString() === roleFilter),
-    );
-    const startIndex = (page - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    return filtered.slice(startIndex, endIndex);
-  }, [dataUsers, page, searchTerm, roleFilter]);
 
   const handleOpenModal = (mode = "create", user = null) => {
     setModalMode(mode);
@@ -70,7 +75,9 @@ const UsersPage = () => {
     doCreateUser(data);
   };
 
-  const pageCount = dataUsers ? Math.ceil(dataUsers.length / itemsPerPage) : 0;
+  const pageCount = filteredUsers
+    ? Math.ceil(filteredUsers.length / itemsPerPage)
+    : 0;
 
   const handlePageChange = (event, value) => {
     event.preventDefault();
@@ -78,12 +85,18 @@ const UsersPage = () => {
   };
 
   const handleSearch = (value) => {
-    setSearchTerm(value);
+    setSearchTerm(value || "");
     setPage(1);
   };
 
+  const handleSelectUser = (selectedOption) => {
+    if (selectedOption) {
+      setSearchTerm(selectedOption.email || selectedOption.name || "");
+      setPage(1);
+    }
+  };
+
   const handleRoleFilter = (value) => {
-    console.log("handleRoleFilter", value);
     setRoleFilter(value);
     setPage(1);
   };
@@ -115,21 +128,12 @@ const UsersPage = () => {
   return (
     <React.Fragment>
       <Box>
-        {userRole === 0 ? (
-          <Typography
-            variant="h3"
-            sx={{ textAlign: "center", fontWeight: "bold", marginBottom: 6 }}
-          >
-            User Page
-          </Typography>
-        ) : (
-          <Typography
-            variant="h3"
-            sx={{ textAlign: "center", fontWeight: "bold", marginBottom: 6 }}
-          >
-            Users Management Page
-          </Typography>
-        )}
+        <Typography
+          variant="h3"
+          sx={{ textAlign: "center", fontWeight: "bold", marginBottom: 6 }}
+        >
+          {userRole === 0 ? "User Page" : "Users Management Page"}
+        </Typography>
 
         <Grid2
           container
@@ -139,10 +143,14 @@ const UsersPage = () => {
             width: "100%",
           }}
         >
-          <Grid2 size={6} item xs={12} md={4}>
-            <SearchBar onSearch={handleSearch} />
+          <Grid2 size={6}>
+            <SearchBar
+              data={dataUsers || []}
+              onSearch={handleSearch}
+              onSelect={handleSelectUser}
+            />
           </Grid2>
-          <Grid2 size={2} item xs={12} md={4}>
+          <Grid2 size={2}>
             <FilterByRole
               onFilter={handleRoleFilter}
               currentFilter={roleFilter}
@@ -185,10 +193,10 @@ const UsersPage = () => {
 
       <UserModal
         open={modalOpen}
-        onClose={() => handleCloseModal()}
+        onClose={handleCloseModal}
         mode={modalMode}
         user={selectedUser}
-        onCreateUser={(data) => handleCreateUser(data)}
+        onCreateUser={handleCreateUser}
         createLoading={createUserLoading}
       />
 
@@ -210,6 +218,7 @@ const UsersPage = () => {
           cardDatas={filteredAndPaginatedData}
         />
       )}
+
       {!isLoading && dataUsers && dataUsers.length > 0 && (
         <Pagination
           count={pageCount}

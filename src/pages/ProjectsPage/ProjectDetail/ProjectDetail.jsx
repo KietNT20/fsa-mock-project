@@ -5,11 +5,12 @@ import { useCreateTask, useGetApiTask } from "@/hooks/useTask"; // Hook to fetch
 import { Note, Payments } from "@mui/icons-material";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import { Box, Button, Divider, Grid2, Paper, Typography } from "@mui/material";
+import { format } from "date-fns";
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import PriorityDisplay from "./PriorityDisplay";
 import ProjectDetailModal from "./ProjectDetailModal";
-import TaskByProject from "./TaskByProject";
+import ProjectTask from "./ProjectTask";
 
 const ProjectDetail = () => {
   const [open, setOpen] = useState(false);
@@ -152,6 +153,8 @@ const ProjectDetail = () => {
         projectId={project?.id}
         onSubmitTask={handleCreateTask}
         disabled={taskLoading || roleUser}
+        projectTimeStart={project?.time_start} // Thêm prop này
+        projectTimeEnd={project?.time_end} // Thêm prop này
       />
 
       {/* Project Details */}
@@ -207,7 +210,7 @@ const ProjectDetail = () => {
               />
               <Typography variant="body1" sx={{ fontSize: "1.8rem" }}>
                 <strong>Start Date: </strong>{" "}
-                {new Date(project.time_start).toLocaleString()}
+                {format(new Date(project.time_start), "dd/MM/yyyy HH:mm a")}
               </Typography>
             </Box>
           </Grid2>
@@ -219,7 +222,7 @@ const ProjectDetail = () => {
               />
               <Typography variant="body1" sx={{ fontSize: "1.8rem" }}>
                 <strong>End Date: </strong>{" "}
-                {new Date(project.time_end).toLocaleString()}
+                {format(new Date(project.time_end), "dd/MM/yyyy HH:mm a")}
               </Typography>
             </Box>
           </Grid2>
@@ -234,36 +237,13 @@ const ProjectDetail = () => {
           </Grid2>
         </Grid2>
       </Paper>
+
       {/* Display tasks below the project details */}
-      <Paper
-        elevation={2}
-        sx={{
-          p: 3,
-          borderRadius: "12px",
-          backgroundColor: "#f9f9f9",
-          boxShadow: "0 8px 20px rgba(0, 0, 0, 0.2)",
-          color: "#424242",
-          maxHeight: "400px",
-          overflowY: "auto",
-          mx: "auto",
-          mt: 3,
-        }}
-      >
-        <Typography
-          variant="h4"
-          sx={{ fontWeight: "bold", mb: 3, fontSize: "2.4rem" }}
-        >
-          Project Tasks
-        </Typography>
-        <Divider
-          sx={{ marginY: 2, borderColor: "#808585", borderWidth: "0.5px" }}
-        />
-        <TaskByProject
-          taskList={filteredTasks}
-          taskLoading={taskLoading}
-          taskError={taskError}
-        />
-      </Paper>
+      <ProjectTask
+        taskList={filteredTasks}
+        taskLoading={taskLoading}
+        taskError={taskError}
+      />
     </>
   );
 };
