@@ -29,7 +29,8 @@ const ProjectDetail = () => {
     { value: "all", label: "All Statuses" },
     { value: "1", label: "Not Started" },
     { value: "2", label: "In Progress" },
-    { value: "3", label: "Completed" },
+    { value: "3", label: "QA Testing" },
+    { value: "4", label: "Completed" },
   ];
 
   const handleCreateTask = (taskData) => {
@@ -85,8 +86,8 @@ const ProjectDetail = () => {
     <>
       <Box>
         <Typography
-          variant="h3"
-          sx={{ textAlign: "center", fontWeight: "bold", marginBottom: 2 }}
+          variant="h4"
+          sx={{ textAlign: "center", fontWeight: "bold", marginBottom: 3 }}
         >
           Project Detail
         </Typography>
@@ -96,8 +97,6 @@ const ProjectDetail = () => {
           container
           spacing={2}
           sx={{
-            marginTop: 6,
-            marginBottom: 2,
             width: "100%",
           }}
         >
@@ -125,7 +124,7 @@ const ProjectDetail = () => {
               disabled={taskLoading || roleUser}
               sx={{
                 background: "linear-gradient(135deg, #0d47a1 , #90caf9)",
-                padding: "12px 24px",
+                padding: "8px 16px",
                 fontSize: "1.3rem",
                 fontWeight: "bold",
                 borderRadius: "8px",
@@ -161,26 +160,28 @@ const ProjectDetail = () => {
       <Paper
         elevation={4}
         sx={{
-          p: 4,
+          p: 3,
           borderRadius: "12px",
           background: "#ffffff",
           color: "#636969",
           boxShadow: "0 8px 20px rgba(0, 0, 0, 0.3)",
           mx: "auto",
-          mt: 3,
+          mt: 2,
+          overflowY: "auto",
+          maxHeight: "20vh",
         }}
       >
-        <Box display="flex" justifyContent="center" alignItems="center" mb={3}>
+        <Box display="flex" justifyContent="center" alignItems="center">
           <Typography
             variant="h4"
-            sx={{ fontWeight: "bold", color: "#000000", fontSize: "2.4rem" }}
+            sx={{ fontWeight: "bold", color: "#000000", fontSize: "1.8rem" }}
           >
             {project.name}
           </Typography>
         </Box>
 
         <Divider
-          sx={{ marginY: 3, borderColor: "#464849", borderWidth: "1.5px" }}
+          sx={{ marginY: 2, borderColor: "#464849", borderWidth: "1.5px" }}
         />
 
         <Grid2
@@ -188,12 +189,12 @@ const ProjectDetail = () => {
           spacing={6}
           alignItems="center"
           justifyContent="center"
-          sx={{ mt: 5, mb: 1 }}
+          sx={{ mt: 1, mb: 1 }}
         >
           <Grid2 item xs={12} md={3}>
             <Box display="flex" alignItems="center">
-              <Payments sx={{ mr: 1, fontSize: "2.4rem", color: "#464849" }} />
-              <Typography variant="body1" sx={{ fontSize: "1.8rem" }}>
+              <Payments sx={{ mr: 1, fontSize: "1.8rem", color: "#464849" }} />
+              <Typography variant="body1" sx={{ fontSize: "1.6rem" }}>
                 <strong>Payment: </strong> {project.payment}
               </Typography>
             </Box>
@@ -206,9 +207,9 @@ const ProjectDetail = () => {
           <Grid2 item xs={12} md={3}>
             <Box display="flex" alignItems="center">
               <CalendarTodayIcon
-                sx={{ mr: 1, fontSize: "2.4rem", color: "#464849" }}
+                sx={{ mr: 1, fontSize: "1.8rem", color: "#464849" }}
               />
-              <Typography variant="body1" sx={{ fontSize: "1.8rem" }}>
+              <Typography variant="body1" sx={{ fontSize: "1.6rem" }}>
                 <strong>Start Date: </strong>{" "}
                 {format(new Date(project.time_start), "dd/MM/yyyy HH:mm a")}
               </Typography>
@@ -218,9 +219,9 @@ const ProjectDetail = () => {
           <Grid2 item xs={12} md={3}>
             <Box display="flex" alignItems="center">
               <CalendarTodayIcon
-                sx={{ mr: 1, fontSize: "2.4rem", color: "#464849" }}
+                sx={{ mr: 1, fontSize: "1.8rem", color: "#464849" }}
               />
-              <Typography variant="body1" sx={{ fontSize: "1.8rem" }}>
+              <Typography variant="body1" sx={{ fontSize: "1.6rem" }}>
                 <strong>End Date: </strong>{" "}
                 {format(new Date(project.time_end), "dd/MM/yyyy HH:mm a")}
               </Typography>
@@ -229,8 +230,8 @@ const ProjectDetail = () => {
 
           <Grid2 item xs={12} md={3}>
             <Box display="flex" alignItems="center">
-              <Note sx={{ mr: 1, fontSize: "2.4rem", color: "#464849" }} />
-              <Typography variant="body1" sx={{ fontSize: "1.8rem" }}>
+              <Note sx={{ mr: 1, fontSize: "1.8rem", color: "#464849" }} />
+              <Typography variant="body1" sx={{ fontSize: "1.6rem" }}>
                 <strong>Note: </strong> {project.note || "None"}
               </Typography>
             </Box>

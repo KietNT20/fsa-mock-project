@@ -1,12 +1,11 @@
-import FilterByStatus from "@/components/FilterByStatus";
-import SearchBar from "@/components/SearchBar";
 import { useGetApiTask, useUpdateTask } from "@/hooks/useTask";
+import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
 import {
   DateRange as DateRangeIcon,
-  EventNote as EventNoteIcon,
   Folder as FolderIcon,
   PriorityHigh as PriorityHighIcon,
 } from "@mui/icons-material";
+import FolderOffIcon from "@mui/icons-material/FolderOff";
 import {
   Box,
   Card,
@@ -14,13 +13,15 @@ import {
   CircularProgress,
   Divider,
   Grid2,
+  Paper,
   Typography,
 } from "@mui/material";
 import { format, parseISO } from "date-fns";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
-import TaskUpdateModal from "./TaskUpdateModal";
 
+// Format date utility
 const formatDate = (dateString) => {
   try {
     return format(parseISO(dateString), "dd/MM/yyyy HH:mm:ss");
@@ -29,14 +30,15 @@ const formatDate = (dateString) => {
     return dateString;
   }
 };
-const menuItems = [
-  { value: "all", label: "All Statuses" },
-  { value: "1", label: "Pending" },
-  { value: "2", label: "In Progress" },
-  { value: "3", label: "Done" },
-];
 
-// Function to return color based on status
+// Status columns
+const columns = {
+  pending: { id: "pending", title: "Pending", status: 1 },
+  inProgress: { id: "inProgress", title: "In Progress", status: 2 },
+  qaTesting: { id: "qaTesting", title: "QA Testing", status: 3 },
+  done: { id: "done", title: "Done", status: 4 },
+};
+
 const getStatusColor = (status) => {
   switch (status) {
     case 1:
@@ -44,6 +46,8 @@ const getStatusColor = (status) => {
     case 2:
       return "rgba(54, 162, 235, 0.5)";
     case 3:
+      return "rgba(255, 99, 132, 0.3)";
+    case 4:
       return "rgba(75, 192, 192, 0.5)";
     default:
       return "rgba(0, 0, 0, 0.1)";
@@ -53,405 +57,305 @@ const getStatusColor = (status) => {
 const TasksPage = () => {
   const { data: taskData, isLoading, error } = useGetApiTask();
   const { userProfile } = useSelector((state) => state.userProfile);
-  const [selectedTask, setSelectedTask] = useState(null);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState(""); // State for search input (user_name)
-  const [statusFilter, setStatusFilter] = useState("all"); // State for status filter
-
+  const [columnsData, setColumnsData] = useState(columns);
   const { mutate: updateTask } = useUpdateTask();
 
-  if (isLoading) {
-    return <CircularProgress />;
-  }
+  if (isLoading) return <CircularProgress />;
+  if (error) return <Typography>Error loading tasks</Typography>;
 
-  if (error) {
-    return <Typography>Error loading tasks</Typography>;
-  }
+  // Filter tasks by user and organize into columns by status
+  const filteredTasks = taskData
+    .filter((task) => task.user_mail === userProfile.email)
+    .reduce(
+      (acc, task) => {
+        const columnId = Object.keys(columns).find(
+          (key) => columns[key].status === task.status,
+        );
+        if (columnId) acc[columnId].push(task);
+        return acc;
+      },
+      { pending: [], inProgress: [], qaTesting: [], done: [] },
+    );
 
-  // Handle search term change
-  const handleSearch = (value) => {
-    setSearchTerm(value.toLowerCase());
-  };
+  const onDragEnd = (result) => {
+    toast.dismiss();
+    const { destination, source, draggableId } = result;
 
-  // Handle status filter change
-  const handleStatusFilter = (value) => {
-    setStatusFilter(value);
-  };
+    // Nếu không có điểm đến hoặc điểm đến giống với điểm bắt đầu, không làm gì cả
+    if (!destination || destination.droppableId === source.droppableId) return;
 
-  // Filter tasks based on user_mail, searchTerm (task_name), and status
-  const filteredTasks = taskData.filter((task) => {
-    const matchesUserEmail = task.user_mail === userProfile.email;
+    const sourceColumn = columnsData[source.droppableId];
+    const destColumn = columnsData[destination.droppableId];
 
-    // Handle search filter by task_name
-    const matchesSearch =
-      searchTerm === "" || task.task_name.toLowerCase().includes(searchTerm);
-
-    // Handle status filter
-    const matchesStatus =
-      statusFilter === "all" || task.status === parseInt(statusFilter);
-
-    // Return tasks that match both search and status
-    return matchesUserEmail && matchesSearch && matchesStatus;
-  });
-
-  const handleCardClick = (task) => {
-    setSelectedTask(task);
-    setModalOpen(true);
-  };
-
-  const handleModalClose = () => {
-    setModalOpen(false);
-    setSelectedTask(null);
-  };
-
-  const handleUpdateStatus = (status) => {
-    if (selectedTask) {
-      updateTask({
-        id: selectedTask.id,
-        task_name: selectedTask.task_name,
-        user_mail: selectedTask.user_mail,
-        project_id: selectedTask.project_id,
-        time_start: selectedTask.time_start,
-        time_end: selectedTask.time_end,
-        status,
-        note: selectedTask.note,
-      });
-      handleModalClose();
+    // Nếu kéo từ status 4 về bất cứ đâu, báo lỗi và ngăn hành động
+    if (sourceColumn.status === 4 && destColumn.status !== 4) {
+      toast.error("Cannot move the completed task");
+      return;
     }
+
+    // Nếu kéo từ status 1 lên 3 hoặc từ status 2 lên 4, báo lỗi và ngăn hành động
+    if (
+      (sourceColumn.status === 1 && destColumn.status === 3) ||
+      (sourceColumn.status === 2 && destColumn.status === 4)
+    ) {
+      toast.error("Cannot skip status levels");
+      return;
+    }
+
+    // Chỉ cho phép kéo lên hoặc xuống trạng thái liền kề
+    if (Math.abs(destColumn.status - sourceColumn.status) !== 1) return;
+
+    const task = filteredTasks[sourceColumn.id].find(
+      (task) => task.id === draggableId,
+    );
+
+    updateTask({ ...task, status: destColumn.status }).then(() => {
+      const updatedFilteredTasks = {
+        ...filteredTasks,
+        [sourceColumn.id]: filteredTasks[sourceColumn.id].filter(
+          (t) => t.id !== task.id,
+        ),
+        [destColumn.id]: [
+          ...filteredTasks[destColumn.id],
+          { ...task, status: destColumn.status },
+        ],
+      };
+
+      setColumnsData(updatedFilteredTasks);
+    });
   };
 
   return (
-    <div>
+    <DragDropContext onDragEnd={onDragEnd}>
       <Typography
         variant="h3"
-        sx={{ textAlign: "center", fontWeight: "bold", marginBottom: 6 }}
+        sx={{ textAlign: "center", fontWeight: "bold", marginBottom: 3 }}
       >
         Task Page
       </Typography>
+      <Grid2 container spacing={2}>
+        {Object.entries(columnsData).map(([columnId, column]) => (
+          <Grid2
+            size={{ xs: 12, sm: 12, md: 6, lg: 4, xl: 3 }}
+            key={columnId}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              mb: 2,
+            }}
+          >
+            <Typography
+              variant="h6"
+              sx={{
+                textAlign: "center",
+                fontWeight: "bold",
+                color: "#546e7a",
+                fontSize: "1.6rem",
+                mb: 1,
+              }}
+            >
+              {column.title}
+            </Typography>
 
-      {/* Search and Filter Components */}
-      <Grid2
-        container
-        spacing={2}
-        sx={{
-          marginTop: 6,
-          marginBottom: 2,
-          width: "100%",
-        }}
-      >
-        <Grid2 size={6} item xs={12} md={4}>
-          <SearchBar onSearch={handleSearch} />
-        </Grid2>
-        <Grid2 size={2} item xs={12} md={4}>
-          <FilterByStatus
-            onFilter={handleStatusFilter}
-            currentFilter={statusFilter}
-            menuItems={menuItems}
-          />
-        </Grid2>
+            <Paper
+              elevation={2}
+              sx={{
+                width: "100%",
+                p: { xs: 1, sm: 1 },
+                borderRadius: "12px",
+                backgroundColor: "#f9f9f9",
+                color: "#424242",
+                maxHeight: "500px",
+                overflow: "auto",
+                mt: 1,
+              }}
+            >
+              <Droppable droppableId={columnId}>
+                {(provided) => (
+                  <Box
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                    sx={{
+                      background: "#f9f9f9",
+                      borderRadius: 4,
+                      minHeight: "484px",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent:
+                        filteredTasks[columnId].length === 0
+                          ? "center"
+                          : "flex-start",
+                    }}
+                  >
+                    {filteredTasks[columnId].length === 0 ? (
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          py: 2,
+                        }}
+                      >
+                        <FolderOffIcon
+                          sx={{
+                            fontSize: { xs: 30, sm: 40 },
+                            color: "#ccc",
+                            mb: 1,
+                          }}
+                        />
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            color: "#888",
+                            textAlign: "center",
+                            fontSize: { xs: "1.2rem", sm: "1.6rem" },
+                          }}
+                        >
+                          Không có dữ liệu
+                        </Typography>
+                      </Box>
+                    ) : (
+                      filteredTasks[columnId].map((task, index) => (
+                        <Draggable key={task.id} draggableId={task.id} index={index}>
+                          {(provided) => (
+                            <Card
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              sx={{
+                                borderRadius: "10px",
+                                background: "#ffffff",
+                                boxShadow: "0 8px 20px rgba(0, 0, 0, 0.3)",
+                                mb: 2,
+                                width: "100%",
+                                p: { xs: 1, sm: 2 },
+                              }}
+                            >
+                              <CardContent>
+                                <Typography
+                                  variant="h6"
+                                  sx={{
+                                    textAlign: "center",
+                                    fontWeight: "bold",
+                                    backgroundColor: getStatusColor(task.status),
+                                    padding: "10px",
+                                    borderRadius: "10px",
+                                    fontSize: { xs: "1.4rem", sm: "1.6rem" },
+                                  }}
+                                >
+                                  {task.task_name}
+                                </Typography>
+
+                                <Divider sx={{ my: 2 }} />
+
+                                {/* Project Name and Status */}
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                    flexDirection: { xs: "column", sm: "row" },
+                                  }}
+                                >
+                                  <Box
+                                    sx={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                    }}
+                                  >
+                                    <FolderIcon sx={{ color: "#2d2f30", mr: 1 }} />
+                                    <Typography
+                                      sx={{
+                                        fontSize: { xs: "1.2rem", sm: "1.4rem" },
+                                        color: "#2d2f30",
+                                      }}
+                                    >
+                                      <strong>Project Name:</strong> {task.project_name}
+                                    </Typography>
+                                  </Box>
+
+                                  <Box
+                                    sx={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                      mt: { xs: 1, sm: 0 },
+                                    }}
+                                  >
+                                    <PriorityHighIcon sx={{ color: "#2d2f30", mr: 1 }} />
+                                    <Typography
+                                      sx={{
+                                        fontSize: { xs: "1.2rem", sm: "1.4rem" },
+                                        color: "#2d2f30",
+                                      }}
+                                    >
+                                      <strong>Status:</strong> {task.status === 1 ? "Pending" : task.status === 2 ? "In Progress" : task.status === 3 ? "QA Testing" : "Done"}
+                                    </Typography>
+                                  </Box>
+                                </Box>
+
+                                <Divider sx={{ my: 2 }} />
+
+                                {/* Time Start and End */}
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                    flexDirection: { xs: "column", sm: "row" },
+                                  }}
+                                >
+                                  <Box
+                                    sx={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                    }}
+                                  >
+                                    <DateRangeIcon sx={{ color: "#2d2f30", mr: 1 }} />
+                                    <Typography
+                                      sx={{
+                                        fontSize: { xs: "1.2rem", sm: "1.4rem" },
+                                        color: "#2d2f30",
+                                      }}
+                                    >
+                                      <strong>Time Start:</strong> {formatDate(task.time_start)}
+                                    </Typography>
+                                  </Box>
+
+                                  <Box
+                                    sx={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                      mt: { xs: 1, sm: 0 },
+                                    }}
+                                  >
+                                    <DateRangeIcon sx={{ color: "#2d2f30", mr: 1 }} />
+                                    <Typography
+                                      sx={{
+                                        fontSize: { xs: "1.2rem", sm: "1.4rem" },
+                                        color: "#2d2f30",
+                                      }}
+                                    >
+                                      <strong>Time End:</strong> {formatDate(task.time_end)}
+                                    </Typography>
+                                  </Box>
+                                </Box>
+                              </CardContent>
+                            </Card>
+                          )}
+                        </Draggable>
+                      ))
+                    )}
+                    {provided.placeholder}
+                  </Box>
+                )}
+              </Droppable>
+            </Paper>
+          </Grid2>
+        ))}
       </Grid2>
 
-      {filteredTasks.length > 0 ? (
-        <Grid2 container spacing={3}>
-          {filteredTasks.map((task) => (
-            <Grid2 item xs={12} key={task.id}>
-              <Card
-                style={{
-                  width: "40vw",
-                  borderRadius: "15px",
-                  background: "#ffffff",
-                  boxShadow: "0 8px 20px rgba(0, 0, 0, 0.3)",
-                  transition: "transform 0.3s, box-shadow 0.3s",
-                  padding: "10px",
-                  cursor: "pointer",
-                  margin: "5px",
-                }}
-                onMouseOver={(e) => {
-                  e.currentTarget.style.transform = "scale(1.05)";
-                  e.currentTarget.style.boxShadow =
-                    "0 12px 24px rgba(0, 0, 0, 0.4)";
-                }}
-                onMouseOut={(e) => {
-                  e.currentTarget.style.transform = "scale(1)";
-                  e.currentTarget.style.boxShadow =
-                    "0 8px 20px rgba(0, 0, 0, 0.3)";
-                }}
-                onClick={() => handleCardClick(task)}
-              >
-                <CardContent>
-                  {/* Apply background color to task name only */}
-                  <Typography
-                    variant="h5"
-                    style={{
-                      textAlign: "center",
-                      fontWeight: "bold",
-                      fontSize: "24px",
-                      color: "black",
-                      backgroundColor: getStatusColor(task.status),
-                      padding: "10px",
-                      borderRadius: "10px",
-                    }}
-                  >
-                    {task.task_name}
-                  </Typography>
-
-                  <Divider
-                    style={{ margin: "10px 0", border: "0.5px solid #666666" }}
-                  />
-
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      padding: "10px 0",
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Typography
-                        variant="body2"
-                        sx={{
-                          color: "#2d2f30",
-                          fontWeight: "bold",
-                          fontSize: "1.6rem",
-                        }}
-                      >
-                        Project
-                      </Typography>
-                      <Box sx={{ display: "flex", alignItems: "center" }}>
-                        <FolderIcon sx={{ marginRight: 1, color: "#2d2f30" }} />
-                        <Typography
-                          variant="body1"
-                          sx={{ fontSize: "1.8rem", color: "#2d2f30" }}
-                        >
-                          {task.project_name}
-                        </Typography>
-                      </Box>
-                    </Box>
-
-                    <Box
-                      sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Typography
-                        variant="body2"
-                        sx={{
-                          color: "#2d2f30",
-                          fontWeight: "bold",
-                          fontSize: "1.6rem",
-                        }}
-                      >
-                        Start Project
-                      </Typography>
-                      <Box sx={{ display: "flex", alignItems: "center" }}>
-                        <DateRangeIcon
-                          sx={{ marginRight: 1, color: "#2d2f30" }}
-                        />
-                        <Typography
-                          variant="body1"
-                          sx={{ fontSize: "1.8rem", color: "#2d2f30" }}
-                        >
-                          {formatDate(task.project_start)}
-                        </Typography>
-                      </Box>
-                    </Box>
-
-                    <Box
-                      sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Typography
-                        variant="body2"
-                        sx={{
-                          color: "#2d2f30",
-                          fontWeight: "bold",
-                          fontSize: "1.6rem",
-                        }}
-                      >
-                        End Project
-                      </Typography>
-                      <Box sx={{ display: "flex", alignItems: "center" }}>
-                        <DateRangeIcon
-                          sx={{ marginRight: 1, color: "#2d2f30" }}
-                        />
-                        <Typography
-                          variant="body1"
-                          sx={{ fontSize: "1.8rem", color: "#2d2f30" }}
-                        >
-                          {formatDate(task.project_end)}
-                        </Typography>
-                      </Box>
-                    </Box>
-                  </Box>
-
-                  <Divider
-                    style={{ margin: "10px 0", border: "0.5px solid #2d2f30" }}
-                  />
-
-                  <Box
-                    sx={{ display: "flex", justifyContent: "space-between" }}
-                  >
-                    <Box sx={{ flex: 1 }}>
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          marginTop: "10px",
-                        }}
-                      >
-                        <EventNoteIcon
-                          sx={{ marginRight: 1, color: "#2d2f30" }}
-                        />
-                        <Typography
-                          variant="body1"
-                          sx={{ fontSize: "1.8rem", color: "#2d2f30" }}
-                        >
-                          User Email: {task.user_mail}
-                        </Typography>
-                      </Box>
-
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          marginTop: "10px",
-                        }}
-                      >
-                        <EventNoteIcon
-                          sx={{ marginRight: 1, color: "#2d2f30" }}
-                        />
-                        <Typography
-                          variant="body1"
-                          sx={{ fontSize: "1.8rem", color: "#2d2f30" }}
-                        >
-                          User Name: {task.user_name}
-                        </Typography>
-                      </Box>
-
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          marginTop: "10px",
-                        }}
-                      >
-                        <EventNoteIcon
-                          sx={{ marginRight: 1, color: "#2d2f30" }}
-                        />
-                        <Typography
-                          variant="body1"
-                          sx={{ fontSize: "1.8rem", color: "#2d2f30" }}
-                        >
-                          Note: {task.note || "None"}
-                        </Typography>
-                      </Box>
-                    </Box>
-
-                    <Box sx={{ flex: 1 }}>
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          marginTop: "10px",
-                        }}
-                      >
-                        <DateRangeIcon
-                          sx={{ marginRight: 1, color: "#2d2f30" }}
-                        />
-                        <Typography
-                          variant="body1"
-                          sx={{ fontSize: "1.8rem", color: "#2d2f30" }}
-                        >
-                          Start Task: {formatDate(task.time_start)}
-                        </Typography>
-                      </Box>
-
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          marginTop: "10px",
-                        }}
-                      >
-                        <DateRangeIcon
-                          sx={{ marginRight: 1, color: "#2d2f30" }}
-                        />
-                        <Typography
-                          variant="body1"
-                          sx={{ fontSize: "1.8rem", color: "#2d2f30" }}
-                        >
-                          End Task: {formatDate(task.time_end)}
-                        </Typography>
-                      </Box>
-
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          marginTop: "10px",
-                        }}
-                      >
-                        <PriorityHighIcon
-                          sx={{ marginRight: 1, color: "#2d2f30" }}
-                        />
-                        <Typography
-                          variant="body1"
-                          sx={{ fontSize: "1.8rem", color: "#2d2f30" }}
-                        >
-                          Status:{" "}
-                          {task.status === 1
-                            ? "Pending"
-                            : task.status === 2
-                              ? "In Progress"
-                              : "Complete"}
-                        </Typography>
-                      </Box>
-                    </Box>
-                  </Box>
-                </CardContent>
-              </Card>
-            </Grid2>
-          ))}
-        </Grid2>
-      ) : (
-        <Typography
-          variant="h4"
-          sx={{
-            textAlign: "center",
-            fontWeight: "bold",
-            color: "#546e7a", // Darker color for stronger emphasis
-            paddingTop: "20px",
-            fontSize: "2rem",
-            letterSpacing: "0.05rem",
-            textTransform: "uppercase",
-            animation: "fadeIn 1.5s ease-in-out",
-          }}
-        >
-          No tasks found
-        </Typography>
-      )}
-
-      {/* Render Modal */}
-      {selectedTask && (
-        <TaskUpdateModal
-          open={modalOpen}
-          handleClose={handleModalClose}
-          task={selectedTask}
-          handleUpdate={handleUpdateStatus}
-        />
-      )}
-    </div>
+    </DragDropContext>
   );
 };
 

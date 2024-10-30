@@ -74,7 +74,7 @@ const TaskByProject = ({ taskList, taskLoading, taskError }) => {
   if (taskLoading) {
     return (
       <Box display="flex" justifyContent="center">
-        <Typography variant="h6" sx={{ fontSize: "1.5rem" }}>
+        <Typography variant="h6" sx={{ fontSize: "1.4rem" }}>
           Loading tasks...
         </Typography>
       </Box>
@@ -83,7 +83,7 @@ const TaskByProject = ({ taskList, taskLoading, taskError }) => {
 
   if (taskError) {
     return (
-      <Typography color="error" sx={{ fontSize: "1.5rem" }}>
+      <Typography color="error" sx={{ fontSize: "1.4rem" }}>
         Failed to load tasks.
       </Typography>
     );
@@ -97,11 +97,11 @@ const TaskByProject = ({ taskList, taskLoading, taskError }) => {
           textAlign: "center",
           fontWeight: "bold",
           color: "#546e7a",
-          paddingTop: "20px",
-          fontSize: "2rem",
+          paddingTop: "10px",
+          fontSize: "1.6rem",
           letterSpacing: "0.05rem",
           textTransform: "uppercase",
-          animation: "fadeIn 1.5s ease-in-out",
+          animation: "fadeIn 1.3s ease-in-out",
         }}
       >
         No tasks available for this project.
@@ -111,10 +111,10 @@ const TaskByProject = ({ taskList, taskLoading, taskError }) => {
 
   return (
     <>
-      <Box sx={{ flexGrow: 1, height: "100%", p: 2 }}>
+      <Box sx={{ flexGrow: 1, height: "100%", p: 1 }}>
         <Grid2
           container
-          spacing={4}
+          spacing={3}
           sx={{
             display: "grid",
             gridTemplateColumns: {

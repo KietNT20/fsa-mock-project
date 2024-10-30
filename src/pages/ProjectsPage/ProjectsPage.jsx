@@ -1,12 +1,14 @@
 import CustomizedCard from "@/components/CustomizedCard";
 import CustomizedTable from "@/components/CustomizedTable";
 import FilterByPriority from "@/components/FilterByPriority";
+import SearchBar from "@/components/SearchBar";
 import {
   useCreateProject,
   useDeleteProject,
   useGetProject,
   useUpdateProject,
 } from "@/hooks/useProject";
+import AddBoxIcon from "@mui/icons-material/AddBox";
 import {
   Box,
   Button,
@@ -18,9 +20,8 @@ import {
 import React, { useCallback, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import ProjectModal from "./ProjectModal";
-import ProjectSearch from "./ProjectSearch";
 
-const itemsPerPage = 6;
+const itemsPerPage = 5;
 
 const ProjectsPage = () => {
   const { data: dataProject, isLoading, isError, error } = useGetProject();
@@ -83,12 +84,7 @@ const ProjectsPage = () => {
   const TableSkeleton = () => (
     <>
       {[...Array(itemsPerPage)].map((_, index) => (
-        <Skeleton
-          key={index}
-          variant="rectangular"
-          height={53}
-          sx={{ my: 1 }}
-        />
+        <Skeleton key={index} variant="rectangular" height={40} />
       ))}
     </>
   );
@@ -134,70 +130,73 @@ const ProjectsPage = () => {
   return (
     <React.Fragment>
       <Box>
-        {userRole === 0 ? (
-          <Typography
-            variant="h3"
-            sx={{ textAlign: "center", fontWeight: "bold", marginBottom: 6 }}
-          >
-            Project Page
-          </Typography>
-        ) : (
-          <Typography
-            variant="h3"
-            sx={{ textAlign: "center", fontWeight: "bold", marginBottom: 6 }}
-          >
-            Projects Management Page
-          </Typography>
-        )}
+        <Typography
+          variant="h4"
+          sx={{ textAlign: "center", fontWeight: "bold", marginBottom: 3 }}
+        >
+          {userRole === 0 ? "Projects Page" : "Projects Management Page"}
+        </Typography>
 
         <Grid2
           container
           spacing={2}
           sx={{
-            marginBottom: 2,
             width: "100%",
           }}
         >
-          <Grid2 size={6} item xs={12} md={4}>
-            <ProjectSearch data={dataProject || []} onSearch={handleSearch} />
-          </Grid2>
-          <Grid2 size={2} item xs={12} md={4}>
-            <FilterByPriority
-              onFilter={handlePriorityFilter}
-              currentFilter={priorityFilter}
-            />
-          </Grid2>
+          {userRole === 0 && (
+            <>
+              <Grid2 size={{ xs: 6, sm: 8, md: 6, lg: 6, xl: 6 }}>
+                <SearchBar data={dataProject || []} onSearch={handleSearch} />
+              </Grid2>
+              <Grid2 size={{ xs: 6, sm: 4, md: 3, lg: 3, xl: 2 }}>
+                <FilterByPriority
+                  onFilter={handlePriorityFilter}
+                  currentFilter={priorityFilter}
+                />
+              </Grid2>
+            </>
+          )}
           {userRole === 1 && (
-            <Grid2
-              item
-              size={4}
-              xs={12}
-              md={4}
-              sx={{ display: "flex", justifyContent: "flex-end" }}
-            >
-              <Button
-                variant="contained"
-                onClick={() => handleOpenModal("create")}
-                sx={{
-                  background: "linear-gradient(135deg, #0d47a1 , #90caf9)",
-                  padding: "12px 24px",
-                  fontSize: "1.3rem",
-                  fontWeight: "bold",
-                  borderRadius: "8px",
-                  textTransform: "none",
-                  boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
-                  transition:
-                    "transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
-                  "&:hover": {
-                    backgroundColor: "#1565c0",
-                    transform: "scale(1.05)",
-                    boxShadow: "0px 6px 16px rgba(0, 0, 0, 0.2)",
-                  },
-                }}
+            <>
+              <Grid2 size={{ xs: 12, sm: 4, md: 6, lg: 6, xl: 6 }}>
+                <SearchBar data={dataProject || []} onSearch={handleSearch} />
+              </Grid2>
+              <Grid2 size={{ xs: 6, sm: 3, md: 2, lg: 2, xl: 2 }}>
+                <FilterByPriority
+                  onFilter={handlePriorityFilter}
+                  currentFilter={priorityFilter}
+                />
+              </Grid2>
+              <Grid2
+                size={{ xs: 6, sm: 5, md: 4, lg: 4, xl: 4 }}
+                sx={{ display: "flex", justifyContent: "flex-end" }}
               >
-                Create New Project
-              </Button>
-            </Grid2>
+                <Button
+                  variant="contained"
+                  onClick={() => handleOpenModal("create")}
+                  sx={{
+                    background: "linear-gradient(135deg, #0d47a1 , #90caf9)",
+                    padding: "8px 16px",
+                    fontSize: "1.3rem",
+                    fontWeight: "bold",
+                    borderRadius: "8px",
+                    textTransform: "none",
+                    boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
+                    transition:
+                      "transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
+                    "&:hover": {
+                      backgroundColor: "#1565c0",
+                      transform: "scale(1.05)",
+                      boxShadow: "0px 6px 16px rgba(0, 0, 0, 0.2)",
+                    },
+                  }}
+                >
+                  <AddBoxIcon sx={{ fontSize: 25, marginRight: "2px" }} />
+                  Create Project
+                </Button>
+              </Grid2>
+            </>
           )}
         </Grid2>
       </Box>
@@ -235,7 +234,7 @@ const ProjectsPage = () => {
               onChange={handlePageChange}
               variant="outlined"
               shape="rounded"
-              sx={{ marginTop: 2, display: "flex", justifyContent: "center" }}
+              sx={{ display: "flex", justifyContent: "center" }}
             />
           )}
         </>

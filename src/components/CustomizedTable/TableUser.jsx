@@ -40,9 +40,9 @@ const TableUser = ({
 }) => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-  const [sortedData, setSortedData] = useState(tableDatas); // Lưu trữ dữ liệu sau khi sắp xếp
-  const [sortField, setSortField] = useState(""); // Lưu cột hiện tại đang được sắp xếp
-  const [sortDirection, setSortDirection] = useState("asc"); // Lưu hướng sắp xếp: asc hoặc desc
+  const [sortedData, setSortedData] = useState(tableDatas);
+  const [sortField, setSortField] = useState("");
+  const [sortDirection, setSortDirection] = useState("asc");
   const dispatch = useDispatch();
   const { infoRow } = useSelector((state) => state.selectedRow);
 
@@ -122,9 +122,9 @@ const TableUser = ({
       <TableContainer
         component={Paper}
         style={{
-          margin: "20px auto",
+          margin: "15px auto",
+          minHeight: "61.8vh",
           maxWidth: "100%",
-          overflowY: "auto",
           boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.2)",
           borderRadius: "10px",
           padding: "20px",
@@ -135,13 +135,11 @@ const TableUser = ({
           align="center"
           gutterBottom
           style={{
-            paddingBottom: "10px",
+            padding: "10px",
             fontWeight: "bold",
             background: "linear-gradient(135deg, #0d47a1 , #90caf9)",
             color: "#fff",
             borderRadius: "8px 8px 0 0",
-            padding: "15px",
-            marginBottom: "20px",
             position: "relative",
           }}
         >
@@ -161,7 +159,7 @@ const TableUser = ({
                   key={index}
                   style={{
                     fontWeight: "bold",
-                    fontSize: "20px",
+                    fontSize: "1.8rem",
                     backgroundColor: "#fff",
                     color: "black",
                     textAlign: "center",
@@ -180,7 +178,7 @@ const TableUser = ({
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
                   backgroundColor: index % 2 === 0 ? "#f5f5f5" : "#fff",
-                  height: "60px",
+                  height: "56px",
                   transition: "background-color 0.3s ease, transform 0.2s ease",
                   "&:hover": {
                     backgroundColor: "#e0f7fa",
@@ -233,7 +231,7 @@ const TableUser = ({
                             <ListItemText
                               primary="Update"
                               primaryTypographyProps={{
-                                fontSize: "1.8rem",
+                                fontSize: "1.6rem",
                                 color: "#0d47a1",
                               }}
                             />
@@ -251,7 +249,7 @@ const TableUser = ({
                             <ListItemText
                               primary="Delete"
                               primaryTypographyProps={{
-                                fontSize: "1.8rem",
+                                fontSize: "1.6rem",
                                 color: "#e83535",
                               }}
                             />

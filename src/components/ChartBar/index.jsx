@@ -1,3 +1,4 @@
+import { COLORS } from "@/constant/color";
 import { Typography } from "@mui/material";
 import {
   BarElement,
@@ -33,22 +34,22 @@ const BarChartComponent = ({ data, labels, title }) => {
         label: title,
         data: data,
         backgroundColor: [
-          "rgba(255, 99, 132, 0.8)",
-          "rgba(54, 162, 235, 0.8)",
-          "rgba(255, 206, 86, 0.8)",
-          "rgba(75, 192, 192, 0.8)",
-          "rgba(153, 102, 255, 0.8)",
-          "rgba(255, 159, 64, 0.8)",
-          "rgba(201, 203, 207, 0.8)",
+          COLORS.PRIMARY_RED,
+          COLORS.PRIMARY_BLUE,
+          COLORS.PRIMARY_YELLOW,
+          COLORS.PRIMARY_GREEN,
+          COLORS.PRIMARY_PURPLE,
+          COLORS.PRIMARY_ORANGE,
+          COLORS.PRIMARY_GRAY,
         ],
         borderColor: [
-          "rgba(255, 99, 132, 1)",
-          "rgba(54, 162, 235, 1)",
-          "rgba(255, 206, 86, 1)",
-          "rgba(75, 192, 192, 1)",
-          "rgba(153, 102, 255, 1)",
-          "rgba(255, 159, 64, 1)",
-          "rgba(201, 203, 207, 1)",
+          COLORS.BORDER_RED,
+          COLORS.BORDER_BLUE,
+          COLORS.BORDER_YELLOW,
+          COLORS.BORDER_GREEN,
+          COLORS.BORDER_PURPLE,
+          COLORS.BORDER_ORANGE,
+          COLORS.BORDER_GRAY,
         ],
         borderWidth: 1,
       },
@@ -56,14 +57,14 @@ const BarChartComponent = ({ data, labels, title }) => {
   };
 
   const options = {
-    responsive: true, // Tự động thay đổi kích thước
-    maintainAspectRatio: false, // Để biểu đồ linh hoạt với tỷ lệ khung hình
+    responsive: true,
+    maintainAspectRatio: false,
     scales: {
       x: {
-        beginAtZero: true, // Bắt đầu từ 0 trên trục X
+        beginAtZero: true,
       },
       y: {
-        beginAtZero: true, // Bắt đầu từ 0 trên trục Y
+        beginAtZero: true,
       },
     },
   };
