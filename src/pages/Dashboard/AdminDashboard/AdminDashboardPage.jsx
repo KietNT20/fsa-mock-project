@@ -142,8 +142,12 @@ const AdminDashboardPage = () => {
       {taskStats && (
         <Box sx={styles.sectionContainer}>
           <Paper elevation={2} sx={{ p: 3 }}>
-            <Grid2 container spacing={4}>
-              <Grid2 size={{ xs: 12, md: 6 }}>
+            <Grid2
+              container
+              spacing={{ xs: 2, md: 3 }}
+              columns={{ xs: 4, sm: 8, md: 12 }}
+            >
+              <Grid2 size={{ xs: 2, sm: 4, md: 4 }} sx={{ mx: "auto" }}>
                 <Box sx={styles.chartContainer}>
                   <ChartComponent
                     data={[
@@ -162,7 +166,7 @@ const AdminDashboardPage = () => {
                   />
                 </Box>
               </Grid2>
-              <Grid2 size={{ xs: 12, md: 6 }}>
+              <Grid2 size={{ md: 12, lg: 6 }}>
                 <Box sx={styles.cardContainer}>
                   <TaskStatsCard
                     taskStats={taskStats}
@@ -181,8 +185,12 @@ const AdminDashboardPage = () => {
       {projectStats && (
         <Box sx={styles.sectionContainer}>
           <Paper elevation={2} sx={{ p: 3 }}>
-            <Grid2 container spacing={4}>
-              <Grid2 size={{ xs: 12, md: 6 }}>
+            <Grid2
+              container
+              spacing={{ xs: 2, md: 3 }}
+              columns={{ xs: 4, sm: 8, md: 12 }}
+            >
+              <Grid2 size={{ xs: 2, sm: 4, md: 4 }} sx={{ mx: "auto" }}>
                 <Box sx={styles.chartContainer}>
                   <ChartComponent
                     data={[
@@ -199,7 +207,7 @@ const AdminDashboardPage = () => {
                   />
                 </Box>
               </Grid2>
-              <Grid2 size={{ xs: 12, md: 6 }}>
+              <Grid2 size={{ md: 12, lg: 6 }}>
                 <Box sx={styles.cardContainer}>
                   <ProjectStatsCard
                     projectStats={projectStats}
@@ -218,8 +226,12 @@ const AdminDashboardPage = () => {
       {userTaskStats && (
         <Box sx={styles.sectionContainer}>
           <Paper elevation={2} sx={{ p: 3 }}>
-            <Grid2 container spacing={4}>
-              <Grid2 size={{ xs: 12, md: 6 }}>
+            <Grid2
+              container
+              spacing={{ xs: 2, md: 3 }}
+              columns={{ xs: 4, sm: 8, md: 12 }}
+            >
+              <Grid2 size={{ xs: 2, sm: 4, md: 4 }} sx={{ mx: "auto" }}>
                 <Box sx={styles.chartContainer}>
                   <BarChartComponent
                     data={[
@@ -234,7 +246,7 @@ const AdminDashboardPage = () => {
                   />
                 </Box>
               </Grid2>
-              <Grid2 size={{ xs: 12, md: 6 }}>
+              <Grid2 size={{ md: 12, lg: 6 }}>
                 <Box sx={styles.cardContainer}>
                   <UserStatCard
                     userTaskStats={userTaskStats}

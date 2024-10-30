@@ -86,20 +86,6 @@ const ProjectStatsCard = ({ projectStats, handleOpenProjectModal }) => {
               alignItems: "center",
             }}
           >
-            <Grid2 item xs={12} sm={6} md={9}>
-              <Typography
-                variant="h4"
-                style={{ fontSize: "1.6rem", fontWeight: "bold" }}
-              >
-                Total Projects
-              </Typography>
-              <Typography
-                variant="body1"
-                style={{ fontSize: "1.8rem", color: "#000000" }}
-              >
-                {projectStats.totalProjects}
-              </Typography>
-            </Grid2>
             <Grid2 item xs={12} sm={6} md={3}>
               <Button
                 variant="contained"

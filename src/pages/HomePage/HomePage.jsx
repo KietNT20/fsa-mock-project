@@ -4,7 +4,6 @@ import { Box, Typography } from "@mui/material";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import comingSoonImage from "../../assets/HomeAsset/home.png";
-import { useEffect } from "react";
 
 const HomePage = () => {
   const dispatch = useDispatch();
