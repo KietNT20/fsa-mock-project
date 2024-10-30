@@ -60,10 +60,10 @@
 }
 
 .MuiTableCell-body {
-  text-overflow: ellipsis;
   overflow: hidden;
-  white-space: nowrap;
+  text-overflow: ellipsis;
   max-width: 200px;
+  white-space: nowrap;
 }
 
 .MuiPickersDay-root,

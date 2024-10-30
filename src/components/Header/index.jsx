@@ -1,7 +1,7 @@
 import { PATH } from "@/constant/path";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle"; // Profile icon
 import LogoutIcon from "@mui/icons-material/Logout"; // Logout icon
-import MenuIcon from "@mui/icons-material/Menu"
+import MenuIcon from "@mui/icons-material/Menu";
 import {
   AppBar,
   Avatar,
