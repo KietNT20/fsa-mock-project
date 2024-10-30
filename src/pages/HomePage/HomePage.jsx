@@ -1,35 +1,45 @@
 import { useGetApiUsers } from "@/hooks/useUsers";
 import { saveUserProfile } from "@/store/actions/userProfileAction";
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import comingSoonImage from "../../assets/HomeAsset/home.png";
 
 const HomePage = () => {
   const dispatch = useDispatch();
   const { profile } = useSelector((state) => state.profile);
   const { data: userListData } = useGetApiUsers();
-  // console.log("userListData", userListData);
-  if (profile?.email && userListData) {
-    const matchedUser = userListData.find(
-      (user) => user.email === profile?.email,
-    );
-    if (matchedUser) {
-      dispatch(saveUserProfile(matchedUser));
+
+  useEffect(() => {
+    if (profile?.email && userListData) {
+      const matchedUser = userListData.find(
+        (user) => user.email === profile?.email,
+      );
+      if (matchedUser) {
+        dispatch(saveUserProfile(matchedUser));
+      }
     }
-  }
+  }, [profile?.email, userListData, dispatch]);
+
   return (
-    <div>
-      <Typography variant="h4" gutterBottom>
-        Welcome to the Dashboard
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        textAlign: "center",
+      }}
+    >
+      <Typography variant="h4" sx={{ fontWeight: "bold", marginBottom: 3 }}>
+        Home Page
       </Typography>
-      <Typography>
-        Đây là trang chính của hệ thống, nơi hiển thị các thông tin và báo cáo
-        quan trọng.
-      </Typography>
-      <Typography>
-        Bạn có thể tùy chỉnh trang này để thêm nội dung như biểu đồ, danh sách
-        công việc, và nhiều hơn nữa.
-      </Typography>
-    </div>
+      <img
+        src={comingSoonImage}
+        alt="Coming Soon"
+        style={{ width: "400px", height: "auto" }}
+      />
+    </Box>
   );
 };
 

@@ -36,7 +36,7 @@ const ProjectSearch = ({ data = [], onSearch }) => {
       }}
       sx={{
         "& .MuiOutlinedInput-root": {
-          fontSize: "1.4rem",
+          fontSize: "1.6rem",
           "& fieldset": {
             borderColor: "#90caf9",
           },

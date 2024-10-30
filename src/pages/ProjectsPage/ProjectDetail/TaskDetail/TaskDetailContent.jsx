@@ -42,7 +42,9 @@ const TaskDetailContent = ({ task }) => (
             ? "Pending"
             : task.status === 2
               ? "In Progress"
-              : "Complete"
+              : task.status === 3
+                ? "QA Testing"
+                : "Completed"
         }
       />
     </Box>

@@ -1,9 +1,9 @@
 import RadarChartComponent from "@/components/ChartRardar";
 import { useGetApiTask } from "@/hooks/useTask";
 import { useGetApiUsers } from "@/hooks/useUsers";
-import { Grid2, Typography } from "@mui/material";
+import { Box, Container, Grid2, Paper, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux"; // Import useSelector from react-redux
+import { useSelector } from "react-redux";
 import DashboarDetailModal from "../DashboardDetailModal";
 import TaskByUserStatCard from "./TaskByUser/TaskByUserStatCard";
 import { calculateTaskByUsersStats } from "./TaskByUser/TaskByUserUtils";
@@ -59,6 +59,11 @@ const UserDashboardPage = () => {
     setModalTitle("All Task By User Details");
     setModalDetails({
       "Tasks Due in 7 Days": taskNames,
+
+      "Tasks Not Started": TaskByUserStat.notStartedTasks,
+      "Tasks In Progress": TaskByUserStat.inProgressTasks,
+      "Tasks Bug Fixing": TaskByUserStat.bugFixingTasks,
+      "Tasks Completed": TaskByUserStat.completedTasks,
     });
     setOpenTaskByUserModal(true);
   };
@@ -66,80 +71,63 @@ const UserDashboardPage = () => {
   const handleCloseTaskByUserModal = () => setOpenTaskByUserModal(false);
 
   return (
-    <>
-      <Typography
-        variant="h3"
-        sx={{ textAlign: "center", fontWeight: "bold", marginBottom: 6 }}
-      >
+    <Container maxWidth="xl">
+      <Typography variant="h4" sx={styles.pageTitle}>
         User Dashboard Page
       </Typography>
       {TaskByUserStat && (
-        <Grid2
-          container
-          spacing={2}
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
+        <Box sx={styles.sectionContainer}>
+          <Paper elevation={2} sx={{ p: 2 }}>
+            <Grid2 container spacing={4}>
+              <Grid2 size={{ xs: 12, md: 6 }}>
+                <Box sx={styles.chartContainer}>
+                  <RadarChartComponent
+                    data={{
+                      labels: [
+                        "Total Tasks",
+                        "Not Started",
+                        "In Progress",
+                        "Tasks Due in 7 Days",
+                        "Bug Fixing",
+                        "Completed",
+                      ],
+                      datasets: [
+                        {
+                          label: "User Task Stats",
+                          data: [
+                            TaskByUserStat?.totalUserTasks,
+                            TaskByUserStat?.notStartedCount,
+                            TaskByUserStat?.inProgressCount,
+                            TaskByUserStat.usersWithTasksDueIn7Days.map(
+                              (user) => user.taskCount,
+                            ),
+                            TaskByUserStat?.bugFixingCount,
+                            TaskByUserStat?.completedCount,
+                          ],
+                          backgroundColor: "rgba(54, 162, 235, 0.5)",
+                          borderColor: "rgba(54, 162, 235, 1)",
+                          borderWidth: 1,
+                        },
+                      ],
+                    }}
+                    suggestedMax={TaskByUserStat.totalUserTasks || 10}
+                    title="User Task Stat"
+                  />
+                </Box>
+              </Grid2>
 
-          {/* User Task Status Breakdown Radar Chart */}
-          <Grid2 item xs={12} md={6}>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-<RadarChartComponent
-    data={{
-        labels: ["Total Tasks", "Not Started", "In Progress","Tasks Due in 7 Days", "Bug Fixing", "Completed"],
-        datasets: [
-            {
-                label: "User Task Stats",
-                data: [
-                  TaskByUserStat?.totalUserTasks, // Total tasks
-                    TaskByUserStat?.notStartedCount,
-                    TaskByUserStat?.inProgressCount,
-                    TaskByUserStat?.usersWithTasksDueIn7Days.map(
-                  (user) => user.taskCount,
-                ),
-                    TaskByUserStat?.bugFixingCount,
-                    TaskByUserStat?.completedCount,
-                ],
-                backgroundColor: "rgba(54, 162, 235, 0.5)",
-                borderColor: "rgba(54, 162, 235, 1)",
-                borderWidth: 1,
-            },
-        ],
-    }}
-    suggestedMax={TaskByUserStat.totalUserTasks || 10}
-    title="User Task Stat"
-/>
-
-            </div>
-          </Grid2>
-
-          {/* Project Stats Card */}
-          <Grid2
-            container
-            spacing={2}
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              marginTop: 90,
-              marginBottom: 90,
-            }}
-          >
-            <TaskByUserStatCard
-              TaskByUserStat={TaskByUserStat}
-              handleOpenTaskByUserModal={handleOpenTaskByUserModal}
-            />
-          </Grid2>
-        </Grid2>
+              {/* Project Stats Card */}
+              <Grid2 size={{ xs: 12, md: 6 }}>
+                <Box sx={styles.cardContainer}>
+                  <TaskByUserStatCard
+                    TaskByUserStat={TaskByUserStat}
+                    handleOpenTaskByUserModal={handleOpenTaskByUserModal}
+                  />
+                </Box>
+              </Grid2>
+            </Grid2>
+          </Paper>
+        </Box>
       )}
       <DashboarDetailModal
         open={OpenTaskByUserModal}
@@ -147,8 +135,30 @@ const UserDashboardPage = () => {
         title={modalTitle}
         details={modalDetails}
       />
-    </>
+    </Container>
   );
 };
 
 export default UserDashboardPage;
+const styles = {
+  sectionContainer: {
+    py: 2,
+  },
+  chartContainer: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100%",
+  },
+  cardContainer: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100%",
+  },
+  pageTitle: {
+    textAlign: "center",
+    fontWeight: "bold",
+    mb: 2,
+  },
+};

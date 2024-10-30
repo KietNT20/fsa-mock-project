@@ -17,7 +17,7 @@ import ProjectStatsCard from "./ProjectStat/ProjectStatsCard";
 import { calculateProjectStats } from "./ProjectStat/ProjectUtils";
 import TaskStatsCard from "./TaskStat/TaskStatsCard";
 import { calculateTaskStats } from "./TaskStat/TaskUtils";
-import UserStatCard from "./UserStat/UserStatCard"; // Ensure this imports your UserStatCard
+import UserStatCard from "./UserStat/UserStatCard";
 import { calculateUsersTaskStats } from "./UserStat/UserUtils";
 
 const currentDate = new Date();
@@ -48,7 +48,6 @@ const AdminDashboardPage = () => {
   const [modalTitle, setModalTitle] = useState("");
   const [modalDetails, setModalDetails] = useState({});
 
-  // Tính toán số liệu cho nhiệm vụ, dự án và người dùng khi dữ liệu thay đổi
   useEffect(() => {
     if (!taskLoading && !taskError && taskData) {
       const stats = calculateTaskStats(taskData, currentDate);
@@ -292,6 +291,6 @@ const styles = {
   pageTitle: {
     textAlign: "center",
     fontWeight: "bold",
-    mb: 6,
+    mb: 2,
   },
 };
