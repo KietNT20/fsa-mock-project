@@ -1,0 +1,136 @@
+.starsBG {
+  background: black url("../../assets/images/stars.png") repeat;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.container-404 {
+  width: 100%;
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 20px;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.main-404 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 40px 0;
+}
+
+.main2-404 {
+  text-align: center;
+  padding: 20px;
+}
+
+.oh {
+  color: #fff;
+  font-size: clamp(30px, 5vw, 50px);
+  margin-bottom: clamp(16px, 2vw, 32px);
+  letter-spacing: clamp(4px, 1vw, 8px);
+  font-family: "Open Sans", sans-serif;
+}
+
+.content-404 {
+  color: #fff;
+  font-size: clamp(36px, 6vw, 60px);
+  letter-spacing: clamp(4px, 1vw, 8px);
+  font-family: "Open Sans", sans-serif;
+}
+
+.main2 button {
+  background: #8a6dd4;
+  color: #fff;
+  padding: 10px;
+  width: min(220px, 90%);
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: clamp(14px, 2vw, 17px);
+  transition: border-radius 0.3s ease;
+}
+
+.main2 button:hover {
+  border-radius: 5px;
+}
+
+.head-1 {
+  font-size: clamp(120px, 20vw, 250px);
+  color: #fff;
+  margin: 0 clamp(15px, 2vw, 30px);
+  text-shadow:
+    0 1px 0 #8a6dd4,
+    0 2px 0 #8a6dd4,
+    0 3px 0 #8a6dd4,
+    0 4px 0 #8a6dd4,
+    0 5px 0 #8a6dd4,
+    0 6px 0 #8a6dd4,
+    0 7px 0 #8a6dd4,
+    0 8px 0 #8a6dd4,
+    0 0 5px #8a6dd400,
+    0 -1px 3px #8a6dd445,
+    0 9px 9px #8a6dd452,
+    0 12px 12px #8a6dd452,
+    0 15px 15px #8a6dd44d;
+}
+
+.saturn {
+  width: min(360px, 90vw);
+  height: auto;
+}
+
+.ufo1,
+.ufo2 {
+  width: clamp(60px, 10vw, 100px);
+  position: absolute;
+  z-index: 9;
+}
+
+.ufo1 {
+  top: 50px;
+  animation: ufo1 20s linear infinite;
+}
+
+.ufo2 {
+  bottom: 80px;
+  animation: ufo2 20s linear infinite;
+}
+
+@keyframes ufo1 {
+  0% {
+    transform: translateX(100vw);
+  }
+  100% {
+    transform: translateX(-100vw);
+  }
+}
+
+@keyframes ufo2 {
+  0% {
+    transform: translateX(-100vw);
+  }
+  100% {
+    transform: translateX(100vw);
+  }
+}
+
+@media (max-width: 768px) {
+  .main-404 {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .ufo1 {
+    top: 30px;
+  }
+  .ufo2 {
+    bottom: 40px;
+  }
+}

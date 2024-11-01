@@ -3,7 +3,6 @@ import { saveUserProfile } from "@/store/actions/userProfileAction";
 import { Box, Typography } from "@mui/material";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import comingSoonImage from "../../assets/HomeAsset/home.png";
 
 const HomePage = () => {
   const dispatch = useDispatch();
@@ -35,11 +34,6 @@ const HomePage = () => {
       <Typography variant="h4" sx={{ fontWeight: "bold", marginBottom: 3 }}>
         Home Page
       </Typography>
-      <img
-        src={comingSoonImage}
-        alt="Coming Soon"
-        style={{ width: "400px", height: "auto" }}
-      />
     </Box>
   );
 };
