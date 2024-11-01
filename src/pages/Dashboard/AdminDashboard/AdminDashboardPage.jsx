@@ -268,6 +268,7 @@ const AdminDashboardPage = () => {
       />
     </Container>
   );
+
 };
 
 export default AdminDashboardPage;

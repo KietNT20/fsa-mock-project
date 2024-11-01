@@ -38,25 +38,25 @@ export const calculateTaskByUsersStats = (
     // Task đang thực hiện
     if (task.status === 2) {
       inProgressCount += 1;
-      inProgressTasks.push(task.task_name); // Lưu tên của task
+      inProgressTasks.push(task.task_name);
     }
 
     // Task đang fix bug
     if (task.status === 3) {
       bugFixingCount += 1;
-      bugFixingTasks.push(task.task_name); // Lưu tên của task
+      bugFixingTasks.push(task.task_name);
     }
 
     // Task đã hoàn thành
     if (task.status === 4) {
       completedCount += 1;
-      completedTasks.push(task.task_name); // Lưu tên của task
+      completedTasks.push(task.task_name);
     }
 
     // Task sẽ hết hạn trong 7 ngày tới và không ở trạng thái done
     if (task.status !== 4 && timeDifference >= 0 && timeDifference <= 7) {
       taskCountForUser += 1;
-      tasksDueIn7Days.push(task.task_name); // Lưu tên của task
+      tasksDueIn7Days.push(task.task_name);
     }
   });
 
@@ -77,10 +77,11 @@ export const calculateTaskByUsersStats = (
     inProgressCount,
     bugFixingCount,
     completedCount,
-    notStartedTasks, // Thêm tên task chưa bắt đầu
-    inProgressTasks, // Thêm tên task đang thực hiện
-    bugFixingTasks, // Thêm tên task đang fix bug
-    completedTasks, // Thêm tên task đã hoàn thành
-    tasksDueIn7Days, // Thêm tên task sẽ hết hạn trong 7 ngày
+    // Thêm tên task
+    notStartedTasks,
+    inProgressTasks,
+    bugFixingTasks,
+    completedTasks,
+    tasksDueIn7Days,
   };
 };

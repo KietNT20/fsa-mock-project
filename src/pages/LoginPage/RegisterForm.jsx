@@ -63,7 +63,7 @@ const RegisterForm = () => {
         width: "100%",
         maxWidth: 450,
         margin: "0 auto",
-        padding: 3,
+        padding: 2,
         boxShadow: 3,
         borderRadius: 2,
         backgroundColor: "#fff",
@@ -196,7 +196,7 @@ const RegisterForm = () => {
       <Typography
         variant="body1"
         className="social-text"
-        sx={{ mt: 2, fontSize: "1.4rem" }}
+        sx={{ mt: 1, fontSize: "1.4rem" }}
       >
         Or Sign up with social platforms
       </Typography>

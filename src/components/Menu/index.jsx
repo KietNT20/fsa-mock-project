@@ -34,9 +34,9 @@ const MenuList = () => {
                 component={NavLink}
                 to={item.path}
                 sx={{
-                  minHeight: 80,
+                  minHeight: 70,
                   justifyContent: "initial",
-                  px: 3.2,
+                  px: 3,
                   transition: "transform 0.3s ease, box-shadow 0.3s ease",
                   "&:hover": {
                     boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",

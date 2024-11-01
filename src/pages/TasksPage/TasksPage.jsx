@@ -219,7 +219,11 @@ const TasksPage = () => {
                       </Box>
                     ) : (
                       filteredTasks[columnId].map((task, index) => (
-                        <Draggable key={task.id} draggableId={task.id} index={index}>
+                        <Draggable
+                          key={task.id}
+                          draggableId={task.id}
+                          index={index}
+                        >
                           {(provided) => (
                             <Card
                               ref={provided.innerRef}
@@ -240,7 +244,9 @@ const TasksPage = () => {
                                   sx={{
                                     textAlign: "center",
                                     fontWeight: "bold",
-                                    backgroundColor: getStatusColor(task.status),
+                                    backgroundColor: getStatusColor(
+                                      task.status,
+                                    ),
                                     padding: "10px",
                                     borderRadius: "10px",
                                     fontSize: { xs: "1.4rem", sm: "1.6rem" },
@@ -265,14 +271,20 @@ const TasksPage = () => {
                                       alignItems: "center",
                                     }}
                                   >
-                                    <FolderIcon sx={{ color: "#2d2f30", mr: 1 }} />
+                                    <FolderIcon
+                                      sx={{ color: "#2d2f30", mr: 1 }}
+                                    />
                                     <Typography
                                       sx={{
-                                        fontSize: { xs: "1.2rem", sm: "1.4rem" },
+                                        fontSize: {
+                                          xs: "1.2rem",
+                                          sm: "1.4rem",
+                                        },
                                         color: "#2d2f30",
                                       }}
                                     >
-                                      <strong>Project Name:</strong> {task.project_name}
+                                      <strong>Project Name:</strong>{" "}
+                                      {task.project_name}
                                     </Typography>
                                   </Box>
 
@@ -283,14 +295,26 @@ const TasksPage = () => {
                                       mt: { xs: 1, sm: 0 },
                                     }}
                                   >
-                                    <PriorityHighIcon sx={{ color: "#2d2f30", mr: 1 }} />
+                                    <PriorityHighIcon
+                                      sx={{ color: "#2d2f30", mr: 1 }}
+                                    />
                                     <Typography
                                       sx={{
-                                        fontSize: { xs: "1.2rem", sm: "1.4rem" },
+                                        fontSize: {
+                                          xs: "1.2rem",
+                                          sm: "1.4rem",
+                                        },
                                         color: "#2d2f30",
                                       }}
                                     >
-                                      <strong>Status:</strong> {task.status === 1 ? "Pending" : task.status === 2 ? "In Progress" : task.status === 3 ? "QA Testing" : "Done"}
+                                      <strong>Status:</strong>{" "}
+                                      {task.status === 1
+                                        ? "Pending"
+                                        : task.status === 2
+                                          ? "In Progress"
+                                          : task.status === 3
+                                            ? "QA Testing"
+                                            : "Done"}
                                     </Typography>
                                   </Box>
                                 </Box>
@@ -311,14 +335,20 @@ const TasksPage = () => {
                                       alignItems: "center",
                                     }}
                                   >
-                                    <DateRangeIcon sx={{ color: "#2d2f30", mr: 1 }} />
+                                    <DateRangeIcon
+                                      sx={{ color: "#2d2f30", mr: 1 }}
+                                    />
                                     <Typography
                                       sx={{
-                                        fontSize: { xs: "1.2rem", sm: "1.4rem" },
+                                        fontSize: {
+                                          xs: "1.2rem",
+                                          sm: "1.4rem",
+                                        },
                                         color: "#2d2f30",
                                       }}
                                     >
-                                      <strong>Time Start:</strong> {formatDate(task.time_start)}
+                                      <strong>Time Start:</strong>{" "}
+                                      {formatDate(task.time_start)}
                                     </Typography>
                                   </Box>
 
@@ -329,14 +359,20 @@ const TasksPage = () => {
                                       mt: { xs: 1, sm: 0 },
                                     }}
                                   >
-                                    <DateRangeIcon sx={{ color: "#2d2f30", mr: 1 }} />
+                                    <DateRangeIcon
+                                      sx={{ color: "#2d2f30", mr: 1 }}
+                                    />
                                     <Typography
                                       sx={{
-                                        fontSize: { xs: "1.2rem", sm: "1.4rem" },
+                                        fontSize: {
+                                          xs: "1.2rem",
+                                          sm: "1.4rem",
+                                        },
                                         color: "#2d2f30",
                                       }}
                                     >
-                                      <strong>Time End:</strong> {formatDate(task.time_end)}
+                                      <strong>Time End:</strong>{" "}
+                                      {formatDate(task.time_end)}
                                     </Typography>
                                   </Box>
                                 </Box>
@@ -354,7 +390,6 @@ const TasksPage = () => {
           </Grid2>
         ))}
       </Grid2>
-
     </DragDropContext>
   );
 };
