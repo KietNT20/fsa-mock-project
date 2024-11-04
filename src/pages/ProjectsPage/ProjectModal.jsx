@@ -203,7 +203,7 @@ const ProjectModal = ({
                 secondsStep={1}
                 minDateTime={currentDateTime}
                 disabled={mode === "update"}
-                views={["year", "month", "day", "hours", "minutes", "seconds"]}
+                views={["year", "month", "day", "hours", "minutes"]}
                 slotProps={{
                   textField: {
                     fullWidth: true,
@@ -252,7 +252,7 @@ const ProjectModal = ({
                 ampm={false}
                 minutesStep={1}
                 secondsStep={1}
-                views={["year", "month", "day", "hours", "minutes", "seconds"]}
+                views={["year", "month", "day", "hours", "minutes"]}
                 slotProps={{
                   textField: {
                     fullWidth: true,

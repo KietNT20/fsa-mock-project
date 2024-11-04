@@ -208,10 +208,12 @@ const UserModal = ({
             render={({ field }) => (
               <TextField
                 {...field}
-                label="Password"
+                label={
+                  mode === "create" ? "Password: User@123" : "New Password"
+                }
                 variant="outlined"
                 fullWidth
-                disabled={isSubmitDisabled}
+                disabled={isSubmitDisabled || mode === "create"}
                 value={field.value}
                 error={!!errors.password}
                 helperText={errors.password?.message}
