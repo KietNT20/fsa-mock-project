@@ -24,7 +24,7 @@ const styles = {
 };
 
 export const TaskSection = ({ taskStats, handleOpenTaskModal }) => (
-  <Box sx={styles.sectionContainer}>
+  <Box sx={{ pb: 4 }}>
     <Paper elevation={2} sx={{ p: 3 }}>
       <Grid2
         container

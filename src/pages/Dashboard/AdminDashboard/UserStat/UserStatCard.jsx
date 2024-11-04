@@ -1,3 +1,4 @@
+import { COLORS } from "@/constant/color";
 import { Launch as DetailIcon } from "@mui/icons-material";
 import {
   Button,
@@ -40,7 +41,7 @@ const UserStatCard = ({ userTaskStats, handleOpenUserModal }) => {
               </Typography>
               <Typography
                 variant="body1"
-                style={{ fontSize: "1.8rem", color: "#2196f3" }}
+                style={{ fontSize: "1.8rem", color: COLORS.PRIMARY_RED }}
               >
                 {userTaskStats.usersWithoutTasks.length}
               </Typography>
@@ -54,7 +55,7 @@ const UserStatCard = ({ userTaskStats, handleOpenUserModal }) => {
               </Typography>
               <Typography
                 variant="body1"
-                style={{ fontSize: "1.8rem", color: "#ff9800" }}
+                style={{ fontSize: "1.8rem", color: COLORS.PRIMARY_BLUE }}
               >
                 {userTaskStats.usersWithTasksDueIn7Days.length}
               </Typography>
@@ -72,20 +73,6 @@ const UserStatCard = ({ userTaskStats, handleOpenUserModal }) => {
               alignItems: "center",
             }}
           >
-            <Grid2 item xs={12} sm={6} md={9}>
-              <Typography
-                variant="h4"
-                style={{ fontSize: "1.6rem", fontWeight: "bold" }}
-              >
-                Total User
-              </Typography>
-              <Typography
-                variant="body1"
-                style={{ fontSize: "1.8rem", color: "#000000" }}
-              >
-                {userTaskStats.totalUser}
-              </Typography>
-            </Grid2>
             <Grid2 item xs={12} sm={6} md={3}>
               <Button
                 variant="contained"

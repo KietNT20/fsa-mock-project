@@ -1,3 +1,4 @@
+import { COLORS } from "@/constant/color";
 import { Launch as DetailIcon } from "@mui/icons-material";
 import {
   Button,
@@ -40,7 +41,7 @@ const ProjectStatsCard = ({ projectStats, handleOpenProjectModal }) => {
               </Typography>
               <Typography
                 variant="body1"
-                style={{ fontSize: "1.8rem", color: "#2196f3" }}
+                style={{ fontSize: "1.8rem", color: COLORS.PRIMARY_RED }}
               >
                 {projectStats.runningProjects.length}
               </Typography>
@@ -54,7 +55,7 @@ const ProjectStatsCard = ({ projectStats, handleOpenProjectModal }) => {
               </Typography>
               <Typography
                 variant="body1"
-                style={{ fontSize: "1.8rem", color: "#ff9800" }}
+                style={{ fontSize: "1.8rem", color: COLORS.PRIMARY_BLUE }}
               >
                 {projectStats.projectsReleasingSoon.length}
               </Typography>
@@ -68,7 +69,7 @@ const ProjectStatsCard = ({ projectStats, handleOpenProjectModal }) => {
               </Typography>
               <Typography
                 variant="body1"
-                style={{ fontSize: "1.8rem", color: "#4caf50" }}
+                style={{ fontSize: "1.8rem", color: COLORS.PRIMARY_YELLOW }}
               >
                 {projectStats.prioritizedProjects.length}
               </Typography>

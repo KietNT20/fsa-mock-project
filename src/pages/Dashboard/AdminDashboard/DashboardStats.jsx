@@ -39,7 +39,7 @@ const DashboardStats = ({
   ];
 
   return (
-    <Grid container spacing={3} sx={{ mb: 3 }}>
+    <Grid container spacing={3} sx={{ mb: 4 }}>
       {stats.map((stat, index) => (
         <Grid size={{ xs: 12, sm: 6, md: 4 }} key={index}>
           <StatCard {...stat} />
