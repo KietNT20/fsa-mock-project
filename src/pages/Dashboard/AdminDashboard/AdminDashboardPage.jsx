@@ -1,3 +1,4 @@
+import Spinner from "@/components/Spinner";
 import { Box, Container, Divider, Typography } from "@mui/material";
 import DashboardDetailModal from "../DashboardDetailModal";
 import { ProjectSection, TaskSection, UserSection } from "./DashboardSection";
@@ -33,11 +34,7 @@ const AdminDashboardPage = () => {
   } = useDashboardModals();
 
   if (isLoading) {
-    return (
-      <Box sx={{ display: "flex", justifyContent: "center", p: 4 }}>
-        <Typography>Loading...</Typography>
-      </Box>
-    );
+    return <Spinner />;
   }
 
   if (isError) {

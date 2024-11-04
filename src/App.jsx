@@ -10,7 +10,8 @@ import tokenMethod from "./utils/token";
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 0,
+      staleTime: 60 * 1000,
+      gcTime: 60 * 1000,
     },
   },
 });

@@ -3,7 +3,7 @@ import { Box, CircularProgress } from "@mui/material";
 const Spinner = () => {
   return (
     <Box sx={styles.spinnerStyles}>
-      <CircularProgress />
+      <CircularProgress size="3rem" />
     </Box>
   );
 };
@@ -15,12 +15,6 @@ export const styles = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    height: "100%",
-    width: "100%",
-    top: 0,
-    left: 0,
-    right: 0,
-    position: "absolute",
-    zIndex: 4,
+    height: "100vh",
   },
 };
