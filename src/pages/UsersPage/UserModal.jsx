@@ -68,7 +68,7 @@ const UserModal = ({
 
   const onSubmit = async (data) => {
     if (mode === "create") {
-      onCreateUser(data);
+      onCreateUser({ ...data, role: "0" });
     } else if (mode === "update") {
       console.log("data", data);
       if (data.name !== user.name || data.password !== user.password) {
@@ -240,7 +240,10 @@ const UserModal = ({
                 {...field}
                 select
                 label="Role"
-                disabled={isRoleDisabled || isSubmitDisabled}
+                value={mode === "create" ? "0" : field.value}
+                disabled={
+                  isRoleDisabled || isSubmitDisabled || mode === "create"
+                }
                 fullWidth
                 error={!!errors.role}
                 helperText={errors.role?.message}

@@ -13,7 +13,7 @@ export const loginSchema = yup.object().shape({
     .string()
     .test(
       "is-valid-password",
-      "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+      "Password have at least 7 characters, must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
       (value) => {
         const passwordRegex = REGEX.PASSWORD;
         return passwordRegex.test(value);
@@ -33,7 +33,7 @@ export const registerSchema = yup.object().shape({
     .string()
     .test(
       "is-valid-password",
-      "Password have 8 characters, must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+      "Password have at least 7 characters, must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
       (value) => {
         const passwordRegex = REGEX.PASSWORD;
         return passwordRegex.test(value);

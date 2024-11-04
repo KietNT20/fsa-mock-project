@@ -81,7 +81,7 @@ export const useCreateApiUser = () => {
       return axiosInstance.post(API.USERS, {
         name,
         email,
-        password: "user@123",
+        password: "User@123",
         role,
       });
     },
