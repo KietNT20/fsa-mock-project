@@ -9,7 +9,7 @@ import PropTypes from "prop-types";
 import * as React from "react";
 import { Outlet } from "react-router-dom";
 
-const drawerWidth = 240;
+const drawerWidth = 220;
 
 function MainLayout(props) {
   const { window } = props;
@@ -49,10 +49,10 @@ function MainLayout(props) {
       <Header handleDrawerToggle={handleDrawerToggle} />
       <Box
         component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+        sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }}
         aria-label="mailbox folders"
       >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+        
         <Drawer
           container={container}
           variant="temporary"
@@ -60,10 +60,10 @@ function MainLayout(props) {
           onTransitionEnd={handleDrawerTransitionEnd}
           onClose={handleDrawerClose}
           ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
+            keepMounted: true,
           }}
           sx={{
-            display: { xs: "block", sm: "none" },
+            display: { xs: "block", md: "none" },
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
@@ -75,7 +75,7 @@ function MainLayout(props) {
         <Drawer
           variant="permanent"
           sx={{
-            display: { xs: "none", sm: "block" },
+            display: { xs: "none", md: "block" },
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
@@ -91,7 +91,7 @@ function MainLayout(props) {
         sx={{
           flexGrow: 1,
           p: 3,
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
+          width: { md: `calc(100% - ${drawerWidth}px)` },
         }}
       >
         <Toolbar />

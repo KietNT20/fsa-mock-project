@@ -72,12 +72,7 @@ const LoginForm = () => {
           backgroundColor: "var(--white-cl)",
         }}
       >
-        <Typography
-          variant="h2"
-          component="h2"
-          className="title"
-          sx={{ mb: 2 }}
-        >
+        <Typography variant="h2" component="h2" className="title">
           SIGN IN
         </Typography>
 

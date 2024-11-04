@@ -10,17 +10,21 @@ import {
   MenuItem,
   Toolbar,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
-const drawerWidth = 240;
+import Logo from "../../assets/HomeAsset/logo2.png";
 
 const Header = ({ handleDrawerToggle }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const { userProfile } = useSelector((state) => state.userProfile);
   const navigate = useNavigate();
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -37,7 +41,7 @@ const Header = ({ handleDrawerToggle }) => {
   };
 
   const handleProfile = () => {
-    navigate(PATH.PROFILE); // Navigate to profile page
+    navigate(PATH.PROFILE);
     handleMenuClose();
   };
 
@@ -46,8 +50,12 @@ const Header = ({ handleDrawerToggle }) => {
       <AppBar
         position="fixed"
         sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
+          width: 'calc(100vw - (100vw - 100%))',
+          ml: 0,
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+          backgroundColor: "#1976d2",
+          borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
         }}
       >
         <Toolbar
@@ -55,21 +63,52 @@ const Header = ({ handleDrawerToggle }) => {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
+            paddingLeft: "20px",
+            paddingRight: "20px",
+            position: "relative",
           }}
         >
+          {/* Menu Icon*/}
           <IconButton
             color="inherit"
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
+            sx={{ mr: 2, display: { md: "none" } }}
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Responsive drawer
-          </Typography>
-          {/* User Avatar/Button to Open Menu */}
+
+          {/* Logo */}
+          <img
+            src={Logo}
+            alt="logo"
+            style={{ width: "130px", height: "auto" }}
+          />
+
+          {/* Slogan */}
+          {!isMobile && (
+            <Typography
+              variant="subtitle1"
+              sx={{
+                position: "absolute",
+                left: "50%",
+                transform: "translateX(-50%)",
+                fontSize: "1.3rem",
+                color: "#ffffff",
+                textAlign: "center",
+                lineHeight: "1.2",
+              }}
+            >
+              Nền tảng quản lý dự án chuyên nghiệp
+              <br />
+              <span style={{ fontSize: "1.1rem", color: "#cfcfcf" }}>
+                Kết nối - Đồng bộ - Thành công
+              </span>
+            </Typography>
+          )}
+
+          {/* Avatar*/}
           <IconButton color="inherit" onClick={handleMenuClick}>
             <Avatar
               src={userProfile.avarta}
@@ -81,6 +120,7 @@ const Header = ({ handleDrawerToggle }) => {
               }}
             />
           </IconButton>
+
           {/* User Menu */}
           <Menu
             anchorEl={anchorEl}
