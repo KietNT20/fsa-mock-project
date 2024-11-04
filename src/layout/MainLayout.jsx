@@ -52,7 +52,6 @@ function MainLayout(props) {
         sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }}
         aria-label="mailbox folders"
       >
-        
         <Drawer
           container={container}
           variant="temporary"

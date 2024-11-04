@@ -4,6 +4,7 @@ import ResponsiveDrawer from "@/layout/MainLayout";
 import DashboardPage from "@/pages/Dashboard/DashboardPage";
 import HomePage from "@/pages/HomePage/HomePage";
 import LoginPage from "@/pages/LoginPage/LoginPage";
+import PageNotFound from "@/pages/PageNotFound/PageNotFound";
 import Profile from "@/pages/Profile/Profile";
 import ProjectDetail from "@/pages/ProjectsPage/ProjectDetail/ProjectDetail";
 import ProjectsPage from "@/pages/ProjectsPage/ProjectsPage";
@@ -27,6 +28,7 @@ const AppRoutes = () => {
         </Route>
       </Route>
       <Route path={PATH.LOGIN} element={<LoginPage />} />
+      <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
 };

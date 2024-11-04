@@ -1,9 +1,9 @@
+import comingSoonImage2 from "@/assets/HomeAsset/Under_Construction.gif";
 import { useGetApiUsers } from "@/hooks/useUsers";
 import { saveUserProfile } from "@/store/actions/userProfileAction";
 import { Box } from "@mui/material";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import comingSoonImage2 from "../../assets/HomeAsset/Under Construction.gif";
 
 const HomePage = () => {
   const dispatch = useDispatch();

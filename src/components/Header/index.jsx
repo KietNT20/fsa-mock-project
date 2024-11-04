@@ -50,7 +50,7 @@ const Header = ({ handleDrawerToggle }) => {
       <AppBar
         position="fixed"
         sx={{
-          width: 'calc(100vw - (100vw - 100%))',
+          width: "calc(100vw - (100vw - 100%))",
           ml: 0,
           zIndex: (theme) => theme.zIndex.drawer + 1,
           backgroundColor: "#1976d2",
@@ -100,10 +100,10 @@ const Header = ({ handleDrawerToggle }) => {
                 lineHeight: "1.2",
               }}
             >
-              Nền tảng quản lý dự án chuyên nghiệp
+              Professional project management platform
               <br />
               <span style={{ fontSize: "1.1rem", color: "#cfcfcf" }}>
-                Kết nối - Đồng bộ - Thành công
+                Connect - Synchronize - Succeed
               </span>
             </Typography>
           )}
@@ -126,12 +126,14 @@ const Header = ({ handleDrawerToggle }) => {
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}
             onClose={handleMenuClose}
-            PaperProps={{
-              sx: {
-                mt: 1.5,
-                borderRadius: 2,
-                minWidth: 150,
-                padding: 1,
+            slotProps={{
+              paper: {
+                sx: {
+                  mt: 1.5,
+                  borderRadius: 2,
+                  minWidth: 150,
+                  padding: 1,
+                },
               },
             }}
           >
