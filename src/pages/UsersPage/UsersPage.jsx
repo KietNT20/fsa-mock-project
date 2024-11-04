@@ -19,7 +19,7 @@ import React, { useCallback, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import UserModal from "./UserModal";
 
-const itemsPerPage = 6;
+const itemsPerPage = 5;
 
 const UsersPage = () => {
   const [page, setPage] = useState(1);
@@ -104,12 +104,7 @@ const UsersPage = () => {
   const TableSkeleton = () => (
     <>
       {[...Array(itemsPerPage)].map((_, index) => (
-        <Skeleton
-          key={index}
-          variant="rectangular"
-          height={53}
-          sx={{ my: 1 }}
-        />
+        <Skeleton key={index} variant="rectangular" height={40} />
       ))}
     </>
   );
@@ -129,8 +124,8 @@ const UsersPage = () => {
     <React.Fragment>
       <Box>
         <Typography
-          variant="h3"
-          sx={{ textAlign: "center", fontWeight: "bold", marginBottom: 6 }}
+          variant="h4"
+          sx={{ textAlign: "center", fontWeight: "bold", marginBottom: 3 }}
         >
           {userRole === 0 ? "User Page" : "Users Management Page"}
         </Typography>
@@ -139,7 +134,6 @@ const UsersPage = () => {
           container
           spacing={2}
           sx={{
-            marginBottom: 2,
             width: "100%",
           }}
         >
@@ -169,7 +163,7 @@ const UsersPage = () => {
                 onClick={() => handleOpenModal("create")}
                 sx={{
                   background: "linear-gradient(135deg, #0d47a1 , #90caf9)",
-                  padding: "12px 24px",
+                  padding: "8px 16px",
                   fontSize: "1.3rem",
                   fontWeight: "bold",
                   borderRadius: "8px",

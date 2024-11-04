@@ -5,6 +5,8 @@ export const getStatusColor = (status) => {
     case 2:
       return "rgba(54, 162, 235, 0.5)"; // Blue for In Process
     case 3:
+      return "rgba(255, 99, 132, 0.5)";
+    case 4:
       return "rgba(75, 192, 192, 0.5)"; // Green for Done
     default:
       return "rgba(0, 0, 0, 0.1)"; // Default gray
@@ -18,6 +20,8 @@ export const getStatusText = (status) => {
     case 2:
       return "In Process";
     case 3:
+      return "QA Testing";
+    case 4:
       return "Done";
     default:
       return "Unknown";

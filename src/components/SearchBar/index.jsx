@@ -50,7 +50,7 @@ const SearchBar = ({ data = [], onSearch, onSelect }) => {
           {...props}
           sx={{
             p: 1,
-            fontSize: "1.4rem",
+            fontSize: "1.5rem",
             "&:hover": {
               backgroundColor: "#f5f5f5",
             },

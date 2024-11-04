@@ -8,25 +8,25 @@ const ProjectTask = ({ taskList, taskLoading, taskError }) => {
       <Paper
         elevation={2}
         sx={{
-          p: 3,
+          p: 2,
           borderRadius: "12px",
           backgroundColor: "#f9f9f9",
           boxShadow: "0 8px 20px rgba(0, 0, 0, 0.2)",
           color: "#424242",
-          maxHeight: "400px",
+          maxHeight: "330px",
           overflowY: "auto",
           mx: "auto",
-          mt: 3,
+          mt: 2,
         }}
       >
         <Typography
           variant="h4"
-          sx={{ fontWeight: "bold", mb: 3, fontSize: "2.4rem" }}
+          sx={{ fontWeight: "bold", mb: 2, fontSize: "2rem" }}
         >
           Project Tasks
         </Typography>
         <Divider
-          sx={{ marginY: 2, borderColor: "#808585", borderWidth: "0.5px" }}
+          sx={{ marginY: 1, borderColor: "#808585", borderWidth: "0.5px" }}
         />
         <TaskByProject
           taskList={taskList}

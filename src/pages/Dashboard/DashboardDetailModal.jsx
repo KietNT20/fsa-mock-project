@@ -1,4 +1,5 @@
 import { Close as CloseIcon } from "@mui/icons-material";
+import FolderOffIcon from "@mui/icons-material/FolderOff";
 import {
   Box,
   Divider,
@@ -23,11 +24,9 @@ const DashboardDetailModal = ({ open, onClose, title, details }) => {
     >
       <Box
         sx={{
-          position: "relative", // Để định vị nút close
-          width: "80%",
+          position: "relative",
           maxWidth: 1200,
-          maxHeight: "90vh",
-          overflow: "auto",
+          maxHeight: "80vh",
           bgcolor: "background.paper",
           borderRadius: 4,
           boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
@@ -57,8 +56,8 @@ const DashboardDetailModal = ({ open, onClose, title, details }) => {
 
         <Typography
           id="modal-modal-title"
-          variant="h3"
-          component="h2"
+          variant="h4"
+          component="h4"
           sx={{
             mb: 2,
             fontWeight: "bold",
@@ -66,13 +65,11 @@ const DashboardDetailModal = ({ open, onClose, title, details }) => {
             textAlign: "center",
             textTransform: "uppercase",
             letterSpacing: 1,
-            pr: 4, // Thêm padding right để tránh chồng lên nút close
           }}
         >
           {title}
         </Typography>
 
-        {/* Rest of the modal content remains the same */}
         <Divider sx={{ mb: 3 }} />
 
         <Box sx={{ maxHeight: "calc(90vh - 200px)", overflow: "auto", pr: 1 }}>
@@ -86,7 +83,8 @@ const DashboardDetailModal = ({ open, onClose, title, details }) => {
                     borderRadius: 4,
                     backgroundColor: "#fff",
                     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.05)",
-                    height: "100%",
+                    minWidth: 300,
+                    minHeight: 200,
                   }}
                 >
                   <Typography
@@ -109,6 +107,7 @@ const DashboardDetailModal = ({ open, onClose, title, details }) => {
                         listStyleType: "none",
                         padding: 0,
                         margin: 0,
+                        flexGrow: 1,
                       }}
                     >
                       {details[category].map((item, index) => (
@@ -143,16 +142,33 @@ const DashboardDetailModal = ({ open, onClose, title, details }) => {
                       ))}
                     </ul>
                   ) : (
-                    <Typography
-                      variant="body2"
+                    <Box
                       sx={{
-                        color: "#888",
-                        textAlign: "center",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
                         py: 2,
                       }}
                     >
-                      Không có dữ liệu
-                    </Typography>
+                      <FolderOffIcon
+                        sx={{
+                          fontSize: 40,
+                          color: "#ccc",
+                          mb: 1,
+                        }}
+                      />
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          color: "#888",
+                          textAlign: "center",
+                          fontSize: "1.6rem",
+                        }}
+                      >
+                        Không có dữ liệu
+                      </Typography>
+                    </Box>
                   )}
                 </Box>
               </Grid2>

@@ -8,10 +8,10 @@ const TaskCard = ({ task, onClick, sx }) => {
     <Paper
       onClick={() => onClick(task)}
       sx={{
-        minWidth: "350px",
+        minWidth: "330px",
         height: "100%",
-        px: 4,
-        py: 3,
+        px: 3,
+        py: 2,
         borderRadius: "12px",
         backgroundColor: "#ffffff",
         transition: "transform 0.3s ease-in-out",
@@ -29,7 +29,7 @@ const TaskCard = ({ task, onClick, sx }) => {
           fontWeight: "bold",
           textAlign: "center",
           marginBottom: 2,
-          fontSize: "2rem",
+          fontSize: "1.8rem",
           backgroundColor: getStatusColor(task.status),
           padding: "20px",
           borderRadius: "10px",

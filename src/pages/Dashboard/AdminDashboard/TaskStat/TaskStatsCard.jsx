@@ -23,7 +23,7 @@ const TaskStatsCard = ({ taskStats, handleOpenTaskModal }) => {
       >
         <CardContent>
           <Grid2 container spacing={2}>
-            <Grid2 size={{ xs: 12, sm: 6 }}>
+            <Grid2 size={{ sm: 12, md: 6 }}>
               <Typography
                 variant="h4"
                 style={{ fontSize: "1.6rem", fontWeight: "bold" }}
@@ -37,7 +37,7 @@ const TaskStatsCard = ({ taskStats, handleOpenTaskModal }) => {
                 {taskStats.lateTasks.length}
               </Typography>
             </Grid2>
-            <Grid2 size={{ xs: 12, sm: 6 }}>
+            <Grid2 size={{ sm: 12, md: 6 }}>
               <Typography
                 variant="h4"
                 style={{ fontSize: "1.6rem", fontWeight: "bold" }}
@@ -51,7 +51,7 @@ const TaskStatsCard = ({ taskStats, handleOpenTaskModal }) => {
                 {taskStats.waitingTasks.length}
               </Typography>
             </Grid2>
-            <Grid2 size={{ xs: 12, sm: 6 }}>
+            <Grid2 size={{ sm: 12, md: 6 }}>
               <Typography
                 variant="h4"
                 style={{ fontSize: "1.6rem", fontWeight: "bold" }}
@@ -65,7 +65,7 @@ const TaskStatsCard = ({ taskStats, handleOpenTaskModal }) => {
                 {taskStats.inProgressTasks.length}
               </Typography>
             </Grid2>
-            <Grid2 size={{ xs: 12, sm: 6 }}>
+            <Grid2 size={{ sm: 12, md: 6 }}>
               <Typography
                 variant="h4"
                 style={{ fontSize: "1.6rem", fontWeight: "bold" }}
@@ -91,20 +91,6 @@ const TaskStatsCard = ({ taskStats, handleOpenTaskModal }) => {
               justifyContent: "space-between",
             }}
           >
-            <Box>
-              <Typography
-                variant="h4"
-                style={{ fontSize: "1.6rem", fontWeight: "bold" }}
-              >
-                Total Tasks
-              </Typography>
-              <Typography
-                variant="body1"
-                style={{ fontSize: "1.8rem", color: "#000000" }}
-              >
-                {taskStats.totalTasks}
-              </Typography>
-            </Box>
             <Box>
               <Button
                 variant="contained"

@@ -1,65 +1,12 @@
+@use "../core/_mixins.scss";
+
 .chart-container {
-  height: 70vh;
-  width: 40vw;
   margin: 0 auto;
-
   .chart-wrapper {
     width: 100%;
-    min-height: 400px;
-  }
-}
-
-@media (min-width: 1024px) and (max-width: 1280px) {
-  .chart-container {
-    height: 65vh;
-    width: 50vw;
-  }
-  .chart-wrapper {
-    width: 85%;
-    height: 550px;
-  }
-}
-
-@media (min-width: 1281px) and (max-width: 1440px) {
-  .chart-container {
-    height: 60vh;
-    width: 50vw;
-  }
-  .chart-wrapper {
-    width: 80%;
-    height: 500px;
-  }
-}
-
-@media (max-width: 1024px) {
-  .chart-container {
-    height: 60vh;
-    width: 60vw;
-  }
-  .chart-wrapper {
-    width: 90%;
-    height: 500px;
-  }
-}
-
-@media (max-width: 768px) {
-  .chart-container {
-    height: 50vh;
-    width: 50vw;
-  }
-  .chart-wrapper {
-    width: 70%;
-    height: 400px;
-  }
-}
-
-@media (max-width: 480px) {
-  .chart-container {
-    height: 50vh;
-    width: 70vw;
-  }
-  .chart-wrapper {
-    width: 100%;
-    height: 300px;
+    min-height: 100px;
+    @include mixins.xl {
+      min-height: 400px;
+    }
   }
 }
