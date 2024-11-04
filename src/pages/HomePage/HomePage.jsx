@@ -1,6 +1,7 @@
+import comingSoonImage2 from "@/assets/HomeAsset/Under_Construction.gif";
 import { useGetApiUsers } from "@/hooks/useUsers";
 import { saveUserProfile } from "@/store/actions/userProfileAction";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -31,9 +32,11 @@ const HomePage = () => {
         textAlign: "center",
       }}
     >
-      <Typography variant="h4" sx={{ fontWeight: "bold", marginBottom: 3 }}>
-        Home Page
-      </Typography>
+      <img
+        src={comingSoonImage2}
+        alt="Coming Soon"
+        style={{ width: "700px", height: "auto" }}
+      />
     </Box>
   );
 };

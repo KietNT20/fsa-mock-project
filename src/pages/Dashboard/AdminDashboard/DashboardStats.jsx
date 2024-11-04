@@ -1,4 +1,4 @@
-import StatCard from "@/components/StatCard/StatCard";
+import StatCard from "@/components/StatCard";
 import {
   FolderSpecial as ProjectIcon,
   Assignment as TaskIcon,
