@@ -11,7 +11,14 @@ export const loginSchema = yup.object().shape({
     .required("Email or username is required"),
   password: yup
     .string()
-    .min(5, "Password must be at least 5 characters")
+    .test(
+      "is-valid-password",
+      "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+      (value) => {
+        const passwordRegex = REGEX.PASSWORD;
+        return passwordRegex.test(value);
+      },
+    )
     .required("Password is required"),
 });
 
@@ -24,6 +31,13 @@ export const registerSchema = yup.object().shape({
   name: yup.string().required("Username is required"),
   password: yup
     .string()
-    .min(5, "Password must be at least 5 characters")
+    .test(
+      "is-valid-password",
+      "Password have 8 characters, must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+      (value) => {
+        const passwordRegex = REGEX.PASSWORD;
+        return passwordRegex.test(value);
+      },
+    )
     .required("Password is required"),
 });

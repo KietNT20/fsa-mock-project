@@ -113,7 +113,7 @@ const RegisterForm = () => {
           <InputText
             {...field}
             fullWidth
-            type="email"
+            type="text"
             label="Email"
             placeholder="Please enter your email"
             variant="outlined"
